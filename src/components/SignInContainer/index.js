@@ -1,14 +1,15 @@
 import React from 'react';
 import  { FirebaseContext } from '../Firebase';
+import SignInBar from './SignInBar';
 
-const SignIn = () => {
+const SignInContainer = () => {
     return(
         <FirebaseContext.Consumer>
             {firebase => {
-                return <div>I've access to Firebase and render something.</div>
+                return <SignInBar firebase = {firebase}/>
             }}
         </FirebaseContext.Consumer>
     )
 }
 
-export default SignIn;
+export default SignInContainer;
