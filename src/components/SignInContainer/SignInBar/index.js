@@ -45,15 +45,13 @@ const SignInBar = props => {
           {mountLogIn ? (
             <LogIn firebase={props.firebase} />
           ) : (
-            <>
               <Button color='inherit' onClick={toggleLogIn}>
                 Log In
               </Button>
-              <Button color='inherit' onClick={props.signUpToggle}>
+          )}
+          <Button color='inherit' onClick={props.signUpToggle}>
                 Sign Up
               </Button>
-            </>
-          )}
         </Toolbar>
       </AppBar>
     </div>

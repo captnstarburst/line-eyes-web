@@ -20,7 +20,7 @@ const LogIn = props => {
   return (
     <>
       <form className={classes.root} noValidate autoComplete='on'>
-        <TextField id='filled-basic' label='User Name' variant='filled' />
+        <TextField autoFocus id='filled-basic' label='User Name' variant='filled' />
         <TextField
           id='filled-basic'
           label='Password'
