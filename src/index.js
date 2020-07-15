@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './theme'
 
 ReactDOM.render(
   <React.StrictMode>
       <FirebaseContext.Provider value={new Firebase()}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </FirebaseContext.Provider>
   </React.StrictMode>,
   document.getElementById('root')
