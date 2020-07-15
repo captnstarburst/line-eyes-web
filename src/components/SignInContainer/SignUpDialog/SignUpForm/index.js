@@ -49,7 +49,7 @@ const SignUpForm = props => {
       />
       <TextField
         id='date'
-        label='Birthday'
+        label='Date Of Birth'
         type='date'
         defaultValue='2017-05-24'
         className={classes.signUpField}
