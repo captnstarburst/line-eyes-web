@@ -1,5 +1,5 @@
 export const LANDING = '/';
-export const SIGN_IN = '/signIn';
+export const LOG_IN = '/LogIn';
 export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
