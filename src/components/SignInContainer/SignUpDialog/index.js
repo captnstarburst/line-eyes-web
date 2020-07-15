@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { makeStyles } from '@material-ui/core/styles'
-import SignUpOne from './SignUpOne'
+import SignUpForm from './SignUpForm'
 
 const useStyles = makeStyles(theme => ({
   flexCol: {
@@ -32,7 +32,7 @@ const SignUpDialog = props => {
     >
       <DialogTitle id='form-dialog-title' style={{textAlign:'center'}}>Line-Eyes Sign Up</DialogTitle>
       <DialogContent className={classes.flexCol}>
-        {signUpPage === 1 &&  <SignUpOne />}
+        {signUpPage === 1 &&  <SignUpForm />}
 
       </DialogContent>
       <DialogActions>
@@ -40,7 +40,7 @@ const SignUpDialog = props => {
           Cancel
         </Button>
         <Button onClick={incrementPage} color='primary'>
-          Next
+          Sign Up
         </Button>
       </DialogActions>
     </Dialog>
