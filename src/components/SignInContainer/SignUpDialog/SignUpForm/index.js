@@ -1,6 +1,8 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
+import EmailValidator from '../../../functions/EmailValidator'
+
 
 const useStyles = makeStyles(theme => ({
   signUpField: {
@@ -16,8 +18,30 @@ const SignUpForm = props => {
   
   const defaultDate = (now.getFullYear() - 18 + "-0" + Number( now.getMonth() + 1) + "-" + now.getDate())
 
-  // alert(defaultDate)
-  console.log(defaultDate)
+  const handleChange = e => {
+    // alert(e.currentTarget.id);
+    switch(e.currentTarget.id){
+      case "email":
+        if(EmailValidator(e.target.value)){
+          //validatedEmail
+        }else{
+          //Email not Validated
+        }
+        break;
+      case "username":
+        break;
+      case "password":
+        break;
+      case "password_check":
+        break;
+      case "date":
+        alert(e.target.value)
+        break;
+      default:
+        break;
+    }
+  }
+
 
   return (
     <>
@@ -28,7 +52,7 @@ const SignUpForm = props => {
         label='Email Address'
         type='email'
         className={classes.signUpField}
-        onChange={props.propagateChange}
+        onChange={handleChange}
       />
       <TextField
         margin='dense'
@@ -36,7 +60,7 @@ const SignUpForm = props => {
         label='User Name'
         type='text'
         className={classes.signUpField}
-        onChange={props.propagateChange}
+        onChange={handleChange}
       />
       <TextField
         margin='dense'
@@ -44,7 +68,7 @@ const SignUpForm = props => {
         label='Password'
         type='password'
         className={classes.signUpField}
-        onChange={props.propagateChange}
+        onChange={handleChange}
       />
       <TextField
         margin='dense'
@@ -52,7 +76,7 @@ const SignUpForm = props => {
         label='Password Check'
         type='password'
         className={classes.signUpField}
-        onChange={props.propagateChange}
+        onChange={handleChange}
       />
       <TextField
         id='date'
@@ -63,7 +87,7 @@ const SignUpForm = props => {
         InputLabelProps={{
           shrink: true
         }}
-        onChange={props.propagateChange}
+        onChange={handleChange}
       />
     </>
   )
