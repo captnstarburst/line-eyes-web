@@ -21,6 +21,10 @@ const SignUpDialog = props => {
   const incrementPage = () => setSignPage((prevState) => prevState + 1);
   // const decrementPage = () => setSignPage((prevState) => prevState--);
 
+  const handleFormChange = (e) => {
+    // alert(e.currentTarget.id)
+  }
+
   return (
     <Dialog
       open={props.mounted}
@@ -30,9 +34,17 @@ const SignUpDialog = props => {
       maxWidth="sm"
       
     >
-      <DialogTitle id='form-dialog-title' style={{textAlign:'center'}}>Line-Eyes Sign Up</DialogTitle>
+      <DialogTitle id='form-dialog-title' style={{textAlign:'center'}}>
+        Line-Eyes 
+        {signUpPage > 1 ?
+          " Confirm Info"
+          :
+          " Sign Up"
+        }
+        
+      </DialogTitle>
       <DialogContent className={classes.flexCol}>
-        {signUpPage === 1 &&  <SignUpForm />}
+        {signUpPage === 1 &&  <SignUpForm propagateChange = {handleFormChange} />}
 
       </DialogContent>
       <DialogActions>

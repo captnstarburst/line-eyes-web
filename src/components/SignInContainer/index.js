@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import PregnancyTest from '../assets/pregnancy-test.png'
 import SignUpDialog from './SignUpDialog'
+import Footer from '../UI/Footer'
 
 const SignInContainer = () => {
   const [mountSignUp, setMountSignUp] = useState(false)
@@ -51,6 +52,7 @@ const SignInContainer = () => {
           Eyes
         </Typography>
       </Container>
+      <Footer />
     </>
   )
 }

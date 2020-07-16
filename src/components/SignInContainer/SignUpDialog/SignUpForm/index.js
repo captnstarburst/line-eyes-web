@@ -1,30 +1,33 @@
-// import 'date-fns';
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
-// import DateFnsUtils from '@date-io/date-fns';
-// import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
   signUpField: {
     width: '50%',
     alignSelf: 'center',
-    marginTop: '15px'
+    marginTop: '20px'
   }
 }))
 
 const SignUpForm = props => {
   const classes = useStyles()
+  const now = new Date(); 
+  const defaultDate = (now.getFullYear() - 18 + "-0" + now.getMonth() + "-" + now.getDate()).toString();
+
+  // alert(defaultDate)
+  console.log(defaultDate)
 
   return (
     <>
       <TextField
         autoFocus
         margin='dense'
-        id='name'
+        id='email'
         label='Email Address'
         type='email'
         className={classes.signUpField}
+        onChange={props.propagateChange}
       />
       <TextField
         margin='dense'
@@ -32,6 +35,7 @@ const SignUpForm = props => {
         label='User Name'
         type='text'
         className={classes.signUpField}
+        onChange={props.propagateChange}
       />
       <TextField
         margin='dense'
@@ -39,6 +43,7 @@ const SignUpForm = props => {
         label='Password'
         type='password'
         className={classes.signUpField}
+        onChange={props.propagateChange}
       />
       <TextField
         margin='dense'
@@ -46,16 +51,18 @@ const SignUpForm = props => {
         label='Password Check'
         type='password'
         className={classes.signUpField}
+        onChange={props.propagateChange}
       />
       <TextField
         id='date'
         label='Date Of Birth'
         type='date'
-        defaultValue='2017-05-24'
+        defaultValue={defaultDate}
         className={classes.signUpField}
         InputLabelProps={{
           shrink: true
         }}
+        onChange={props.propagateChange}
       />
     </>
   )
