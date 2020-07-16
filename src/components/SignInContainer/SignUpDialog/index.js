@@ -21,7 +21,7 @@ const SignUpDialog = props => {
   const incrementPage = () => setSignPage((prevState) => prevState + 1);
   // const decrementPage = () => setSignPage((prevState) => prevState--);
 
-  const handleFormChange = (e) => {
+  const formValues = (e) => {
     // alert(e.currentTarget.id)
   }
 
@@ -44,7 +44,7 @@ const SignUpDialog = props => {
         
       </DialogTitle>
       <DialogContent className={classes.flexCol}>
-        {signUpPage === 1 &&  <SignUpForm propagateChange = {handleFormChange} />}
+        {signUpPage === 1 &&  <SignUpForm propagateValidatedInfo = {formValues} />}
 
       </DialogContent>
       <DialogActions>
