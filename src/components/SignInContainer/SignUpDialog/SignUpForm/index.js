@@ -12,8 +12,9 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpForm = props => {
   const classes = useStyles()
-  const now = new Date(); 
-  const defaultDate = (now.getFullYear() - 18 + "-0" + now.getMonth() + "-" + now.getDate()).toString();
+  const now = new Date();
+  
+  const defaultDate = (now.getFullYear() - 18 + "-0" + Number( now.getMonth() + 1) + "-" + now.getDate())
 
   // alert(defaultDate)
   console.log(defaultDate)
