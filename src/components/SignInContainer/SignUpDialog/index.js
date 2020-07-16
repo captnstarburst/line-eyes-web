@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -16,14 +16,32 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpDialog = props => {
   const classes = useStyles()
+  const now = new Date();
+  const defaultDate = (now.getFullYear() - 18 + "-0" + Number( now.getMonth() + 1) + "-" + now.getDate())
+
   const [signUpPage, setSignPage] = useState(1);
+  const [mountSignUpButton, setSignUpButtonMount] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    username: "",
+    password: "",
+    dateOfBirth: defaultDate
+  })
 
   const incrementPage = () => setSignPage((prevState) => prevState + 1);
   // const decrementPage = () => setSignPage((prevState) => prevState--);
 
-  const formValues = (e) => {
-    // alert(e.currentTarget.id)
+  const formValues = validated => {
+    setUserInfo(prevState => ({...prevState, [validated.id]: validated.value}));
   }
+
+  useEffect(() => {
+    if(userInfo.email !== "" && userInfo.username !== "" && userInfo.password !== "" && userInfo.dateOfBirth !== ""){
+      setSignUpButtonMount(true);
+    }else{
+      setSignUpButtonMount(false);
+    }
+  }, [userInfo]);
 
   return (
     <Dialog
@@ -44,16 +62,19 @@ const SignUpDialog = props => {
         
       </DialogTitle>
       <DialogContent className={classes.flexCol}>
-        {signUpPage === 1 &&  <SignUpForm propagateValidatedInfo = {formValues} />}
+        {signUpPage === 1 &&  <SignUpForm propagateValidatedInfo = {formValues} defaultDate={defaultDate} />}
 
       </DialogContent>
       <DialogActions>
         <Button onClick={props.toggleSignUp} color='primary'>
           Cancel
         </Button>
-        <Button onClick={incrementPage} color='primary'>
-          Sign Up
-        </Button>
+        {mountSignUpButton && 
+          <Button onClick={incrementPage} color='primary'>
+            Sign Up
+          </Button>
+        }
+        
       </DialogActions>
     </Dialog>
   )

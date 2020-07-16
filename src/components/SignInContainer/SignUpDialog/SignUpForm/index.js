@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import EmailValidator from '../../../functions/EmailValidator'
@@ -14,28 +14,43 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpForm = props => {
   const classes = useStyles()
-  const now = new Date();
-  
-  const defaultDate = (now.getFullYear() - 18 + "-0" + Number( now.getMonth() + 1) + "-" + now.getDate())
+  const [passwordInput, setPasswordInput] = useState({password: "", password_check: ""});
+
+  const passwordCheck = () => {
+    if(passwordInput.password === "" && passwordInput.password_check === ""){
+      return false
+    }else if(passwordInput.password === passwordInput.password_check){
+      return true
+    }else{
+      return false
+    }
+  }
 
   const handleChange = e => {
     // alert(e.currentTarget.id);
     switch(e.currentTarget.id){
       case "email":
         if(EmailValidator(e.target.value)){
-          //validatedEmail
+          props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
         }else{
-          //Email not Validated
+          props.propagateValidatedInfo({id: e.currentTarget.id, value:""});
         }
         break;
       case "username":
+        props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
         break;
       case "password":
-        break;
       case "password_check":
+        // alert(e.target.value)
+        setPasswordInput(prevState => ({...prevState, [e.currentTarget.id] : e.currentTarget.value}));
+          if(passwordCheck()){
+            props.propagateValidatedInfo({id: "password", value: passwordInput.password});
+          }else{
+            props.propagateValidatedInfo({id: "password", value: ""});
+          }
         break;
-      case "date":
-        alert(e.target.value)
+      case "dateOfBirth":
+        props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
         break;
       default:
         break;
@@ -79,10 +94,10 @@ const SignUpForm = props => {
         onChange={handleChange}
       />
       <TextField
-        id='date'
+        id='dateOfBirth'
         label='Date Of Birth'
         type='date'
-        defaultValue={defaultDate}
+        defaultValue={props.defaultDate}
         className={classes.signUpField}
         InputLabelProps={{
           shrink: true
