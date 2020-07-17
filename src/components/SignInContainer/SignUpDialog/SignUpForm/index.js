@@ -14,14 +14,16 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpForm = props => {
   const classes = useStyles();
-  const propagateValidatedInfo = props.propagateValidatedInfo
+  const now = new Date();
+  const minimumDate = (now.getFullYear() - 13 + "-0" + Number( now.getMonth() + 1) + "-" + now.getDate())
+
   const [passwordInput, setPasswordInput] = useState({password: "", password_check: ""});
 
   useEffect(()=> {
     if(passwordInput.password === passwordInput.password_check){
-      propagateValidatedInfo({id: "password", value: passwordInput.password});
+      props.propagateValidatedInfo({id: "password", value: passwordInput.password});
     }else{
-      propagateValidatedInfo({id: "password", value: ""});
+      props.propagateValidatedInfo({id: "password", value: ""});
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,7 +46,11 @@ const SignUpForm = props => {
         setPasswordInput(prevState => ({...prevState, [e.currentTarget.id] : e.currentTarget.value}));
         break;
       case "dateOfBirth":
-        props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
+        if(e.target.value > minimumDate){
+          props.propagateValidatedInfo({id: e.currentTarget.id, value: ""});
+        }else{
+          props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
+        }
         break;
       default:
         break;
