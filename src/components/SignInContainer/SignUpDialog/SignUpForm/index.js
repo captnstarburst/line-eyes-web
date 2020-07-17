@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import EmailValidator from '../../../functions/EmailValidator'
@@ -13,18 +13,21 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SignUpForm = props => {
-  const classes = useStyles()
+  const classes = useStyles();
+  const propagateValidatedInfo = props.propagateValidatedInfo
   const [passwordInput, setPasswordInput] = useState({password: "", password_check: ""});
 
-  const passwordCheck = () => {
-    if(passwordInput.password === "" && passwordInput.password_check === ""){
-      return false
-    }else if(passwordInput.password === passwordInput.password_check){
-      return true
-    }else{
-      return false
-    }
-  }
+
+  const passwordVerification = useCallback(
+    () => {
+      if(passwordInput.password === passwordInput.password_check){
+        propagateValidatedInfo({id: "password", value: passwordInput.password});
+      }else{
+        propagateValidatedInfo({id: "password", value: ""});
+      }
+    },
+    [passwordInput.password, passwordInput.password_check, propagateValidatedInfo],
+  )
 
   const handleChange = e => {
     // alert(e.currentTarget.id);
@@ -41,13 +44,8 @@ const SignUpForm = props => {
         break;
       case "password":
       case "password_check":
-        // alert(e.target.value)
         setPasswordInput(prevState => ({...prevState, [e.currentTarget.id] : e.currentTarget.value}));
-          if(passwordCheck()){
-            props.propagateValidatedInfo({id: "password", value: passwordInput.password});
-          }else{
-            props.propagateValidatedInfo({id: "password", value: ""});
-          }
+        passwordVerification();
         break;
       case "dateOfBirth":
         props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
@@ -108,4 +106,4 @@ const SignUpForm = props => {
   )
 }
 
-export default SignUpForm
+export default React.memo(SignUpForm);
