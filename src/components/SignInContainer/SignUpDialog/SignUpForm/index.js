@@ -18,12 +18,17 @@ const SignUpForm = props => {
   const minimumDate = (now.getFullYear() - 13 + "-0" + Number( now.getMonth() + 1) + "-" + now.getDate())
 
   const [passwordInput, setPasswordInput] = useState({password: "", password_check: ""});
+  const [emailError, setEmailError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(()=> {
     if(passwordInput.password === passwordInput.password_check){
       props.propagateValidatedInfo({id: "password", value: passwordInput.password});
+      setPasswordError(false);
     }else{
       props.propagateValidatedInfo({id: "password", value: ""});
+      setPasswordError(true);
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,8 +39,10 @@ const SignUpForm = props => {
       case "email":
         if(EmailValidator(e.target.value)){
           props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
+          setEmailError(false);
         }else{
           props.propagateValidatedInfo({id: e.currentTarget.id, value:""});
+          setEmailError(true);
         }
         break;
       case "username":
@@ -48,8 +55,10 @@ const SignUpForm = props => {
       case "dateOfBirth":
         if(e.target.value > minimumDate){
           props.propagateValidatedInfo({id: e.currentTarget.id, value: ""});
+          setDateError(true)
         }else{
           props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});
+          setDateError(false)
         }
         break;
       default:
@@ -68,6 +77,8 @@ const SignUpForm = props => {
         type='email'
         className={classes.signUpField}
         onChange={handleChange}
+        error={emailError}
+        helperText={emailError ? "Please enter a valid email address" : null }
       />
       <TextField
         margin='dense'
@@ -84,6 +95,8 @@ const SignUpForm = props => {
         type='password'
         className={classes.signUpField}
         onChange={handleChange}
+        error={passwordError}
+        helperText={passwordError ? "Passwords do not match" : null }
       />
       <TextField
         margin='dense'
@@ -92,6 +105,8 @@ const SignUpForm = props => {
         type='password'
         className={classes.signUpField}
         onChange={handleChange}
+        error={passwordError}
+        helperText={passwordError ? "Passwords do not match" : null }
       />
       <TextField
         id='dateOfBirth'
@@ -103,6 +118,8 @@ const SignUpForm = props => {
           shrink: true
         }}
         onChange={handleChange}
+        error={dateError}
+        helperText={dateError ? "You must be at least 13 years of age" : null }
       />
     </>
   )
