@@ -8,7 +8,10 @@ import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
 // import theme from './theme'
 
 
+// https://github.com/mui-org/material-ui/issues/13394
+// https://material-ui.com/customization/theming/#unstable-createmuistrictmodetheme-options-args-theme
 const theme = unstable_createMuiStrictModeTheme();
+
 
 ReactDOM.render(
   <React.StrictMode>
