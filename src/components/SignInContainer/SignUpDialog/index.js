@@ -65,11 +65,19 @@ const SignUpDialog = props => {
         {signUpPage === 1 &&  <SignUpForm propagateValidatedInfo = {formValues} defaultDate={defaultDate} />}
 
       </DialogContent>
-      <DialogActions>
-        <Button onClick={props.toggleSignUp} color='primary'>
-          Cancel
-        </Button>
-        {mountSignUpButton && 
+      <DialogActions style={{display: 'flex'}}>
+        <div style={{marginRight: 'auto'}}>
+          {signUpPage > 1 &&
+            <Button onClick={props.toggleSignUp} color='primary'>
+              Go Back
+            </Button>
+          }
+          <Button onClick={props.toggleSignUp} color='primary'>
+            Cancel
+          </Button>
+        </div>
+        
+        {(mountSignUpButton || signUpPage > 1) && 
           <Button onClick={incrementPage} color='primary'>
             Sign Up
           </Button>
