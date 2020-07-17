@@ -48,7 +48,7 @@ const SignUpDialog = props => {
       open={props.mounted}
       onClose={props.toggleSignUp}
       aria-labelledby='form-dialog-title'
-      fullWidth="sm"
+      fullWidth={true}
       maxWidth="sm"
       
     >

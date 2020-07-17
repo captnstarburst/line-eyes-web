@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState, useEffect} from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import EmailValidator from '../../../functions/EmailValidator'
@@ -17,20 +17,17 @@ const SignUpForm = props => {
   const propagateValidatedInfo = props.propagateValidatedInfo
   const [passwordInput, setPasswordInput] = useState({password: "", password_check: ""});
 
-
-  const passwordVerification = useCallback(
-    () => {
-      if(passwordInput.password === passwordInput.password_check){
-        propagateValidatedInfo({id: "password", value: passwordInput.password});
-      }else{
-        propagateValidatedInfo({id: "password", value: ""});
-      }
-    },
-    [passwordInput.password, passwordInput.password_check, propagateValidatedInfo],
-  )
+  useEffect(()=> {
+    if(passwordInput.password === passwordInput.password_check){
+      propagateValidatedInfo({id: "password", value: passwordInput.password});
+    }else{
+      propagateValidatedInfo({id: "password", value: ""});
+    }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [passwordInput.password, passwordInput.password_check])
 
   const handleChange = e => {
-    // alert(e.currentTarget.id);
     switch(e.currentTarget.id){
       case "email":
         if(EmailValidator(e.target.value)){
@@ -45,7 +42,6 @@ const SignUpForm = props => {
       case "password":
       case "password_check":
         setPasswordInput(prevState => ({...prevState, [e.currentTarget.id] : e.currentTarget.value}));
-        passwordVerification();
         break;
       case "dateOfBirth":
         props.propagateValidatedInfo({id: e.currentTarget.id, value:e.target.value});

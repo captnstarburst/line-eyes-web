@@ -4,7 +4,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './theme'
+import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+// import theme from './theme'
+
+
+const theme = unstable_createMuiStrictModeTheme();
 
 ReactDOM.render(
   <React.StrictMode>
