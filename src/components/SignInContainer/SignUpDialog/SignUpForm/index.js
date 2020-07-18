@@ -25,8 +25,10 @@ const SignUpForm = props => {
   useEffect(()=> {
     if(passwordInput.password === passwordInput.password_check){
       props.propagateValidatedInfo({id: "password", value: passwordInput.password});
+      console.log(passwordInput + " true")
       setPasswordError(false);
     }else{
+      console.log(passwordInput + " false")
       props.propagateValidatedInfo({id: "password", value: ""});
       setPasswordError(true);
     }
@@ -50,7 +52,8 @@ const SignUpForm = props => {
         break;
       case "password":
       case "password_check":
-        setPasswordInput(prevState => ({...prevState, [e.currentTarget.id] : e.currentTarget.value}));
+        e.persist();
+        setPasswordInput(prevState => ({...prevState, [e.target.id] : e.target.value}));
         break;
       case "dateOfBirth":
         if(e.target.value > minimumDate){
