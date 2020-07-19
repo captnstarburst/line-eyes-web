@@ -50,8 +50,8 @@ const SignInBar = props => {
               </Button>
           )}
           <Button color='inherit' onClick={props.signUpToggle}>
-                Sign Up
-              </Button>
+            Sign Up
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

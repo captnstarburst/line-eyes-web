@@ -27,7 +27,15 @@ const SignInContainer = () => {
         style={{ backgroundColor: '#272C34', height: '100vh' }}
       >
         {mountSignUp && (
-          <SignUpDialog mounted={mountSignUp} toggleSignUp={toggleSignUp} />
+          <FirebaseContext.Consumer>
+            {firebase => {
+              return <SignUpDialog firebase = {firebase}
+                mounted={mountSignUp} 
+                toggleSignUp={toggleSignUp} 
+                />
+            }}
+          </FirebaseContext.Consumer>
+          
         )}
 
         <Typography

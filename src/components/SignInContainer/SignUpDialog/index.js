@@ -25,11 +25,18 @@ const SignUpDialog = props => {
     email: "",
     username: "",
     password: "",
-    dateOfBirth: defaultDate
+    dateOfBirth: defaultDate,
+    termsAcceptance: false
   })
 
-  const incrementPage = () => setSignPage((prevState) => prevState + 1);
-  // const decrementPage = () => setSignPage((prevState) => prevState--);
+  const incrementPage = () =>{
+    setSignPage((prevState) => prevState + 1); 
+    setSignUpButtonMount(false);
+  } 
+  const decrementPage = () => {
+    setSignPage((prevState) => prevState - 1);
+    setUserInfo(prevState => ({...prevState, termsAcceptance: false}));
+  }
 
   const formValues = validated => {
     setUserInfo(prevState => ({...prevState, [validated.id]: validated.value}));
@@ -37,6 +44,8 @@ const SignUpDialog = props => {
 
   useEffect(() => {
     if(userInfo.email !== "" && userInfo.username !== "" && userInfo.password !== "" && userInfo.dateOfBirth !== ""){
+      setSignUpButtonMount(true);
+    }else if(userInfo.termsAcceptance){
       setSignUpButtonMount(true);
     }else{
       setSignUpButtonMount(false);
@@ -50,7 +59,6 @@ const SignUpDialog = props => {
       aria-labelledby='form-dialog-title'
       fullWidth={true}
       maxWidth="sm"
-      
     >
       <DialogTitle id='form-dialog-title' style={{textAlign:'center'}}>
         Line-Eyes 
@@ -62,22 +70,41 @@ const SignUpDialog = props => {
         
       </DialogTitle>
       <DialogContent className={classes.flexCol}>
-        {signUpPage === 1 &&  <SignUpForm propagateValidatedInfo = {formValues} defaultDate={defaultDate} />}
+        {signUpPage === 1 &&  
+          <SignUpForm 
+            validation = {false}
+            propagateValidatedInfo = {formValues} 
+            defaultDate={defaultDate} 
+          />
+        }
 
+        {signUpPage > 1 &&
+          <SignUpForm 
+            validation = {true}
+            email = {userInfo.email}
+            username = {userInfo.username}
+            password = {userInfo.password}
+            dateOfBirth = {userInfo.dateOfBirth}
+            termsAcceptance = {userInfo.termsAcceptance} 
+            propagateValidatedInfo = {formValues}
+            
+          />
+        }
       </DialogContent>
       <DialogActions style={{display: 'flex'}}>
         <div style={{marginRight: 'auto'}}>
-          {signUpPage > 1 &&
-            <Button onClick={props.toggleSignUp} color='primary'>
+        {signUpPage > 1 ? 
+            <Button onClick={decrementPage} color='primary'>
               Go Back
             </Button>
+            :
+            <Button onClick={props.toggleSignUp} color='primary'>
+              Cancel
+            </Button>
           }
-          <Button onClick={props.toggleSignUp} color='primary'>
-            Cancel
-          </Button>
-        </div>
-        
-        {(mountSignUpButton || signUpPage > 1) && 
+        </div> 
+          
+        {mountSignUpButton && 
           <Button onClick={incrementPage} color='primary'>
             Sign Up
           </Button>

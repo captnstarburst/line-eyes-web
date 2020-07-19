@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import TextField from '@material-ui/core/TextField'
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles'
 import EmailValidator from '../../../functions/EmailValidator'
-
 
 const useStyles = makeStyles(theme => ({
   signUpField: {
@@ -25,10 +26,8 @@ const SignUpForm = props => {
   useEffect(()=> {
     if(passwordInput.password === passwordInput.password_check){
       props.propagateValidatedInfo({id: "password", value: passwordInput.password});
-      console.log(passwordInput + " true")
       setPasswordError(false);
     }else{
-      console.log(passwordInput + " false")
       props.propagateValidatedInfo({id: "password", value: ""});
       setPasswordError(true);
     }
@@ -64,6 +63,9 @@ const SignUpForm = props => {
           setDateError(false)
         }
         break;
+      case "termsAcceptance":
+        props.propagateValidatedInfo({id: e.target.id, value: e.target.checked});
+        break;
       default:
         break;
     }
@@ -79,6 +81,11 @@ const SignUpForm = props => {
         label='Email Address'
         type='email'
         className={classes.signUpField}
+        variant= {props.validation ? "filled" : "outlined"}
+        defaultValue={props.validation ? props.email : null}
+        InputProps={{
+          readOnly: props.validation,
+        }}
         onChange={handleChange}
         error={emailError}
         helperText={emailError ? "Please enter a valid email address" : null }
@@ -90,6 +97,11 @@ const SignUpForm = props => {
         type='text'
         className={classes.signUpField}
         onChange={handleChange}
+        variant= {props.validation ? "filled" : "outlined"}
+        defaultValue={props.validation ? props.username : null}
+        InputProps={{
+          readOnly: props.validation,
+        }}
       />
       <TextField
         margin='dense'
@@ -98,34 +110,63 @@ const SignUpForm = props => {
         type='password'
         className={classes.signUpField}
         onChange={handleChange}
+        variant= {props.validation ? "filled" : "outlined"}
+        defaultValue={props.validation ? props.password : null}
+        InputProps={{
+          readOnly: props.validation,
+        }}
         error={passwordError}
         helperText={passwordError ? "Passwords do not match" : null }
       />
-      <TextField
-        margin='dense'
-        id='password_check'
-        label='Password Check'
-        type='password'
-        className={classes.signUpField}
-        onChange={handleChange}
-        error={passwordError}
-        helperText={passwordError ? "Passwords do not match" : null }
-      />
+      {!props.validation && 
+        <TextField
+          margin='dense'
+          id='password_check'
+          label='Password Check'
+          type='password'
+          className={classes.signUpField}
+          onChange={handleChange}
+          variant= {"outlined"}
+          error={passwordError}
+          helperText={passwordError ? "Passwords do not match" : null }
+        />
+      }
+      
       <TextField
         id='dateOfBirth'
         label='Date Of Birth'
         type='date'
-        defaultValue={props.defaultDate}
+        defaultValue={props.validation ? props.dateOfBirth : props.defaultDate}
+        variant= {props.validation ? "filled" : "outlined"}
         className={classes.signUpField}
         InputLabelProps={{
           shrink: true
         }}
         onChange={handleChange}
+        InputProps={{
+          readOnly: props.validation
+        }}
         error={dateError}
         helperText={dateError ? "You must be at least 13 years of age" : null }
       />
+
+      {props.validation && 
+        <FormControlLabel
+        className={classes.signUpField}
+          control={
+            <Checkbox
+              checked={props.termsAcceptance}
+              onChange={handleChange}
+              name="Agreement"
+              id="termsAcceptance"
+              color="primary"
+            />
+          }
+          label="I agree to the Terms of Service and Privacy Policy"
+        />
+      }
     </>
   )
 }
 
-export default React.memo(SignUpForm);
+export default SignUpForm;
