@@ -1,12 +1,28 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import * as ROUTES from './components/constants/routes';
 import SignIn from './components/SignInContainer';
 
-function App() {
+const App = props => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() =>{
+    const user = props.firebase.getAuth;
+
+    if(user){
+      setLoggedIn(true)
+    }else{
+      setLoggedIn(false)
+    }
+
+  }, [props.firebase]);  
+  
   return (
-    <Router>
+    <Router> 
+      {!loggedIn && 
+        <Redirect to={ROUTES.LOG_IN} />
+      }
       {/* <Route exact path={ROUTES.LANDING} component={LandingPage} /> */}
       <Route path={ROUTES.LOG_IN} component={SignIn} />
       {/* <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} /> */}

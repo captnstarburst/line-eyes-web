@@ -17,7 +17,11 @@ ReactDOM.render(
   <React.StrictMode>
       <FirebaseContext.Provider value={new Firebase()}>
         <ThemeProvider theme={theme}>
-          <App />
+          <FirebaseContext.Consumer>
+            {firebase => {
+              return <App firebase={firebase} />
+            }}
+          </FirebaseContext.Consumer>
         </ThemeProvider>
       </FirebaseContext.Provider>
   </React.StrictMode>,

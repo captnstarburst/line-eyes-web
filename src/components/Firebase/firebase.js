@@ -21,7 +21,7 @@ export default class Firebase {
     app.initializeApp(config);
     app.auth().useDeviceLanguage();
     app.functions();
-    this.wholesystem = app;
+    this.wholeSystem = app;
     this.db = app.database();
     this.firestore = app.firestore();
     this.storage = app.storage();
@@ -54,48 +54,15 @@ export default class Firebase {
   }
 
   // Firebase references
-  getAuth() {
-    return this.auth;
+  getCurrentUser() {
+    return this.auth.currentUser()
   }
-  getDB() {
-    return this.db;
-  }
-  getDBRef(path) {
-    return this.db.ref(path);
-  }
-  getFieldValue() {
-    return this.wholesystem.firestore.FieldValue;
-  }
-  getFS() {
-    return this.firestore;
-  }
-  getFSDocRef(path) {
-    return this.firestore.doc(path);
-  }
-  getFSCollectionRef(path) {
-    return this.firestore.collection(path);
-  }
-  getFunctions() {
-    return app.functions();
-  }
-  getRecaptcha(c, info) {
-    return new this.wholesystem.auth.RecaptchaVerifier(c,info);
-  }
-  getStorageRef(path) {
-    return this.storage.ref(path);
-  }
-  getStorageRefFromURL(url) {
-    return this.storage.refFromURL(url);
-  }
-  getSystem() {
-    return this.wholesystem;
-  }
-
+  
   // Firebase timestamps
   createTimestamp(seconds, nanoseconds) {
-    return new this.wholesystem.firestore.Timestamp(seconds, nanoseconds);
+    return new this.wholeSystem.firestore.Timestamp(seconds, nanoseconds);
   }
   getTimestamp(date) {
-    return this.wholesystem.firestore.Timestamp.fromDate(date);
+    return this.wholeSystem.firestore.Timestamp.fromDate(date);
   }
 }
