@@ -54,10 +54,44 @@ export default class Firebase {
   }
 
   // Firebase references
-  getCurrentUser() {
-    return this.auth.currentUser()
+
+  getAuth() {
+    return this.auth;
   }
-  
+  getDB() {
+    return this.db;
+  }
+  getDBRef(path) {
+    return this.db.ref(path);
+  }
+  getFieldValue() {
+    return this.wholeSystem.firestore.FieldValue;
+  }
+  getFS() {
+    return this.firestore;
+  }
+  getFSDocRef(path) {
+    return this.firestore.doc(path);
+  }
+  getFSCollectionRef(path) {
+    return this.firestore.collection(path);
+  }
+  getFunctions() {
+    return app.functions();
+  }
+  getRecaptcha(c, info) {
+    return new this.wholeSystem.auth.RecaptchaVerifier(c,info);
+  }
+  getStorageRef(path) {
+    return this.storage.ref(path);
+  }
+  getStorageRefFromURL(url) {
+    return this.storage.refFromURL(url);
+  }
+  getSystem() {
+    return this.wholeSystem;
+  }
+
   // Firebase timestamps
   createTimestamp(seconds, nanoseconds) {
     return new this.wholeSystem.firestore.Timestamp(seconds, nanoseconds);

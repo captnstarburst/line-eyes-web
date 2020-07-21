@@ -39,7 +39,18 @@ const SignUpDialog = props => {
   }
 
   const formValues = validated => {
+    console.log(JSON.stringify(validated))
     setUserInfo(prevState => ({...prevState, [validated.id]: validated.value}));
+  }
+
+  const createUser = () => {
+    props.firebase.doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
+      .then((user) => {
+        console.log(JSON.stringify(user));
+      })
+      .catch(function(error) {
+        console.log(JSON.stringify(error))
+      });
   }
 
   useEffect(() => {
@@ -105,7 +116,7 @@ const SignUpDialog = props => {
         </div> 
           
         {mountSignUpButton && 
-          <Button onClick={incrementPage} color='primary'>
+          <Button onClick={signUpPage > 1 ?  createUser : incrementPage} color='primary'>
             Sign Up
           </Button>
         }

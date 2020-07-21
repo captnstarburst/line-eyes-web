@@ -24,13 +24,16 @@ const SignUpForm = props => {
   const [passwordError, setPasswordError] = useState(false);
 
   useEffect(()=> {
-    if(passwordInput.password === passwordInput.password_check){
-      props.propagateValidatedInfo({id: "password", value: passwordInput.password});
-      setPasswordError(false);
-    }else{
-      props.propagateValidatedInfo({id: "password", value: ""});
-      setPasswordError(true);
+    if(!props.password) {
+      if(passwordInput.password === passwordInput.password_check){
+        props.propagateValidatedInfo({id: "password", value: passwordInput.password});
+        setPasswordError(false);
+      }else{
+        props.propagateValidatedInfo({id: "password", value: ""});
+        setPasswordError(true);
+      }
     }
+    
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [passwordInput.password, passwordInput.password_check])

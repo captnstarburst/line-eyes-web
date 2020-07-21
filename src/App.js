@@ -8,20 +8,22 @@ const App = props => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() =>{
-    const user = props.firebase.getAuth;
-
-    if(user){
-      setLoggedIn(true)
-    }else{
-      setLoggedIn(false)
-    }
-
+    props.firebase.onAuthUserListener(
+      () => {
+        setLoggedIn(true)
+      },
+      () => {
+        setLoggedIn(false)
+      }, 
+    )
   }, [props.firebase]);  
   
   return (
     <Router> 
-      {!loggedIn && 
-        <Redirect to={ROUTES.LOG_IN} />
+      {!loggedIn ?
+        <Redirect to={ROUTES.LOG_IN} /> 
+        :
+        <Redirect to={ROUTES.LANDING} />
       }
       {/* <Route exact path={ROUTES.LANDING} component={LandingPage} /> */}
       <Route path={ROUTES.LOG_IN} component={SignIn} />
