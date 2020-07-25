@@ -72,43 +72,6 @@ export default function BasicTextFields () {
         Log In
       </Button>
 
-      <hr className={classes.hrText} data-content="Provider Log In" />
-
-
-      <Button
-        variant='contained'
-        color='primary'
-        endIcon={<AccountCircleIcon />}
-        style={{ width: '95%' }}
-      >
-        Google
-      </Button>
-      <Button
-        variant='contained'
-        color='primary'
-        endIcon={<AccountCircleIcon />}
-        style={{ width: '95%' }}
-      >
-        Facebook
-      </Button>
-      <Button
-        variant='contained'
-        color='primary'
-        endIcon={<AccountCircleIcon />}
-        style={{ width: '95%' }}
-      >
-        Twitter
-      </Button>
-
-
-      <Button
-        variant='contained'
-        color='primary'
-        endIcon={<AccountCircleIcon />}
-        style={{ width: '95%' }}
-      >
-        Create Account
-      </Button>
     </form>
   )
 }

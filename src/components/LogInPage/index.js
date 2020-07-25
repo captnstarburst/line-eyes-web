@@ -2,7 +2,7 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
-import LogIn from './LogIn'
+import LogInContainer from './LogInContainer'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -12,14 +12,14 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   logInContainer: {
-    height: '50vh',
+    height: 'auto',
     marginTop: '10vh',
-    width: '35vw'
+    maxWidth: '70vw'
   }
 }))
 
 const LogInPage = props => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Grid
@@ -31,8 +31,8 @@ const LogInPage = props => {
       className={classes.root}
       xl={12}
     >
-      <Paper elevation={24} className={classes.logInContainer} style={{height: '100%'}}>
-        <LogIn />
+      <Paper elevation={24} className={classes.logInContainer}>
+        <LogInContainer />
       </Paper>
     </Grid>
   )
