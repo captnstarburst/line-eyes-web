@@ -1,40 +1,50 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import PregnancyTest from '../../assets/pregnancy-test.png'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import { FirebaseContext } from '../../Firebase'
 import ProviderSignUp from './ProviderSignUp'
 import LogInForm from './LogInForm'
+import CreateForm from './CreateForm'
 
 const LogInContainer = props => {
-  const [currentFormMounted, setCurrentForm] = useState("provider");
-
+  const [currentFormMounted, setCurrentForm] = useState('provider')
 
   const handleLogInClick = () => {
-    setCurrentForm("login")
+    setCurrentForm('login')
   }
 
   const handleBackClick = () => {
-    setCurrentForm("provider")
+    setCurrentForm('provider')
+  }
+
+  const handleCreateClick = () => {
+    setCurrentForm('create')
   }
 
   return (
     <section>
-
-      {currentFormMounted === "provider" ? 
-      
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'end' }}>
-        <Button color='primary' onClick={handleLogInClick} endIcon={<ArrowRightAltIcon />}>
-          Log In{' '}
+      {currentFormMounted === 'provider' ? (
+        <div style={{ display: 'flex', width: '100%', justifyContent: 'end' }}>
+          <Button
+            color='primary'
+            onClick={handleLogInClick}
+            endIcon={<ArrowRightAltIcon />}
+          >
+            Log In{' '}
+          </Button>
+        </div>
+      ) : (
+        <Button
+          color='primary'
+          onClick={handleBackClick}
+          startIcon={<ArrowBackIcon />}
+        >
+          Go Back
         </Button>
-      </div>
-      :
-      <Button color='primary' onClick={handleBackClick} startIcon={<ArrowBackIcon />}>
-        Go Back
-      </Button>
-      }
-      
+      )}
 
       <Typography
         align='center'
@@ -59,15 +69,19 @@ const LogInContainer = props => {
           style={{ width: '50%', marginBottom: '50px' }}
         />
 
-        {currentFormMounted === "provider" && 
-          <ProviderSignUp />
-        }
-        
-        {currentFormMounted === "login" &&
-          <LogInForm />
-        }
+        {currentFormMounted === 'provider' && (
+          <ProviderSignUp propagateCreateClick={handleCreateClick} />
+        )}
 
+        {currentFormMounted === 'login' && <LogInForm />}
 
+        {currentFormMounted === 'create' && 
+          <FirebaseContext.Consumer>
+            {firebase => {
+              return <CreateForm firebase={firebase} />
+            }}
+          </FirebaseContext.Consumer>
+        }
       </div>
     </section>
   )

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import * as ROUTES from './components/constants/routes';
-import SignIn from './components/SignInContainer';
 import LogInPage from './components/LogInPage'
 
 const App = props => {

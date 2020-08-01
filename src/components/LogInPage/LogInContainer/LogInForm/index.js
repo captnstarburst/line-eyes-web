@@ -8,39 +8,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      width: '25ch',
+      width: '40ch',
       display: 'flex',
       flexDirection: 'column'
-    }
-  },
-  hrText: {
-    lineHeight: '1em',
-    position: 'relative',
-    outline: '0',
-    border: '0',
-    color: 'black',
-    textAlign: 'center',
-    height: '1.5em',
-    opacity: '.5',
-
-    '&::before': {
-        content: '',
-        background: 'linear-gradient(to right, transparent, #818078, transparent)',
-        position: 'absolute',
-        left: '0',
-        top: '50%',
-        width: '100%',
-        height: '1px'
-    },
-    '&::after': {
-        content: 'attr(data-content)',
-        position: 'relative',
-        display: 'inline-block',
-        color: 'black',
-        padding: '0 .5em',
-        lineHeight: '1.5em',
-        color: '#818078',
-        backgroundColor: '#fcfcfa'
     }
   }
 }))
@@ -49,7 +19,7 @@ export default function BasicTextFields () {
   const classes = useStyles()
 
   return (
-    <form className={classes.root} noValidate autoComplete='off'>
+    <form className={classes.root} noValidate autoComplete='on'>
       <TextField
         variant='outlined'
         id='username'
@@ -71,7 +41,6 @@ export default function BasicTextFields () {
       >
         Log In
       </Button>
-
     </form>
   )
 }

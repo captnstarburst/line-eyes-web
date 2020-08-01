@@ -8,12 +8,12 @@ const useStyles = makeStyles(theme => ({
   root: {
     background:
       'linear-gradient(4deg, rgba(34,193,195,1) 0%, rgba(0,112,26,1) 100%)',
-    height: '100vh',
+    height: '120vh',
     flexGrow: 1
   },
   logInContainer: {
     height: 'auto',
-    marginTop: '10vh',
+    marginTop: '5vh',
     maxWidth: '70vw'
   }
 }))

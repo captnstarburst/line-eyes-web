@@ -56,7 +56,7 @@ const ProviderSignUp = props => {
         or
       </Typography>
 
-      <Button color='primary'>Create Account </Button>
+      <Button color='primary' onClick={props.propagateCreateClick}>Create Account </Button>
     </>
   )
 }
