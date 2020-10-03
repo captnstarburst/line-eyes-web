@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import * as ROUTES from './components/constants/routes';
 import LogInPage from './components/LogInPage'
+import LandingPage from './components/LandingPage'
 
 const App = props => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -25,7 +26,7 @@ const App = props => {
         :
         <Redirect to={ROUTES.LANDING} />
       }
-      {/* <Route exact path={ROUTES.LANDING} component={LandingPage} /> */}
+      <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route path={ROUTES.LOG_IN} component={LogInPage} />
       {/* <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} /> */}
       {/* <Route path={ROUTES.HOME} component={HomePage} /> */}

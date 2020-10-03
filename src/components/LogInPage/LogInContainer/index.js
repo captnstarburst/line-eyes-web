@@ -8,6 +8,7 @@ import { FirebaseContext } from '../../Firebase'
 import ProviderSignUp from './ProviderSignUp'
 import LogInForm from './LogInForm'
 import CreateForm from './CreateForm'
+import Error from './Error'
 
 const LogInContainer = props => {
   const [currentFormMounted, setCurrentForm] = useState('provider')
@@ -22,6 +23,10 @@ const LogInContainer = props => {
 
   const handleCreateClick = () => {
     setCurrentForm('create')
+  }
+
+  const mountError = () => {
+    setCurrentForm('error')
   }
 
   return (
@@ -75,13 +80,17 @@ const LogInContainer = props => {
 
         {currentFormMounted === 'login' && <LogInForm />}
 
-        {currentFormMounted === 'create' && 
+        {currentFormMounted === 'create' && (
           <FirebaseContext.Consumer>
             {firebase => {
-              return <CreateForm firebase={firebase} />
+              return (
+                <CreateForm firebase={firebase} propagateError={mountError} />
+              )
             }}
           </FirebaseContext.Consumer>
-        }
+        )}
+
+        {currentFormMounted === 'error' && <Error />}
       </div>
     </section>
   )

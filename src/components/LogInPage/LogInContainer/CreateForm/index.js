@@ -108,37 +108,15 @@ const CreateForm = props => {
   }
 
   const createUser = () => {
+    // const firestore = props.firebase.getFS();
+
     props.firebase.doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
-      .then((user) => {
-        user.updateProfile({
-          displayName: userInfo.username,
-        })
-        return user
-      })
-      .then((user) => {
-        props.firebase.getFS()
-          .collection('Users')
-          .doc(user.uid)
-          .set({
-            displayName: userInfo.username,
-            first_name: userInfo.first_name,
-            joined: new Date(),
-            last_name: userInfo.last_name,
-            profile_pic: ""
-          })
-        return user
-      })
-      .then((user) => {
-        props.firebase.getFS()
-          .collection('Birthdays')
-          .doc(user.uid)
-          .set({
-            birthday: userInfo.dateOfBirth
-          })
-        return user
+      .then((data) => {
+        console.log(data)
       })
       .catch(function(error) {
         console.log(JSON.stringify(error))
+        props.propagateError();
       });
   }
 
