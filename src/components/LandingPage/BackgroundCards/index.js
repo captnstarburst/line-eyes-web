@@ -6,12 +6,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
-import PregnancyTest from '../../../assets/pregnancy-test.png'
+import PregnancyTest from '../../assets/pregnancy-test.png'
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
-    zIndex: 1,
   },
 });
 
