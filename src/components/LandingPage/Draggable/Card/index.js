@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ImgMediaCard() {
+export default function ImgMediaCard(props) {
   const classes = useStyles();
 
 
@@ -31,23 +31,32 @@ export default function ImgMediaCard() {
           title="Contemplative Reptile"
           draggable="false"
         />
+        {props.positionX}
+        {props.positionY}
       <CardActions style={{display:'flex', justifyContent:'space-between'}}>
       <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                
-                color="inherit"
               >
-                <IndeterminateCheckBoxIcon />
+                <IndeterminateCheckBoxIcon 
+                  style={{
+                    fontSize: props.positionX < 100 ? "24x" : "48px",
+                    color : props.positionX > 100 ? "red" : "#000"  
+                  }} 
+                />
               </IconButton>
               <IconButton
-                style={{color: "#000"}}
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
               >
-                <ControlPointIcon />
+                <ControlPointIcon 
+                  style={{
+                    fontSize: props.positionX < 100 ? "24x" : "48px",
+                    color : props.positionX > 100 ? "red" : "#000"  
+                  }} 
+                />
               </IconButton>
       </CardActions>
     </Card>
