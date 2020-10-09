@@ -13,6 +13,14 @@ const useStyles = makeStyles({
     maxWidth: 500,
     zIndex: 1,
   },
+  normalIcon: {
+    fontSize: "24px",
+    color: "#000" 
+  },
+  activeIcon: {
+    fontSize: "45px",
+    color: "red" 
+  }
 });
 
 export default function ImgMediaCard(props) {
@@ -40,10 +48,7 @@ export default function ImgMediaCard(props) {
                 aria-haspopup="true"
               >
                 <IndeterminateCheckBoxIcon 
-                  style={{
-                    fontSize: props.positionX < 100 ? "24x" : "48px",
-                    color : props.positionX > 100 ? "red" : "#000"  
-                  }} 
+                  className = { props.positionX > -100 ? classes.normalIcon :classes.activeIcon }
                 />
               </IconButton>
               <IconButton
@@ -52,10 +57,7 @@ export default function ImgMediaCard(props) {
                 aria-haspopup="true"
               >
                 <ControlPointIcon 
-                  style={{
-                    fontSize: props.positionX < 100 ? "24x" : "48px",
-                    color : props.positionX > 100 ? "red" : "#000"  
-                  }} 
+                  className = { props.positionX < 100 ? classes.normalIcon :classes.activeIcon } 
                 />
               </IconButton>
       </CardActions>
