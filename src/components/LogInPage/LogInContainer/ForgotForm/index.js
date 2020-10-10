@@ -2,7 +2,8 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import EmailIcon from '@material-ui/icons/Email';
+import { withFirebase } from '../../../Firebase';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const LoginForm = props => {
+const ForgotForm = props => {
 
   const classes = useStyles()
 
@@ -27,26 +28,17 @@ const LoginForm = props => {
         label='User Name or Email'
         type='text'
       />
-      <TextField
-        variant='outlined'
-        id='password'
-        label='Password'
-        type='password'
-      />
 
       <Button
         variant='contained'
         color='primary'
-        endIcon={<AccountCircleIcon />}
+        endIcon={<EmailIcon />}
         style={{ width: '95%' }}
       >
-        Log In
+        Reset Password
       </Button>
-
-      <Button color='primary' onClick={props.propagateForgot}> Forgot Password </Button>
     </form>
   )
 }
 
-
-export default LoginForm
+export default withFirebase(ForgotForm)

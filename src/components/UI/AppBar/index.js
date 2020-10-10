@@ -15,11 +15,10 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import QueueIcon from '@material-ui/icons/Queue';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import { withFirebase } from '../../Firebase';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar() {
+const MenuAppBar = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -93,16 +92,13 @@ export default function MenuAppBar() {
       </List>
       <Divider />
       <ListItem button>
-            <ListItemIcon>
-              <SettingsApplicationsIcon/> 
-            </ListItemIcon>
-            <ListItemText primary={"Settings"} />
-          </ListItem>
-      
-      
+        <ListItemIcon>
+          <SettingsApplicationsIcon/> 
+        </ListItemIcon>
+        <ListItemText primary={"Settings"} />
+      </ListItem>
     </div>
   );
-
 
   return (
     <div className={classes.root}>
@@ -140,7 +136,7 @@ export default function MenuAppBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>My Account</MenuItem>
-                <MenuItem onClick={handleClose}>Log Out</MenuItem>
+                <MenuItem onClick={props.firebase.doSignOut}>Log Out</MenuItem>
               </Menu>
             </div>
           
@@ -152,3 +148,5 @@ export default function MenuAppBar() {
     </div>
   );
 }
+
+export default withFirebase(MenuAppBar)

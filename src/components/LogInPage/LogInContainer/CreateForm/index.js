@@ -4,6 +4,10 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import EmailValidator from '../../../functions/EmailValidator'
+import { withFirebase } from '../../../Firebase';
+import { withRouter } from 'react-router-dom';
+import * as ROUTES from '../../../constants/routes';
+import { compose } from 'recompose';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -74,45 +78,46 @@ const CreateForm = props => {
   
   const handleCreateClick = e => {
     e.preventDefault();
+    createUser()
+    
+    // let check = true;
+    // const firestore = props.firebase.getFS();
 
-    let check = true;
-    const firestore = props.firebase.getFS();
+    // setCheckingValues(true)
 
-    setCheckingValues(true)
-
-    firestore.collection("Users")
-      .where("displayName", "==", userInfo.username)
-      .get()
-      .then(function(querySnapshot) {
-        if(!querySnapshot.empty){
-          setFormError(prevState => ({...prevState, username: true}));
-          check = false
-        }
-      })
-      .then(() => {
-        for (const item in formError) {
-          if(formError[item]){
-            check = false
-            return
-          }
-        }
-      })
-      .then(() => {
-        if(check){
-          createUser()
-        }
-      })
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-      }); 
+    // firestore.collection("Users")
+    //   .where("displayName", "==", userInfo.username)
+    //   .get()
+    //   .then(function(querySnapshot) {
+    //     if(!querySnapshot.empty){
+    //       setFormError(prevState => ({...prevState, username: true}));
+    //       check = false
+    //     }
+    //   })
+    //   .then(() => {
+    //     for (const item in formError) {
+    //       if(formError[item]){
+    //         check = false
+    //         return
+    //       }
+    //     }
+    //   })
+    //   .then(() => {
+    //     if(check){
+    //       createUser()
+    //     }
+    //   })
+    //   .catch(function(error) {
+    //     console.log("Error getting documents: ", error);
+    //   }); 
   }
 
   const createUser = () => {
     // const firestore = props.firebase.getFS();
 
     props.firebase.doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
-      .then((data) => {
-        console.log(data)
+      .then(authUser => {
+        props.history.push(ROUTES.LANDING);
       })
       .catch(function(error) {
         console.log(JSON.stringify(error))
@@ -186,4 +191,9 @@ const CreateForm = props => {
   )
 }
 
-export default CreateForm
+const ComposedCreateForm = compose(
+  withRouter,
+  withFirebase,
+)(CreateForm);
+
+export default ComposedCreateForm

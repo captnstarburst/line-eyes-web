@@ -4,11 +4,11 @@ import Typography from '@material-ui/core/Typography'
 import PregnancyTest from '../../assets/pregnancy-test.png'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { FirebaseContext } from '../../Firebase'
 import ProviderSignUp from './ProviderSignUp'
 import LogInForm from './LogInForm'
 import CreateForm from './CreateForm'
 import Error from './Error'
+import ForgotForm from './ForgotForm'
 
 const LogInContainer = props => {
   const [currentFormMounted, setCurrentForm] = useState('provider')
@@ -23,6 +23,10 @@ const LogInContainer = props => {
 
   const handleCreateClick = () => {
     setCurrentForm('create')
+  }
+
+  const handleForgotClick = () => {
+    setCurrentForm('forgot')
   }
 
   const mountError = () => {
@@ -78,17 +82,21 @@ const LogInContainer = props => {
           <ProviderSignUp propagateCreateClick={handleCreateClick} />
         )}
 
-        {currentFormMounted === 'login' && <LogInForm />}
+        {currentFormMounted === 'login' && 
+          <LogInForm 
+            propagateForgot = {handleForgotClick}
+          />
+        }
 
-        {currentFormMounted === 'create' && (
-          <FirebaseContext.Consumer>
-            {firebase => {
-              return (
-                <CreateForm firebase={firebase} propagateError={mountError} />
-              )
-            }}
-          </FirebaseContext.Consumer>
-        )}
+        {currentFormMounted === 'create' && 
+          <CreateForm  
+            propagateError = {mountError} 
+          />
+        }
+
+        {currentFormMounted === 'forgot' && 
+          <ForgotForm />
+        }
 
         {currentFormMounted === 'error' && <Error />}
       </div>

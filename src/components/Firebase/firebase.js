@@ -16,87 +16,25 @@ const config = {
   measurementId: "G-ZDBMNDGK0W"
 };
 
-export default class Firebase {
+class Firebase {
   constructor() {
     app.initializeApp(config);
-    app.auth().useDeviceLanguage();
-    app.functions();
-    this.wholeSystem = app;
-    this.db = app.database();
-    this.firestore = app.firestore();
-    this.storage = app.storage();
+
     this.auth = app.auth();
   }
 
-  // *** Auth API ***
-  onAuthUserListener = (next, fallback) =>
-    this.auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        next(authUser);
-      } else {
-        fallback();
-      }
-    }
-  );
-
-  // Firebase authentications
-  doCreateUserWithEmailAndPassword(email, password) {
-    return this.auth.createUserWithEmailAndPassword(email, password);
-  }
-  doSignInWithEmailAndPassword(email, password) {
-    return this.auth.signInWithEmailAndPassword(email, password);
-  }
-  doSignOut() {
-    return this.auth.signOut();
-  }
-  doPasswordReset(email) {
-    return this.auth.sendPasswordResetEmail(email);
-  }
-
-  // Firebase references
-
-  getAuth() {
-    return this.auth;
-  }
-  getDB() {
-    return this.db;
-  }
-  getDBRef(path) {
-    return this.db.ref(path);
-  }
-  getFieldValue() {
-    return this.wholeSystem.firestore.FieldValue;
-  }
-  getFS() {
-    return this.firestore;
-  }
-  getFSDocRef(path) {
-    return this.firestore.doc(path);
-  }
-  getFSCollectionRef(path) {
-    return this.firestore.collection(path);
-  }
-  getFunctions() {
-    return app.functions();
-  }
-  getRecaptcha(c, info) {
-    return new this.wholeSystem.auth.RecaptchaVerifier(c,info);
-  }
-  getStorageRef(path) {
-    return this.storage.ref(path);
-  }
-  getStorageRefFromURL(url) {
-    return this.storage.refFromURL(url);
-  }
-  getSystem() {
-    return this.wholeSystem;
-  }
-
-  // Firebase timestamps
-  createTimestamp(seconds, nanoseconds) {
-    return new this.wholeSystem.firestore.Timestamp(seconds, nanoseconds);
-  }
-  getTimestamp(date) {
-    return this.wholeSystem.firestore.Timestamp.fromDate(date);
-  }
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    this.auth.createUserWithEmailAndPassword(email, password);
+ 
+  doSignInWithEmailAndPassword = (email, password) =>
+    this.auth.signInWithEmailAndPassword(email, password);
+ 
+  doSignOut = () => this.auth.signOut();
+ 
+  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+ 
+  doPasswordUpdate = password =>
+    this.auth.currentUser.updatePassword(password);
 }
+
+export default Firebase;

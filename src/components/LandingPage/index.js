@@ -2,6 +2,7 @@ import React from 'react'
 import AppBar from '../UI/AppBar'
 import Dragger from './Draggable'
 import BackgroundCards from './BackgroundCards'
+import { withAuthorization } from '../Session';
 
 const Landing = props => {
     return(
@@ -23,4 +24,6 @@ const Landing = props => {
     )
 }
 
-export default Landing
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Landing)
