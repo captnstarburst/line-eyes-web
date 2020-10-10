@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { withFirebase } from '../../../Firebase';
+import { withRouter } from 'react-router-dom';
+import * as ROUTES from '../../../constants/routes';
+import { compose } from 'recompose';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,6 +23,33 @@ const LoginForm = props => {
 
   const classes = useStyles()
 
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleFormChange = e => {
+    switch(e.target.id){
+      case "username":
+        setUser(e.target.value);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        break;
+      default: 
+        break;
+    }
+  }
+
+  const handleSignIn = () => {
+    props.firebase.doSignInWithEmailAndPassword(user, password)
+    .then(authUser => {
+      props.history.push(ROUTES.LANDING);
+    })
+    .catch(function(error) {
+      console.log(JSON.stringify(error))
+      props.propagateError();
+    });
+  }
+
   return (
     <form className={classes.root} noValidate autoComplete='on'>
       <TextField
@@ -26,12 +57,14 @@ const LoginForm = props => {
         id='username'
         label='User Name or Email'
         type='text'
+        onChange={handleFormChange}
       />
       <TextField
         variant='outlined'
         id='password'
         label='Password'
         type='password'
+        onChange={handleFormChange}
       />
 
       <Button
@@ -39,6 +72,7 @@ const LoginForm = props => {
         color='primary'
         endIcon={<AccountCircleIcon />}
         style={{ width: '95%' }}
+        onClick = {handleSignIn}
       >
         Log In
       </Button>
@@ -47,6 +81,9 @@ const LoginForm = props => {
     </form>
   )
 }
+const ComposedLogInForm = compose(
+  withRouter,
+  withFirebase,
+)(LoginForm);
 
-
-export default LoginForm
+export default ComposedLogInForm
