@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
@@ -19,6 +19,9 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import QueueIcon from '@material-ui/icons/Queue';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import { withFirebase } from '../../Firebase';
+import { withRouter } from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
+import { compose } from 'recompose';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +68,16 @@ const MenuAppBar = props => {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleRouteToMyAccount = () => {
+    handleClose();
+    props.history.push(ROUTES.My_Account);
+  }
+
+  const handleRouteToLineEyes = () => {
+    handleClose();
+    props.history.push(ROUTES.LANDING);
+  }
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -75,7 +88,7 @@ const MenuAppBar = props => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-          <ListItem button >
+          <ListItem button onClick={handleRouteToMyAccount} >
             <ListItemIcon> <AccountCircle /> </ListItemIcon>
             <ListItemText primary={"My Account"} />
           </ListItem>
@@ -83,12 +96,10 @@ const MenuAppBar = props => {
             <ListItemIcon> <AddAPhotoIcon /> </ListItemIcon>
             <ListItemText primary={"Add Photo"} />
           </ListItem>
-          <ListItem button >
+          <ListItem button onClick={handleRouteToLineEyes} >
             <ListItemIcon> <QueueIcon /> </ListItemIcon>
             <ListItemText primary={"Line-Eyes"} />
           </ListItem>
-          
-        
       </List>
       <Divider />
       <ListItem button>
@@ -135,7 +146,7 @@ const MenuAppBar = props => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>My Account</MenuItem>
+                <MenuItem onClick={handleRouteToMyAccount}>My Account</MenuItem>
                 <MenuItem onClick={props.firebase.doSignOut}>Log Out</MenuItem>
               </Menu>
             </div>
@@ -144,9 +155,14 @@ const MenuAppBar = props => {
       </AppBar>
       <Drawer anchor={"left"} open={state["left"]} onClose={toggleDrawer("left", false)}>
             {list("left")}
-          </Drawer>
+      </Drawer>
     </div>
   );
 }
 
-export default withFirebase(MenuAppBar)
+const ComposedMenuAppBar = compose(
+  withRouter,
+  withFirebase,
+)(MenuAppBar);
+
+export default withFirebase(ComposedMenuAppBar)
