@@ -21,6 +21,7 @@
     "react-draggable": "^4.4.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "recharts": "^1.8.5",
     "recompose": "^0.30.0"
   },
   "scripts": {

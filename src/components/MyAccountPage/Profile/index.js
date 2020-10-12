@@ -46,10 +46,11 @@ export default function CenteredGrid() {
                         Real Name
                     </Typography>
                     <Typography
-                        align='center'
+                        align='left'
                         color='primary'
                         variant='h6'
                         component='h6'
+                        style={{fontSize: "12px"}}
                     >
                         User Name
                     </Typography>
