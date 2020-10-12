@@ -6,6 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import WarningIcon from '@material-ui/icons/Warning';
 import PregnancyTest from '../../../assets/pregnancy-test.png'
 
 const useStyles = makeStyles({
@@ -49,6 +50,15 @@ export default function ImgMediaCard(props) {
               >
                 <IndeterminateCheckBoxIcon 
                   className = { props.positionX > -100 ? classes.normalIcon :classes.activeIcon }
+                />
+              </IconButton>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+              >
+                <WarningIcon
+                  className = { props.positionY < 10 ? classes.normalIcon :classes.activeIcon }
                 />
               </IconButton>
               <IconButton
