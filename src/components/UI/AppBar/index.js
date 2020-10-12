@@ -73,6 +73,11 @@ const MenuAppBar = props => {
     props.history.push(ROUTES.My_Account);
   }
 
+  const handleRouteToPhotoEdit = () => {
+    handleClose();
+    props.history.push(ROUTES.PHOTO);
+  }
+
   const handleRouteToLineEyes = () => {
     handleClose();
     props.history.push(ROUTES.LANDING);
@@ -92,7 +97,7 @@ const MenuAppBar = props => {
             <ListItemIcon> <AccountCircle /> </ListItemIcon>
             <ListItemText primary={"My Account"} />
           </ListItem>
-          <ListItem button >
+          <ListItem button onClick={handleRouteToPhotoEdit}>
             <ListItemIcon> <AddAPhotoIcon /> </ListItemIcon>
             <ListItemText primary={"Add Photo"} />
           </ListItem>

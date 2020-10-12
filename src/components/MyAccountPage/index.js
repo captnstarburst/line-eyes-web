@@ -1,25 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react'
 import AppBar from '../UI/AppBar'
 import CenteredTabs from './Navigation'
 import Stats from './Stats'
 import Profile from './Profile'
+import Uploads from './Uploads'
+import Activity from './Activity'
 import { withAuthorization } from '../Session';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-
 const MyAccountPage = props => {
+    const [displaying, setDisplaying] = useState("stats");
+
+    const changeDisplay = selection => setDisplaying(selection);
+
     return(
         <>
             <AppBar />
-            
             <CssBaseline />
             <Container fixed>
                 <Profile />
-                <CenteredTabs />
+                <CenteredTabs 
+                    selection = {changeDisplay}
+                />
                 <Typography component="section" style={{ backgroundColor: '#cfe8fc' }}>
-                    <Stats />
+                    {displaying === "stats" && 
+                        <Stats />
+                    }
+                    {displaying === "uploads" &&
+                        <Uploads />
+                    }
+                    {displaying === "activity" &&
+                        <Activity />
+                    }
                 </Typography>
             </Container>
         </>

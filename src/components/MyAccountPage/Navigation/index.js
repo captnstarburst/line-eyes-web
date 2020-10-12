@@ -10,11 +10,24 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CenteredTabs() {
+export default function CenteredTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    switch(newValue){
+      case 0:
+        props.selection("stats")
+        break;
+      case 1: 
+        props.selection("uploads")
+        break;
+      case 2: 
+        props.selection("activity")
+        break;
+      default:
+        break;
+    }
     setValue(newValue);
   };
 
