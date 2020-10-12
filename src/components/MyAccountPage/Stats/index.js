@@ -83,7 +83,7 @@ export default function FullWidthGrid() {
                   component='h6'
                   
               >
-                Percentage 
+                Most Recent Upload Results 
             </Typography>
             <PieChart />
           </Paper>
