@@ -1,7 +1,5 @@
 import React from 'react'
 import AppBar from '../UI/AppBar'
-import Dragger from './Draggable'
-import BackgroundCards from './BackgroundCards'
 import Zoom from '@material-ui/core/Zoom'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
@@ -54,9 +52,7 @@ const Landing = props => {
               top: 0,
               left: 0
             }}
-          >
-            <BackgroundCards />
-          </div>
+          ></div>
           <div
             style={{
               width: '100%',
@@ -64,9 +60,7 @@ const Landing = props => {
               zIndex: 1,
               marginTop: '50px'
             }}
-          >
-            <Dragger />
-          </div>
+          ></div>
         </div>
         <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
           <Fab

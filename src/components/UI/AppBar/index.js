@@ -88,6 +88,11 @@ const MenuAppBar = props => {
     props.history.push(ROUTES.LANDING)
   }
 
+  const handleRouteToSettings = () => {
+    handleClose()
+    props.history.push(ROUTES.SETTINGS)
+  }
+
   const list = anchor => (
     <div
       className={clsx(classes.list, {
@@ -121,7 +126,7 @@ const MenuAppBar = props => {
         </ListItem>
       </List>
       <Divider />
-      <ListItem button>
+      <ListItem button onClick={handleRouteToSettings}>
         <ListItemIcon>
           <SettingsApplicationsIcon />
         </ListItemIcon>

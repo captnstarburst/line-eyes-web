@@ -12,6 +12,7 @@ import ControlPointIcon from '@material-ui/icons/ControlPoint'
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import WarningIcon from '@material-ui/icons/Warning'
 import Fade from '@material-ui/core/Fade'
+import Badge from '@material-ui/core/Badge'
 
 const useStyles = makeStyles({
   root: {
@@ -44,57 +45,17 @@ export default function ImgMediaCard () {
           <CardActions
             style={{ display: 'flex', justifyContent: 'space-between' }}
           >
-            <div style={{ flexDirection: 'column' }}>
-              <IconButton
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-              >
-                <IndeterminateCheckBoxIcon />
-              </IconButton>
-              <Typography
-                align='center'
-                color='primary'
-                variant='h6'
-                component='h6'
-              >
-                0
-              </Typography>
-            </div>
-            <div style={{ flexDirection: 'column' }}>
-              <IconButton
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-              >
-                <WarningIcon />
-              </IconButton>
-              <Typography
-                align='center'
-                color='primary'
-                variant='h6'
-                component='h6'
-              >
-                0
-              </Typography>
-            </div>
-            <div style={{ flexDirection: 'column' }}>
-              <IconButton
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-              >
-                <ControlPointIcon />
-              </IconButton>
-              <Typography
-                align='center'
-                color='primary'
-                variant='h6'
-                component='h6'
-              >
-                0
-              </Typography>
-            </div>
+            <Badge color='secondary' badgeContent={1} invisible={false}>
+              <IndeterminateCheckBoxIcon />
+            </Badge>
+
+            <Badge color='secondary' badgeContent={1} invisible={false}>
+              <WarningIcon />
+            </Badge>
+
+            <Badge color='secondary' badgeContent={1} invisible={false}>
+              <ControlPointIcon />
+            </Badge>
           </CardActions>
         </Card>
       </Fade>
