@@ -7,7 +7,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography'
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

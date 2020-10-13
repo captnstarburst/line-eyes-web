@@ -4,5 +4,6 @@
         "Eyez",
         "ZDBMNDGK",
         "labelledby"
-    ]
+    ],
+    "editor.formatOnSave": true
 }

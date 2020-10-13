@@ -1,57 +1,103 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Chips from './Chips'
+import Typography from '@material-ui/core/Typography'
 import PregnancyTest from '../../assets/pregnancy-test.png'
-import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton'
+import ControlPointIcon from '@material-ui/icons/ControlPoint'
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
+import WarningIcon from '@material-ui/icons/Warning'
+import Fade from '@material-ui/core/Fade'
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 500,
-  },
-});
+    maxWidth: 500
+  }
+})
 
-export default function ImgMediaCard() {
-  const classes = useStyles();
+export default function ImgMediaCard () {
+  const classes = useStyles()
 
   return (
-    <section style={{display:'flex', justifyContent: "center", paddingTop: '50px'}}>
-        <Fade in={true} {...({ timeout: 1000 })}>
-            <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt="Contemplative Reptile"
-          height="140"
-          image={PregnancyTest}
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>
-        </Fade>
+    <section
+      style={{ display: 'flex', justifyContent: 'center', paddingTop: '50px' }}
+    >
+      <Fade in={true} {...{ timeout: 1000 }}>
+        <Card className={classes.root}>
+          <CardMedia
+            component='img'
+            alt='Contemplative Reptile'
+            height='140'
+            image={PregnancyTest}
+            title='Contemplative Reptile'
+          />
+          <CardContent>
+            <Typography gutterBottom variant='h5' component='h2'>
+              User Name 10/12/2020
+            </Typography>
+            <Chips />
+          </CardContent>
+          <CardActions
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            <div style={{ flexDirection: 'column' }}>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+              >
+                <IndeterminateCheckBoxIcon />
+              </IconButton>
+              <Typography
+                align='center'
+                color='primary'
+                variant='h6'
+                component='h6'
+              >
+                0
+              </Typography>
+            </div>
+            <div style={{ flexDirection: 'column' }}>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+              >
+                <WarningIcon />
+              </IconButton>
+              <Typography
+                align='center'
+                color='primary'
+                variant='h6'
+                component='h6'
+              >
+                0
+              </Typography>
+            </div>
+            <div style={{ flexDirection: 'column' }}>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+              >
+                <ControlPointIcon />
+              </IconButton>
+              <Typography
+                align='center'
+                color='primary'
+                variant='h6'
+                component='h6'
+              >
+                0
+              </Typography>
+            </div>
+          </CardActions>
+        </Card>
+      </Fade>
     </section>
-    
-  );
+  )
 }
