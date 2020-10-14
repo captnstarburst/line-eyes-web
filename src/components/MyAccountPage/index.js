@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import AppBar from '../UI/AppBar'
+import Footer from '../UI/Footer'
 import CenteredTabs from './Navigation'
 import Stats from './Stats'
 import Profile from './Profile'
@@ -33,6 +34,7 @@ const MyAccountPage = props => {
           </Switch>
         </Typography>
       </Container>
+      <Footer />
     </>
   )
 }

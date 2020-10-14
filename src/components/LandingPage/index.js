@@ -1,16 +1,20 @@
 import React from 'react'
 import AppBar from '../UI/AppBar'
 import Dragger from './Draggable'
-import BackgroundCards from './BackgroundCards'
+import ActionButtons from './ActionButtons'
 import Zoom from '@material-ui/core/Zoom'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import Chips from './Chips'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { withAuthorization } from '../Session'
 import { withRouter } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { withFirebase } from '../Firebase'
 import { compose } from 'recompose'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Typography from '@material-ui/core/Typography'
+import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +40,37 @@ const Landing = props => {
   return (
     <>
       <AppBar />
-      <main
+      <CssBaseline />
+      <Container fixed>
+        <Typography
+          component='main'
+          style={{
+            backgroundColor: '#cfe8fc',
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
+            height: '80vh',
+            overflow: 'hidden'
+          }}
+        >
+          <Chips />
+          <div style={{ position: 'relative', marginTop: '10vh' }}>
+            <Dragger />
+          </div>
+          <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
+            <Fab
+              aria-label={'fab.label'}
+              className={classes.fab}
+              onClick={handleRouteToPhotoPage}
+            >
+              <AddIcon color={'primary'} />
+            </Fab>
+          </Zoom>
+        </Typography>
+      </Container>
+      {/* <main
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -45,19 +79,8 @@ const Landing = props => {
           overflow: 'hidden'
         }}
       >
-        <div style={{ position: 'relative', marginTop: '10vh' }}>
-          <Dragger />
-        </div>
-        <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
-          <Fab
-            aria-label={'fab.label'}
-            className={classes.fab}
-            onClick={handleRouteToPhotoPage}
-          >
-            <AddIcon color={'primary'} />
-          </Fab>
-        </Zoom>
-      </main>
+        
+      </main> */}
     </>
   )
 }
