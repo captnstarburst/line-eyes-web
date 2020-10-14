@@ -152,6 +152,19 @@ export default function SwitchListSecondary () {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
+          <ListItemText
+            id='switch-list-label-bluetooth'
+            primary='Change User Name'
+          />
+          <ListItemSecondaryAction>
+            <TextField
+              id='outlined-basic'
+              label='Outlined'
+              variant='outlined'
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem className={classes.paper}>
           <Button
             variant='contained'
             color='secondary'

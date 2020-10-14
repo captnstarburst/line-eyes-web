@@ -10,6 +10,7 @@ import { withAuthorization } from '../Session'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
+import { Switch, Route } from 'react-router-dom'
 
 const MyAccountPage = props => {
   const [displaying, setDisplaying] = useState('stats')
@@ -24,10 +25,12 @@ const MyAccountPage = props => {
         <Profile />
         <CenteredTabs selection={changeDisplay} />
         <Typography component='section' style={{ backgroundColor: '#cfe8fc' }}>
-          {displaying === 'stats' && <Stats />}
-          {displaying === 'uploads' && <Uploads />}
-          {displaying === 'activity' && <Activity />}
-          {displaying === 'settings' && <Settings />}
+          <Switch>
+            <Route path={`/Me/stats`} exact component={Stats} />
+            <Route path={`/Me/uploads`} exact component={Uploads} />
+            <Route path={`/Me/activity`} component={Activity} />
+            <Route path={`/Me/settings`} component={Settings} />
+          </Switch>
         </Typography>
       </Container>
     </>

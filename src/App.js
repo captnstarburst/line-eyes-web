@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
-      <Route exact path={ROUTES.My_Account} component={MyAccountPage} />
+      <Route path={ROUTES.My_Account} component={MyAccountPage} />
       <Route exact path={ROUTES.PHOTO} component={PhotoPage} />
       <Route path={ROUTES.LOG_IN} component={LogInPage} />
       {/* <Route path={ROUTES.ADMIN} component={AdminPage} /> */}

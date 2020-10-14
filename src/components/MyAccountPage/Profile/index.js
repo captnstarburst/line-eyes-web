@@ -27,7 +27,7 @@ const Profile = props => {
   const classes = useStyles()
 
   const handleRouteToSettings = () => {
-    props.history.push(ROUTES.SETTINGS)
+    props.history.push(ROUTES.My_Account + '/settings')
   }
 
   return (

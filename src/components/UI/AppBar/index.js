@@ -75,7 +75,7 @@ const MenuAppBar = props => {
 
   const handleRouteToMyAccount = () => {
     handleClose()
-    props.history.push(ROUTES.My_Account)
+    props.history.push(ROUTES.My_Account + '/stats')
   }
 
   const handleRouteToPhotoEdit = () => {
@@ -90,7 +90,7 @@ const MenuAppBar = props => {
 
   const handleRouteToSettings = () => {
     handleClose()
-    props.history.push(ROUTES.SETTINGS)
+    props.history.push(ROUTES.My_Account + '/settings')
   }
 
   const list = anchor => (
@@ -205,4 +205,4 @@ const MenuAppBar = props => {
 
 const ComposedMenuAppBar = compose(withRouter, withFirebase)(MenuAppBar)
 
-export default withFirebase(ComposedMenuAppBar)
+export default ComposedMenuAppBar
