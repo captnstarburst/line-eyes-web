@@ -46,27 +46,7 @@ const Landing = props => {
         }}
       >
         <div style={{ position: 'relative', marginTop: '10vh' }}>
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              top: 0,
-              left: 0
-            }}
-          >
-            <BackgroundCards />
-          </div>
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              zIndex: 1,
-              marginTop: '50px'
-            }}
-          >
-            <Dragger />
-          </div>
+          <Dragger />
         </div>
         <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
           <Fab
