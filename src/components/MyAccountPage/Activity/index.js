@@ -7,9 +7,9 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Chips from './Chips'
 import Typography from '@material-ui/core/Typography'
 import PregnancyTest from '../../assets/pregnancy-test.png'
-import IconButton from '@material-ui/core/IconButton'
+import DragHandleIcon from '@material-ui/icons/DragHandle'
 import ControlPointIcon from '@material-ui/icons/ControlPoint'
-import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
+import MinimizeIcon from '@material-ui/icons/Minimize'
 import WarningIcon from '@material-ui/icons/Warning'
 import Fade from '@material-ui/core/Fade'
 import Badge from '@material-ui/core/Badge'
@@ -43,10 +43,10 @@ export default function ImgMediaCard () {
             <Chips />
           </CardContent>
           <CardActions
-            style={{ display: 'flex', justifyContent: 'space-between' }}
+            style={{ display: 'flex', justifyContent: 'space-around' }}
           >
             <Badge color='secondary' badgeContent={1} invisible={false}>
-              <IndeterminateCheckBoxIcon />
+              <MinimizeIcon style={{ transform: 'rotate(90deg)' }} />
             </Badge>
 
             <Badge color='secondary' badgeContent={1} invisible={false}>
@@ -54,7 +54,7 @@ export default function ImgMediaCard () {
             </Badge>
 
             <Badge color='secondary' badgeContent={1} invisible={false}>
-              <ControlPointIcon />
+              <DragHandleIcon style={{ transform: 'rotate(90deg)' }} />
             </Badge>
           </CardActions>
         </Card>

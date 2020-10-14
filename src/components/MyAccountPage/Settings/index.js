@@ -50,7 +50,7 @@ export default function SwitchListSecondary () {
   return (
     <div className={classes.root}>
       <List
-        subheader={<ListSubheader>Personal Info</ListSubheader>}
+        subheader={<ListSubheader disableSticky>Personal Info</ListSubheader>}
         className={classes.list}
       >
         <ListItem className={classes.paper}>
@@ -100,7 +100,9 @@ export default function SwitchListSecondary () {
         </ListItem>
       </List>
       <List
-        subheader={<ListSubheader>Notification Settings</ListSubheader>}
+        subheader={
+          <ListSubheader disableSticky>Notification Settings</ListSubheader>
+        }
         className={classes.list}
       >
         <ListItem className={classes.paper}>
@@ -114,6 +116,7 @@ export default function SwitchListSecondary () {
           <ListItemSecondaryAction>
             <Switch
               edge='end'
+              color='primary'
               onChange={handleToggle('wifi')}
               checked={checked.indexOf('wifi') !== -1}
               inputProps={{ 'aria-labelledby': 'switch-list-label-wifi' }}
@@ -122,7 +125,9 @@ export default function SwitchListSecondary () {
         </ListItem>
       </List>
       <List
-        subheader={<ListSubheader>Account Settings</ListSubheader>}
+        subheader={
+          <ListSubheader disableSticky>Account Settings</ListSubheader>
+        }
         className={classes.list}
       >
         <ListItem className={classes.paper}>
