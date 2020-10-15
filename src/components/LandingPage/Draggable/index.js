@@ -1,6 +1,7 @@
 import React from 'react'
 import Draggable from 'react-draggable'
 import Card from './Card'
+import SelectionIcon from './SelectionIcon'
 
 class Dragger extends React.Component {
   state = {
@@ -64,18 +65,24 @@ class Dragger extends React.Component {
     const { deltaPosition, controlledPosition } = this.state
 
     return (
-      <Draggable
-        onDrag={this.handleDrag}
-        bounds={{ top: 10, left: -1000, right: 1000, bottom: 100 }}
-        {...dragHandlers}
-      >
-        <div>
-          <Card
-            positionX={deltaPosition.x.toFixed(0)}
-            positionY={deltaPosition.y.toFixed(0)}
-          />
-        </div>
-      </Draggable>
+      <>
+        <Draggable
+          onDrag={this.handleDrag}
+          bounds={{ top: 10, left: -1000, right: 1000, bottom: 100 }}
+          {...dragHandlers}
+        >
+          <div>
+            <Card
+              positionX={deltaPosition.x.toFixed(0)}
+              positionY={deltaPosition.y.toFixed(0)}
+            />
+          </div>
+        </Draggable>
+        <SelectionIcon
+          positionX={deltaPosition.x.toFixed(0)}
+          positionY={deltaPosition.y.toFixed(0)}
+        />
+      </>
     )
   }
 }

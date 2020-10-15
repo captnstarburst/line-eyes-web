@@ -1,7 +1,6 @@
 import React from 'react'
 import AppBar from '../UI/AppBar'
 import Dragger from './Draggable'
-import ActionButtons from './ActionButtons'
 import Zoom from '@material-ui/core/Zoom'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
@@ -59,6 +58,7 @@ const Landing = props => {
           <div style={{ position: 'relative' }}>
             <Dragger />
           </div>
+
           <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
             <Fab
               aria-label={'fab.label'}
@@ -70,17 +70,6 @@ const Landing = props => {
           </Zoom>
         </Typography>
       </Container>
-      {/* <main
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '99vw',
-          height: '80vh',
-          overflow: 'hidden'
-        }}
-      >
-        
-      </main> */}
     </>
   )
 }
