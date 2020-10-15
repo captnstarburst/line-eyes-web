@@ -51,12 +51,12 @@ const Landing = props => {
             flexDirection: 'column',
             alignItems: 'center',
             width: '100%',
-            height: '80vh',
-            overflow: 'hidden'
+            height: '100vh',
+            overflowX: 'hidden'
           }}
         >
           <Chips />
-          <div style={{ position: 'relative', marginTop: '10vh' }}>
+          <div style={{ position: 'relative' }}>
             <Dragger />
           </div>
           <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
