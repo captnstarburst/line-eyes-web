@@ -1,5 +1,6 @@
 import React from 'react'
 import AppBar from '../UI/AppBar'
+import TagDrawer from '../UI/TagDrawer'
 import Dragger from './Draggable'
 import Zoom from '@material-ui/core/Zoom'
 import Fab from '@material-ui/core/Fab'
@@ -41,6 +42,7 @@ const Landing = props => {
       <AppBar />
       <CssBaseline />
       <Container fixed>
+        <TagDrawer />
         <Typography
           component='main'
           style={{
