@@ -40,23 +40,32 @@ export default function FloatingActionButtons (props) {
     }
   }, [props.positionX, props.positionY])
 
-  return (
-    <div className={classes.root}>
-      <Grow
-        in={mountIcon}
-        // style={{ transformOrigin: '0 0 0' }}
-        {...{ timeout: 2000 }}
-      >
-        <Fab
-          aria-label='add'
-          style={{ width: '100px', height: '100px', opacity: 0.7 }}
-        >
-          {value === 0 && <MinimizeIcon />}
+  console.log(mountIcon)
 
-          {value === 1 && <WarningIcon />}
-          {value === 2 && <DragHandleIcon />}
-        </Fab>
-      </Grow>
-    </div>
+  return (
+    <>
+      {mountIcon ? (
+        <div className={classes.root}>
+          <Grow
+            in={mountIcon}
+            // style={{ transformOrigin: '0 0 0' }}
+            // {...{ timeout: 2000 }}
+          >
+            <Fab
+              aria-label='add'
+              style={{ width: '100px', height: '100px', opacity: 0.7 }}
+            >
+              {value === 0 && (
+                <MinimizeIcon style={{ transform: 'rotate(90deg)' }} />
+              )}
+              {value === 1 && <WarningIcon />}
+              {value === 2 && (
+                <DragHandleIcon style={{ transform: 'rotate(90deg)' }} />
+              )}
+            </Fab>
+          </Grow>
+        </div>
+      ) : null}
+    </>
   )
 }
