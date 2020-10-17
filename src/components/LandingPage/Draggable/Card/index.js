@@ -58,8 +58,6 @@ export default function ImgMediaCard (props) {
           title='Contemplative Reptile'
           draggable='false'
         />
-        {/* {props.positionX}
-        {props.positionY} */}
         <CardActions>
           <BottomNavigation
             value={value}
@@ -83,45 +81,6 @@ export default function ImgMediaCard (props) {
               icon={<DragHandleIcon style={{ transform: 'rotate(90deg)' }} />}
             />
           </BottomNavigation>
-          {/* <IconButton
-            aria-label='account of current user'
-            aria-controls='menu-appbar'
-            aria-haspopup='true'
-          >
-            <MinimizeIcon
-              style={{ transform: 'rotate(90deg)' }}
-              className={
-                props.positionX > -100 ? classes.normalIcon : classes.activeIcon
-              }
-            />
-          </IconButton> */}
-          {/* <IconButton
-            aria-label='account of current user'
-            aria-controls='menu-appbar'
-            aria-haspopup='true'
-          >
-            <WarningIcon
-              className={
-                props.positionY > 49 &&
-                props.positionX > -99 &&
-                props.positionX < 99
-                  ? classes.activeIcon
-                  : classes.normalIcon
-              }
-            />
-          </IconButton>
-          <IconButton
-            aria-label='account of current user'
-            aria-controls='menu-appbar'
-            aria-haspopup='true'
-          >
-            <DragHandleIcon
-              style={{ transform: 'rotate(90deg)' }}
-              className={
-                props.positionX < 100 ? classes.normalIcon : classes.activeIcon
-              }
-            />
-          </IconButton> */}
         </CardActions>
       </Card>
     </Paper>
