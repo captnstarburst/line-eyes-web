@@ -17,8 +17,8 @@ import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -80,7 +80,7 @@ const Review = props => {
                     icon={
                       <Badge
                         color='secondary'
-                        badgeContent={1}
+                        badgeContent={0}
                         invisible={false}
                       >
                         <MinimizeIcon
@@ -97,7 +97,7 @@ const Review = props => {
                     icon={
                       <Badge
                         color='secondary'
-                        badgeContent={1}
+                        badgeContent={0}
                         invisible={false}
                       >
                         {' '}
@@ -110,7 +110,7 @@ const Review = props => {
                     icon={
                       <Badge
                         color='secondary'
-                        badgeContent={1}
+                        badgeContent={0}
                         invisible={false}
                       >
                         <DragHandleIcon
@@ -127,7 +127,7 @@ const Review = props => {
 
         <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
           <Fab aria-label={'fab.label'} className={classes.fab}>
-            <AddIcon color={'primary'} />
+            <CloudUploadIcon color={'primary'} />
           </Fab>
         </Zoom>
       </Typography>
