@@ -8,7 +8,6 @@ import Chips from './Chips'
 import Typography from '@material-ui/core/Typography'
 import PregnancyTest from '../../assets/pregnancy-test.png'
 import DragHandleIcon from '@material-ui/icons/DragHandle'
-import ControlPointIcon from '@material-ui/icons/ControlPoint'
 import MinimizeIcon from '@material-ui/icons/Minimize'
 import WarningIcon from '@material-ui/icons/Warning'
 import Fade from '@material-ui/core/Fade'
@@ -45,15 +44,15 @@ export default function ImgMediaCard () {
           <CardActions
             style={{ display: 'flex', justifyContent: 'space-around' }}
           >
-            <Badge color='secondary' badgeContent={1} invisible={false}>
+            <Badge color='primary' badgeContent={1} invisible={false}>
               <MinimizeIcon style={{ transform: 'rotate(90deg)' }} />
             </Badge>
 
-            <Badge color='secondary' badgeContent={1} invisible={false}>
+            <Badge color='primary' badgeContent={1} invisible={false}>
               <WarningIcon />
             </Badge>
 
-            <Badge color='secondary' badgeContent={1} invisible={false}>
+            <Badge color='primary' badgeContent={'You'} invisible={false}>
               <DragHandleIcon style={{ transform: 'rotate(90deg)' }} />
             </Badge>
           </CardActions>

@@ -56,7 +56,9 @@ export default function FloatingActionButtons (props) {
               style={{ width: '100px', height: '100px', opacity: 0.7 }}
             >
               {value === 0 && (
-                <MinimizeIcon style={{ transform: 'rotate(90deg)' }} />
+                <MinimizeIcon
+                  style={{ transform: 'rotate(90deg)', marginLeft: '15%' }}
+                />
               )}
               {value === 1 && <WarningIcon />}
               {value === 2 && (

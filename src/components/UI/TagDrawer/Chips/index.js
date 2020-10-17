@@ -10,7 +10,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     listStyle: 'none',
-    padding: theme.spacing(0.5)
+    padding: theme.spacing(0.5),
+    maxHeight: '200px',
+    overflowY: 'scroll'
   },
   chip: {
     margin: theme.spacing(0.5)
@@ -24,7 +26,22 @@ export default function ChipsArray () {
     { key: 1, label: 'Clear Blue' },
     { key: 2, label: 'DPO 5' },
     { key: 3, label: 'Ovulation Test' },
-    { key: 4, label: 'Help Me, I am trapped in here' }
+    { key: 4, label: 'Help Me, I am trapped in here' },
+    { key: 5, label: 'Pregnancy Test' },
+    { key: 6, label: 'Clear Blue' },
+    { key: 6, label: 'DPO 5' },
+    { key: 7, label: 'Ovulation Test' },
+    { key: 9, label: 'Help Me, I am trapped in here' },
+    { key: 10, label: 'Pregnancy Test' },
+    { key: 11, label: 'Clear Blue' },
+    { key: 12, label: 'DPO 5' },
+    { key: 13, label: 'Ovulation Test' },
+    { key: 14, label: 'Help Me, I am trapped in here' },
+    { key: 15, label: 'Pregnancy Test' },
+    { key: 16, label: 'Clear Blue' },
+    { key: 16, label: 'DPO 5' },
+    { key: 17, label: 'Ovulation Test' },
+    { key: 19, label: 'Help Me, I am trapped in here' }
   ])
 
   const handleDelete = chipToDelete => () => {

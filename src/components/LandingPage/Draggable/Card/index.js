@@ -71,7 +71,11 @@ export default function ImgMediaCard (props) {
           >
             <BottomNavigationAction
               label='Negative'
-              icon={<MinimizeIcon style={{ transform: 'rotate(90deg)' }} />}
+              icon={
+                <MinimizeIcon
+                  style={{ transform: 'rotate(90deg)', marginLeft: '10%' }}
+                />
+              }
             />
             <BottomNavigationAction label='Invalid' icon={<WarningIcon />} />
             <BottomNavigationAction
