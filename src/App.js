@@ -8,6 +8,7 @@ import MyAccountPage from './components/MyAccountPage'
 import PhotoPage from './components/PhotoPage'
 import PrivacyPage from './components/LegalPage/PrivacyPolicy'
 import TermsPage from './components/LegalPage/TermsConditions'
+import AdminPage from './components/AdminPage/'
 import { withFirebase } from './components/Firebase'
 import { withAuthentication } from './components/Session'
 
@@ -20,7 +21,7 @@ const App = () => {
       <Route path={ROUTES.LOG_IN} component={LogInPage} />
       <Route exact path={ROUTES.PRIVACY} component={PrivacyPage} />
       <Route exact path={ROUTES.TERMS} component={TermsPage} />
-      {/* <Route path={ROUTES.ADMIN} component={AdminPage} /> */}
+      <Route path={ROUTES.ADMIN} component={AdminPage} />
     </Router>
   )
 }
