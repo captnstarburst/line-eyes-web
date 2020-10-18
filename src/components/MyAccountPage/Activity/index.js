@@ -15,6 +15,10 @@ import Badge from '@material-ui/core/Badge'
 import Paper from '@material-ui/core/Paper'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const useStyles = makeStyles({
   root: {
@@ -28,6 +32,16 @@ const useStyles = makeStyles({
 export default function ImgMediaCard () {
   const classes = useStyles()
 
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   return (
     <section
       style={{ display: 'flex', justifyContent: 'center', paddingTop: '50px' }}
@@ -35,6 +49,20 @@ export default function ImgMediaCard () {
       <Fade in={true} {...{ timeout: 1000 }}>
         <Paper elevation={3} variant='outlined'>
           <Card className={classes.root}>
+            <div style={{ display: 'flex', justifyContent: 'end' }}>
+              <IconButton aria-label='settings' onClick={handleClick}>
+                <MoreHorizIcon />
+              </IconButton>
+              <Menu
+                id='simple-menu'
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Report Image</MenuItem>
+              </Menu>
+            </div>
             <CardMedia
               component='img'
               alt='Contemplative Reptile'

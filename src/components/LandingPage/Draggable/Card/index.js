@@ -10,6 +10,10 @@ import PregnancyTest from '../../../assets/u8f5w0o1e3t51.jpg'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import Paper from '@material-ui/core/Paper'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const useStyles = makeStyles({
   root: {
@@ -46,6 +50,16 @@ export default function ImgMediaCard (props) {
     }
   }, [props.positionX, props.positionY])
 
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   return (
     <Paper elevation={3} variant='outlined'>
       <Card className={classes.root}>
@@ -58,6 +72,22 @@ export default function ImgMediaCard (props) {
           title='Contemplative Reptile'
           draggable='false'
         />
+        <IconButton
+          aria-label='settings'
+          style={{ position: 'absolute', top: '5px', right: '10px' }}
+          onClick={handleClick}
+        >
+          <MoreHorizIcon />
+        </IconButton>
+        <Menu
+          id='simple-menu'
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose}>Report Image</MenuItem>
+        </Menu>
         <CardActions>
           <BottomNavigation
             value={value}
