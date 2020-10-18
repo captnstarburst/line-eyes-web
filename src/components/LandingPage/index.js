@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AppBar from '../UI/AppBar'
 import TagDrawer from '../UI/TagDrawer'
 import Dragger from './Draggable'
@@ -15,6 +15,7 @@ import { compose } from 'recompose'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
+import Toast from './Toast'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,9 +34,13 @@ const useStyles = makeStyles(theme => ({
 const Landing = props => {
   const classes = useStyles()
 
+  const [selection, setSelection] = useState(null)
+
   const handleRouteToPhotoPage = () => {
     props.history.push(ROUTES.PHOTO)
   }
+
+  const propagateSelection = selected => setSelection(selected)
 
   return (
     <>
@@ -58,9 +63,9 @@ const Landing = props => {
         >
           <Chips />
           <div style={{ position: 'relative' }}>
-            <Dragger />
+            <Dragger propagateSelection={propagateSelection} />
           </div>
-
+          <Toast userSelection={selection} />
           <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
             <Fab
               aria-label={'fab.label'}

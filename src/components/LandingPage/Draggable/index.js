@@ -4,12 +4,12 @@ import Card from './Card'
 import SelectionIcon from './SelectionIcon'
 
 class Dragger extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
   state = {
     deltaPosition: {
-      x: 0,
-      y: 0
-    },
-    controlledPosition: {
       x: 0,
       y: 0
     }
@@ -72,11 +72,12 @@ class Dragger extends React.Component {
         break
       default:
     }
+    this.props.propagateSelection(selection)
   }
 
   render () {
     const dragHandlers = { onStart: this.onStart, onStop: this.onStop }
-    const { deltaPosition, controlledPosition } = this.state
+    const { deltaPosition } = this.state
 
     return (
       <>
