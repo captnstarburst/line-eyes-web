@@ -32,10 +32,10 @@ const Footer = () => {
             width: '50%'
           }}
         >
-          <Link href='#' color='primary' onClick={preventDefault}>
+          <Link href='/privacy-policy' color='primary'>
             Privacy Policy
           </Link>
-          <Link href='#' color='primary' onClick={preventDefault}>
+          <Link href='/terms-and-conditions' color='primary'>
             Terms & Conditions
           </Link>
         </Typography>

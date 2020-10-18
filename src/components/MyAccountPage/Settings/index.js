@@ -16,7 +16,8 @@ import TextField from '@material-ui/core/TextField'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    paddingTop: '50px'
+    paddingTop: '50px',
+    paddingBottom: '100px'
   },
   list: {
     width: '100%',
