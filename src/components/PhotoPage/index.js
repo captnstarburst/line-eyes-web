@@ -2,30 +2,39 @@ import React, { useState } from 'react'
 import AppBar from '../UI/AppBar'
 import Editor from './Editor'
 import Review from './Review'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import { withAuthorization } from '../Session'
+import { compose } from 'recompose'
 
 const PhotoPage = props => {
-  const [page, setNextPage] = useState(1)
   const [base64, setBase64] = useState()
 
   const incrementNext = url => {
-    alert(url)
     setBase64(url)
-    setNextPage(prevState => prevState + 1)
+    props.history.push('/upload-photo/review')
   }
 
   return (
     <>
       <AppBar />
-      {page === 1 ? (
-        <Editor propagateUrl={incrementNext} />
-      ) : (
-        <Review url={base64} />
-      )}
+      <Switch>
+        <Route
+          path={`/upload-photo`}
+          exact
+          component={() => <Editor propagateUrl={incrementNext} />}
+        />
+        <Route
+          path={`/upload-photo/review`}
+          exact
+          component={() => <Review url={base64} />}
+        />
+      </Switch>
     </>
   )
 }
 
 const condition = authUser => !!authUser
 
-export default withAuthorization(condition)(PhotoPage)
+const ComposedPhoto = compose(withRouter)(PhotoPage)
+
+export default withAuthorization(condition)(ComposedPhoto)
