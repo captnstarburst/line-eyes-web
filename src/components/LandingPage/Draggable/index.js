@@ -5,14 +5,13 @@ import SelectionIcon from './SelectionIcon'
 
 class Dragger extends React.Component {
   state = {
-    activeDrags: 0,
     deltaPosition: {
       x: 0,
       y: 0
     },
     controlledPosition: {
-      x: -400,
-      y: 200
+      x: 0,
+      y: 0
     }
   }
 
@@ -60,6 +59,21 @@ class Dragger extends React.Component {
     this.onStop()
   }
 
+  programmaticallyMoveCard = selection => {
+    switch (selection) {
+      case 'negative':
+        this.setState({ deltaPosition: { x: -200, y: 0 } })
+        break
+      case 'invalid':
+        this.setState({ deltaPosition: { x: 0, y: 100 } })
+        break
+      case 'positive':
+        this.setState({ deltaPosition: { x: 200, y: 0 } })
+        break
+      default:
+    }
+  }
+
   render () {
     const dragHandlers = { onStart: this.onStart, onStop: this.onStop }
     const { deltaPosition, controlledPosition } = this.state
@@ -70,11 +84,13 @@ class Dragger extends React.Component {
           onDrag={this.handleDrag}
           bounds={{ top: 10, left: -1000, right: 1000, bottom: 100 }}
           {...dragHandlers}
+          position={deltaPosition}
         >
           <div>
             <Card
               positionX={deltaPosition.x.toFixed(0)}
               positionY={deltaPosition.y.toFixed(0)}
+              programmaticallyMoveCard={this.programmaticallyMoveCard}
             />
           </div>
         </Draggable>

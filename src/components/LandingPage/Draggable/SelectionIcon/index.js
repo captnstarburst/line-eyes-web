@@ -57,12 +57,18 @@ export default function FloatingActionButtons (props) {
             >
               {value === 0 && (
                 <MinimizeIcon
-                  style={{ transform: 'rotate(90deg)', marginLeft: '15%' }}
+                  style={{
+                    transform: 'rotate(90deg)',
+                    marginLeft: '48%',
+                    fontSize: '5em'
+                  }}
                 />
               )}
-              {value === 1 && <WarningIcon />}
+              {value === 1 && <WarningIcon style={{ fontSize: '5em' }} />}
               {value === 2 && (
-                <DragHandleIcon style={{ transform: 'rotate(90deg)' }} />
+                <DragHandleIcon
+                  style={{ transform: 'rotate(90deg)', fontSize: '5em' }}
+                />
               )}
             </Fab>
           </Grow>

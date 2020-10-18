@@ -104,11 +104,17 @@ export default function ImgMediaCard (props) {
                   style={{ transform: 'rotate(90deg)', marginLeft: '10%' }}
                 />
               }
+              onClick={() => props.programmaticallyMoveCard('negative')}
             />
-            <BottomNavigationAction label='Invalid' icon={<WarningIcon />} />
+            <BottomNavigationAction
+              label='Invalid'
+              icon={<WarningIcon />}
+              onClick={() => props.programmaticallyMoveCard('invalid')}
+            />
             <BottomNavigationAction
               label='Positive'
               icon={<DragHandleIcon style={{ transform: 'rotate(90deg)' }} />}
+              onClick={() => props.programmaticallyMoveCard('positive')}
             />
           </BottomNavigation>
         </CardActions>
