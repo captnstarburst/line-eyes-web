@@ -31,6 +31,15 @@ class Dragger extends React.Component {
 
   onStop = () => {
     this.setState(prevState => ({ activeDrags: --prevState.activeDrags }))
+    if(this.state.deltaPosition.x === -200){
+      this.props.propagateSelection("negative")
+    }else if(this.state.deltaPosition.x === 200){
+      this.props.propagateSelection("positive")
+    }else if(this.state.deltaPosition.y === 100){
+      this.props.propagateSelection("invalid")
+    }else{
+      this.setState({deltaPosition: {x:0 ,y:0}})
+    }
   }
 
   // For controlled component
@@ -83,7 +92,7 @@ class Dragger extends React.Component {
       <>
         <Draggable
           onDrag={this.handleDrag}
-          bounds={{ top: 10, left: -1000, right: 1000, bottom: 100 }}
+          bounds={{ top: 10, left: -200, right: 200, bottom: 100 }}
           {...dragHandlers}
           position={deltaPosition}
         >
