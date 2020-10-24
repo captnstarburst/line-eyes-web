@@ -46,7 +46,7 @@ const CreateForm = props => {
   const handleChange = e => {
     e.persist();
     setUserInfo(prevState => ({...prevState, [e.target.id]: e.target.value}));
-    setCheckingValues(false);
+	setCheckingValues(false);
   }
 
   useEffect(() => {
@@ -113,15 +113,43 @@ const CreateForm = props => {
   }
 
   const createUser = () => {
-    // const firestore = props.firebase.getFS();
+   	const firestore = props.firebase.getFirestore()
 
-    props.firebase.doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
-      .then(authUser => {
-        props.history.push(ROUTES.LANDING);
+	  props.firebase.doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
+		  .then(async authUser => {
+		
+			await firestore.collection("Users").doc(authUser.user.uid).set({
+				display_name: userInfo.username,
+				email: userInfo.email,
+				first_name: "",
+				joined: props.firebase.timestampFrom(new Date()),
+				last_name: "",
+				profile_pic: false
+			})
+
+			return authUser
+    })
+    .then(async authUser => {
+      await firestore.collection("Birthdays").doc(authUser.user.uid).set({
+        birthday:props.firebase.timestampFrom(new Date(userInfo.dateOfBirth))
       })
-      .catch(function(error) {
-        console.log(JSON.stringify(error))
-        props.propagateError();
+
+      return authUser
+    })
+    .then(async authUser => {
+      await firestore.collection("TOS").doc(authUser.user.uid).set({
+        acceptance: props.firebase.timestampFrom(new Date()),
+        ip: "127.0.0"
+      })
+
+      return authUser
+    })
+    .then(authUser => {
+        	props.history.push(ROUTES.LANDING);
+      	})
+      	.catch(function(error) {
+        	console.log(JSON.stringify(error))
+        	props.propagateError();
       });
   }
 

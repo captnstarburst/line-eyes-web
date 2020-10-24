@@ -21,10 +21,24 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
+    this.firestore = app.firestore();
+
+    this.googleProvider = new app.auth.GoogleAuthProvider();
+    this.facebookProvider = new app.auth.FacebookAuthProvider();
+    this.twitterProvider = new app.auth.TwitterAuthProvider();
   }
 
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
+  
+  doSignInWithGoogle = () =>
+    this.auth.signInWithPopup(this.googleProvider);
+
+  doSignInWithFacebook = () =>
+    this.auth.signInWithPopup(this.facebookProvider);
+
+  doSignInWithTwitter = () =>
+    this.auth.signInWithPopup(this.twitterProvider);
  
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
@@ -35,6 +49,15 @@ class Firebase {
  
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
+
+  getFirestore() {
+    return this.firestore;
+  }
+
+  timestampFrom(date) {
+    return app.firestore.Timestamp.fromDate(date);
+  }
+  
 }
 
 export default Firebase;
