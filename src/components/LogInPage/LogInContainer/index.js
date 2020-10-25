@@ -1,53 +1,53 @@
-import React, { useState } from 'react'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import PregnancyTest from '../../assets/pregnancy-test.png'
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import ProviderSignUp from './ProviderSignUp'
-import LogInForm from './LogInForm'
-import CreateForm from './CreateForm'
-import Error from './Error'
-import ForgotForm from './ForgotForm'
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import PregnancyTest from "../../assets/pregnancy-test.png";
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ProviderSignUp from "./ProviderSignUp";
+import LogInForm from "./LogInForm";
+import CreateForm from "./CreateForm";
+import Error from "./Error";
+import ForgotForm from "./ForgotForm";
 
-const LogInContainer = props => {
-  const [currentFormMounted, setCurrentForm] = useState('provider')
+const LogInContainer = (props) => {
+  const [currentFormMounted, setCurrentForm] = useState("provider");
 
   const handleLogInClick = () => {
-    setCurrentForm('login')
-  }
+    setCurrentForm("login");
+  };
 
   const handleBackClick = () => {
-    setCurrentForm('provider')
-  }
+    setCurrentForm("provider");
+  };
 
   const handleCreateClick = () => {
-    setCurrentForm('create')
-  }
+    setCurrentForm("create");
+  };
 
   const handleForgotClick = () => {
-    setCurrentForm('forgot')
-  }
+    setCurrentForm("forgot");
+  };
 
   const mountError = () => {
-    setCurrentForm('error')
-  }
+    setCurrentForm("error");
+  };
 
   return (
     <section>
-      {currentFormMounted === 'provider' ? (
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'end' }}>
+      {currentFormMounted === "provider" ? (
+        <div style={{ display: "flex", width: "100%", justifyContent: "end" }}>
           <Button
-            color='primary'
+            color="primary"
             onClick={handleLogInClick}
             endIcon={<ArrowRightAltIcon />}
           >
-            Log In{' '}
+            Log In{" "}
           </Button>
         </div>
       ) : (
         <Button
-          color='primary'
+          color="primary"
           onClick={handleBackClick}
           startIcon={<ArrowBackIcon />}
         >
@@ -56,52 +56,49 @@ const LogInContainer = props => {
       )}
 
       <Typography
-        align='center'
-        color='primary'
-        variant='h3'
-        component='h1'
-        style={{ fontFamily: 'Red Rose, cursive' }}
+        align="center"
+        color="primary"
+        variant="h3"
+        component="h1"
+        style={{ fontFamily: "Red Rose, cursive" }}
       >
         Line - Eyes
       </Typography>
 
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column'
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
         }}
       >
         <img
           src={PregnancyTest}
-          alt='Line - Eyez App'
-          style={{ width: '50%', marginBottom: '50px' }}
+          alt="Line - Eyez App"
+          style={{ width: "50%", marginBottom: "50px" }}
         />
 
-        {currentFormMounted === 'provider' && (
-          <ProviderSignUp propagateCreateClick={handleCreateClick} />
+        {currentFormMounted === "provider" && (
+          <ProviderSignUp
+            propagateCreateClick={handleCreateClick}
+            propagateError={mountError}
+          />
         )}
 
-        {currentFormMounted === 'login' && 
-          <LogInForm 
-            propagateForgot = {handleForgotClick}
-          />
-        }
+        {currentFormMounted === "login" && (
+          <LogInForm propagateForgot={handleForgotClick} />
+        )}
 
-        {currentFormMounted === 'create' && 
-          <CreateForm  
-            propagateError = {mountError} 
-          />
-        }
+        {currentFormMounted === "create" && (
+          <CreateForm propagateError={mountError} />
+        )}
 
-        {currentFormMounted === 'forgot' && 
-          <ForgotForm />
-        }
+        {currentFormMounted === "forgot" && <ForgotForm />}
 
-        {currentFormMounted === 'error' && <Error />}
+        {currentFormMounted === "error" && <Error />}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default LogInContainer
+export default LogInContainer;
