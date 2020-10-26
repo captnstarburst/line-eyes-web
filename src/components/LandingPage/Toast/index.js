@@ -1,57 +1,57 @@
-import React, { useEffect } from 'react'
-import Button from '@material-ui/core/Button'
-import Snackbar from '@material-ui/core/Snackbar'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
+import React, { useState, useEffect } from "react";
+import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
-export default function SimpleSnackbar (props) {
-  const [open, setOpen] = React.useState(false)
+export const Toast = (props) => {
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (props.userSelection) {
-      setOpen(true)
+      setOpen(true);
     }
-  }, [props.userSelection])
+  }, [props.userSelection]);
 
   const handleClick = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
+    if (reason === "clickaway") {
+      return;
     }
 
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
+          vertical: "bottom",
+          horizontal: "center",
         }}
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message={'Voted ' + props.userSelection}
+        message={"Voted " + props.userSelection}
         action={
-          <React.Fragment>
-            <Button color='primary' size='small' onClick={handleClose}>
+          <>
+            <Button color="primary" size="small" onClick={handleClose}>
               UNDO
             </Button>
             <IconButton
-              size='small'
-              aria-label='close'
-              color='inherit'
+              size="small"
+              aria-label="close"
+              color="inherit"
               onClick={handleClose}
             >
-              <CloseIcon fontSize='small' />
+              <CloseIcon fontSize="small" />
             </IconButton>
-          </React.Fragment>
+          </>
         }
       />
     </div>
-  )
-}
+  );
+};
