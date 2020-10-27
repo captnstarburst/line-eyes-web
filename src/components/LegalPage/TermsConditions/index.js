@@ -1,18 +1,18 @@
-import React from 'react'
-import AppBar from '../../UI/AppBar'
-import Footer from '../../UI/Footer'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container'
+import React from "react";
+import AppBar from "../../UI/AppBar";
+import Footer from "../../UI/Footer";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
-const TermsConditions = props => {
+const TermsConditions = (props) => {
   return (
     <>
       <AppBar />
       <CssBaseline />
       <Container fixed>
-        <Typography component='section' style={{ backgroundColor: '#cfe8fc' }}>
-          <strong>Terms &amp; Conditions</strong>{' '}
+        <Typography component="section" style={{ backgroundColor: "#cfe8fc" }}>
+          <strong>Terms &amp; Conditions</strong>{" "}
           <p>
             By downloading or using the app, these terms will automatically
             apply to you – you should make sure therefore that you read them
@@ -23,14 +23,14 @@ const TermsConditions = props => {
             languages, or make derivative versions. The app itself, and all the
             trade marks, copyright, database rights and other intellectual
             property rights related to it, still belong to Conor Hinchee.
-          </p>{' '}
+          </p>{" "}
           <p>
             Conor Hinchee is committed to ensuring that the app is as useful and
             efficient as possible. For that reason, we reserve the right to make
             changes to the app or to charge for its services, at any time and
             for any reason. We will never charge you for the app or its services
             without making it very clear to you exactly what you’re paying for.
-          </p>{' '}
+          </p>{" "}
           <p>
             The Line Eyes app stores and processes personal data that you have
             provided to us, in order to provide my Service. It’s your
@@ -41,64 +41,64 @@ const TermsConditions = props => {
             It could make your phone vulnerable to malware/viruses/malicious
             programs, compromise your phone’s security features and it could
             mean that the Line Eyes app won’t work properly or at all.
-          </p>{' '}
+          </p>{" "}
           <div>
             <p>
               The app does use third party services that declare their own Terms
               and Conditions.
-            </p>{' '}
+            </p>{" "}
             <p>
               Link to Terms and Conditions of third party service providers used
               by the app
-            </p>{' '}
+            </p>{" "}
             <ul>
               <li>
                 <a
-                  href='https://policies.google.com/terms'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Google Play Services
                 </a>
               </li>
               <li>
                 <a
-                  href='https://firebase.google.com/terms/analytics'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  href="https://firebase.google.com/terms/analytics"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Google Analytics for Firebase
                 </a>
               </li>
               <li>
                 <a
-                  href='https://firebase.google.com/terms/crashlytics'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  href="https://firebase.google.com/terms/crashlytics"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Firebase Crashlytics
                 </a>
               </li>
               <li>
                 <a
-                  href='https://www.facebook.com/legal/terms/plain_text_terms'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  href="https://www.facebook.com/legal/terms/plain_text_terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Facebook
                 </a>
               </li>
               <li>
                 <a
-                  href='https://sentry.io/terms/'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  href="https://sentry.io/terms/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Sentry
                 </a>
               </li>
             </ul>
-          </div>{' '}
+          </div>{" "}
           <p>
             You should be aware that there are certain things that Conor Hinchee
             will not take responsibility for. Certain functions of the app will
@@ -107,8 +107,8 @@ const TermsConditions = props => {
             provider, but Conor Hinchee cannot take responsibility for the app
             not working at full functionality if you don’t have access to Wi-Fi,
             and you don’t have any of your data allowance left.
-          </p>{' '}
-          <p></p>{' '}
+          </p>{" "}
+          <p></p>{" "}
           <p>
             If you’re using the app outside of an area with Wi-Fi, you should
             remember that your terms of the agreement with your mobile network
@@ -121,14 +121,14 @@ const TermsConditions = props => {
             roaming. If you are not the bill payer for the device on which
             you’re using the app, please be aware that we assume that you have
             received permission from the bill payer for using the app.
-          </p>{' '}
+          </p>{" "}
           <p>
             Along the same lines, Conor Hinchee cannot always take
             responsibility for the way you use the app i.e. You need to make
             sure that your device stays charged – if it runs out of battery and
             you can’t turn it on to avail the Service, Conor Hinchee cannot
             accept responsibility.
-          </p>{' '}
+          </p>{" "}
           <p>
             With respect to Conor Hinchee’s responsibility for your use of the
             app, when you’re using the app, it’s important to bear in mind that
@@ -137,7 +137,7 @@ const TermsConditions = props => {
             so that we can make it available to you. Conor Hinchee accepts no
             liability for any loss, direct or indirect, you experience as a
             result of relying wholly on this functionality of the app.
-          </p>{' '}
+          </p>{" "}
           <p>
             At some point, we may wish to update the app. The app is currently
             available on Android &amp; iOS – the requirements for both
@@ -153,30 +153,30 @@ const TermsConditions = props => {
             otherwise, upon any termination, (a) the rights and licenses granted
             to you in these terms will end; (b) you must stop using the app, and
             (if needed) delete it from your device.
-          </p>{' '}
+          </p>{" "}
           <p>
             <strong>Changes to This Terms and Conditions</strong>
-          </p>{' '}
+          </p>{" "}
           <p>
             I may update our Terms and Conditions from time to time. Thus, you
             are advised to review this page periodically for any changes. I will
             notify you of any changes by posting the new Terms and Conditions on
             this page.
-          </p>{' '}
-          <p>These terms and conditions are effective as of 2020-10-18</p>{' '}
+          </p>{" "}
+          <p>These terms and conditions are effective as of 2020-10-18</p>{" "}
           <p>
             <strong>Contact Us</strong>
-          </p>{' '}
+          </p>{" "}
           <p>
             If you have any questions or suggestions about my Terms and
             Conditions, do not hesitate to contact me at lineeyesapp@gmail.com.
-          </p>{' '}
+          </p>{" "}
           <p>
             This Terms and Conditions page was generated by
             <a
-              href='https://app-privacy-policy-generator.firebaseapp.com/'
-              target='_blank'
-              rel='noopener noreferrer'
+              href="https://app-privacy-policy-generator.firebaseapp.com/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               App Privacy Policy Generator
             </a>
@@ -185,7 +185,7 @@ const TermsConditions = props => {
       </Container>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default TermsConditions
+export default TermsConditions;
