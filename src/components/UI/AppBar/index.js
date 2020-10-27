@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -21,10 +20,12 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import SettingsApplicationsIcon from "@material-ui/icons/SettingsApplications";
 import Badge from "@material-ui/core/Badge";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import clsx from "clsx";
 import { withFirebase } from "../../Firebase";
 import { withRouter } from "react-router-dom";
-import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
+import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuAppBar = (props) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [state, setState] = React.useState({
     top: false,
@@ -54,6 +55,15 @@ const MenuAppBar = (props) => {
     bottom: false,
     right: false,
   });
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    async function IIFE() {
+      const role = await props.firebase.getRole();
+      setRole(role);
+    }
+    IIFE();
+  }, [props.firebase]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -99,6 +109,11 @@ const MenuAppBar = (props) => {
     props.history.push(ROUTES.PRIVACY);
   };
 
+  const handleRouteToAdmin = () => {
+    handleClose();
+    props.history.push(ROUTES.ADMIN);
+  };
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -130,6 +145,15 @@ const MenuAppBar = (props) => {
           </ListItemIcon>
           <ListItemText primary={"Line-Eyes"} />
         </ListItem>
+        {role === "Admin" && (
+          <ListItem button onClick={handleRouteToAdmin}>
+            <ListItemIcon>
+              {" "}
+              <SupervisorAccountIcon />{" "}
+            </ListItemIcon>
+            <ListItemText primary={"Admin"} />
+          </ListItem>
+        )}
       </List>
       <Divider />
       <ListItem button onClick={handleRouteToSettings}>
