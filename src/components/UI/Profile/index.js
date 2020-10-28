@@ -6,7 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import SetStorage from "../../functions/SessionStorage";
+import { useUserSession } from "../../Hooks/useUserSession";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../../Firebase";
 import { compose } from "recompose";
@@ -29,27 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = (props) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    if (
-      !sessionStorage.getItem("display_name") ||
-      !sessionStorage.getItem("first_name") ||
-      !sessionStorage.getItem("last_name") ||
-      !sessionStorage.getItem("profile_pic")
-    ) {
-      const firestore = props.firebase.getFirestore();
-      const uid = props.firebase.currentUserUID();
-
-      firestore
-        .doc("Users/" + uid)
-        .get()
-        .then((doc) => {
-          SetStorage("display_name", doc.data().display_name);
-          SetStorage("first_name", doc.data().first_name);
-          SetStorage("last_name", doc.data().last_name);
-          SetStorage("profile_pic", doc.data().profile_pic);
-        });
-    }
-  }, []);
+  useUserSession(props.firebase);
 
   const handleRouteToSettings = () => {
     props.history.push(ROUTES.My_Account + "/settings");
