@@ -1,17 +1,25 @@
-import React, { useState } from 'react'
-import AppBar from '../UI/AppBar'
-import Footer from '../UI/Footer'
-import Profile from './Profile'
-import Activity from './Activity'
-import { withAuthorization } from '../Session'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container'
+import React, { useState, useEffect } from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import AppBar from "../UI/AppBar";
+import Footer from "../UI/Footer";
+import Profile from "../UI/Profile";
+import Activity from "./Activity";
+import { withAuthorization } from "../Session";
 
-const MyAccountPage = props => {
-  const [displaying, setDisplaying] = useState('stats')
+const AdminPage = (props) => {
+  const [role, setRole] = useState(null);
 
-  const changeDisplay = selection => setDisplaying(selection)
+  useEffect(() => {
+    async function IIFE() {
+      const role = await props.firebase.getRole();
+      setRole(role);
+    }
+    IIFE();
+  }, [props.firebase]);
+
+  if (!role) return null;
 
   return (
     <>
@@ -19,15 +27,15 @@ const MyAccountPage = props => {
       <CssBaseline />
       <Container fixed>
         <Profile />
-        <Typography component='section' style={{ backgroundColor: '#cfe8fc' }}>
+        <Typography component="section" style={{ backgroundColor: "#cfe8fc" }}>
           <Activity />
         </Typography>
       </Container>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-const condition = authUser => !!authUser
+const condition = (authUser) => !!authUser;
 
-export default withAuthorization(condition)(MyAccountPage)
+export default withAuthorization(condition)(AdminPage);

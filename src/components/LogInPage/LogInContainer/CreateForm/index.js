@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import EmailValidator from "../../../functions/EmailValidator";
+import SetStorage from "../../../functions/SessionStorage";
 import { withFirebase } from "../../../Firebase";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../../constants/routes";
@@ -93,37 +94,6 @@ const CreateForm = (props) => {
   const handleCreateClick = (e) => {
     e.preventDefault();
     createUser();
-
-    // let check = true;
-    // const firestore = props.firebase.getFS();
-
-    // setCheckingValues(true)
-
-    // firestore.collection("Users")
-    //   .where("displayName", "==", userInfo.username)
-    //   .get()
-    //   .then(function(querySnapshot) {
-    //     if(!querySnapshot.empty){
-    //       setFormError(prevState => ({...prevState, username: true}));
-    //       check = false
-    //     }
-    //   })
-    //   .then(() => {
-    //     for (const item in formError) {
-    //       if(formError[item]){
-    //         check = false
-    //         return
-    //       }
-    //     }
-    //   })
-    //   .then(() => {
-    //     if(check){
-    //       createUser()
-    //     }
-    //   })
-    //   .catch(function(error) {
-    //     console.log("Error getting documents: ", error);
-    //   });
   };
 
   const createUser = () => {
@@ -137,12 +107,20 @@ const CreateForm = (props) => {
           .doc(authUser.user.uid)
           .set({
             display_name: userInfo.username,
-            email: userInfo.email,
             first_name: "",
             joined: props.firebase.timestampFrom(new Date()),
             last_name: "",
             profile_pic: false,
           });
+
+        SetStorage("display_name", userInfo.username);
+
+        return authUser;
+      })
+      .then(async (authUser) => {
+        await firestore.collection("Emails").doc(authUser.user.uid).set({
+          email: userInfo.email,
+        });
 
         return authUser;
       })

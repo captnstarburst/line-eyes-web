@@ -8,6 +8,7 @@ import {
   faFacebook,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+import SetStorage from "../../../functions/SessionStorage";
 import { withFirebase } from "../../../Firebase";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../../constants/routes";
@@ -29,7 +30,6 @@ const ProviderSignUp = (props) => {
     props.firebase
       .doSignInWithGoogle()
       .then(async (authUser) => {
-        console.log(authUser.user.uid);
         const userDoc = await firestore
           .collection("Users")
           .doc(authUser.user.uid)
@@ -65,6 +65,18 @@ const ProviderSignUp = (props) => {
         joined: props.firebase.timestampFrom(new Date()),
         last_name: authUser.additionalUserInfo.profile.family_name,
         profile_pic: authUser.user.photoURL,
+      })
+      .then(() => {
+        SetStorage("display_name", authUser.user.displayName);
+        SetStorage(
+          "first_name",
+          authUser.additionalUserInfo.profile.given_name
+        );
+        SetStorage(
+          "last_name",
+          authUser.additionalUserInfo.profile.family_name
+        );
+        SetStorage("profile_pic", authUser.user.photoURL);
       })
       .then(() => {
         return firestore.collection("Birthdays").doc(authUser.user.uid).set({
