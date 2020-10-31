@@ -60,15 +60,19 @@ const Chips = (props) => {
       {props.deletable ? (
         <>
           {props.chipData.map((data) => {
-            return (
-              <li key={data.key}>
-                <Chip
-                  label={data.label}
-                  className={classes.chip}
-                  onDelete={props.handleDelete(data)}
-                />
-              </li>
-            );
+            if (data.viewing) {
+              return (
+                <li key={data.key}>
+                  <Chip
+                    label={data.label}
+                    className={classes.chip}
+                    onDelete={() => props.propagateChipChange(data.key)}
+                  />
+                </li>
+              );
+            } else {
+              return null;
+            }
           })}
         </>
       ) : (
