@@ -22,5 +22,5 @@ export const useUserSession = (firebase) => {
           SetStorage("profile_pic", doc.data().profile_pic);
         });
     }
-  }, []);
+  }, [firebase]);
 };

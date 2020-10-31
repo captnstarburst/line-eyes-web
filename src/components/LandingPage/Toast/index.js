@@ -13,10 +13,6 @@ export const Toast = (props) => {
     }
   }, [props.userSelection]);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;

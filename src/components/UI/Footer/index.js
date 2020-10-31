@@ -1,21 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 
-const useStyles = makeStyles((theme) => ({
-  bottomLinks: {
-    textAlign: "center",
-    "& > * + *": {
-      marginLeft: theme.spacing(10),
-    },
-  },
-}));
-
 const Footer = (props) => {
-  const preventDefault = (event) => event.preventDefault();
-  const classes = useStyles();
-
   return (
     <footer style={{ marginTop: "150px" }}>
       <Typography

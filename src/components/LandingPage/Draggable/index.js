@@ -4,6 +4,7 @@ import { CurrentTest } from "./CurrentTest";
 import SelectionIcon from "./SelectionIcon";
 
 class Dragger extends React.Component {
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
   }
