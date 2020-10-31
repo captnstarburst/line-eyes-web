@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Dragger from "./Draggable";
 import { Toast } from "./Toast";
-import Chips from "./Chips";
+import Chips from "../UI/Chips";
 import AppBar from "../UI/AppBar";
 import TagDrawer from "../UI/TagDrawer";
 import * as ROUTES from "../constants/routes";
@@ -39,12 +39,25 @@ const Landing = (props) => {
   const classes = useStyles();
 
   const [selection, setSelection] = useState(null);
+  const [chipData, setChipData] = React.useState([
+    { key: 0, label: "Pregnancy Test" },
+    { key: 1, label: "Clear Blue" },
+    { key: 2, label: "DPO 5" },
+    { key: 3, label: "Ovulation Test" },
+    { key: 4, label: "Help Me, I am trapped in here" },
+  ]);
 
   const handleRouteToPhotoPage = () => {
     props.history.push(ROUTES.PHOTO);
   };
 
   const propagateSelection = (selected) => setSelection(selected);
+
+  const handleDelete = (chipToDelete) => () => {
+    setChipData((chips) =>
+      chips.filter((chip) => chip.key !== chipToDelete.key)
+    );
+  };
 
   return (
     <>
@@ -53,7 +66,12 @@ const Landing = (props) => {
       <Container fixed>
         <TagDrawer />
         <Typography component="main" className={classes.Main}>
-          <Chips />
+          <Chips
+            chipData={chipData}
+            margin
+            deletable
+            handleDelete={handleDelete}
+          />
           <div style={{ position: "relative" }}>
             <Dragger propagateSelection={propagateSelection} />
           </div>
