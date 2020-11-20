@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import EmailValidator from "../../../functions/EmailValidator";
 import SetStorage from "../../../functions/SessionStorage";
+import DefaultDateString from "../../../functions/DefaultDateString";
 import { withFirebase } from "../../../Firebase";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../../constants/routes";
@@ -24,20 +25,13 @@ const useStyles = makeStyles((theme) => ({
 const CreateForm = (props) => {
   const classes = useStyles();
   const now = new Date();
-  const minimumDate =
-    now.getFullYear() -
-    13 +
-    "-0" +
-    Number(now.getMonth() + 1) +
-    "-" +
-    now.getDate();
-  const defaultDate =
-    now.getFullYear() -
-    18 +
-    "-0" +
-    Number(now.getMonth() + 1) +
-    "-" +
-    now.getDate();
+  const minimumDate = DefaultDateString(
+    now.setFullYear(now.getFullYear() - 13)
+  );
+
+  const defaultDate = DefaultDateString(
+    now.setFullYear(now.getFullYear() - 18)
+  );
 
   const [userInfo, setUserInfo] = useState({
     email: "",
