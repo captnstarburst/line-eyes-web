@@ -9,9 +9,11 @@ import CenteredTabs from "./Navigation";
 import { Stats } from "./Stats";
 import { Uploads } from "./Uploads";
 import { Activity } from "./Activity";
-import { Settings } from "./Settings";
+import Settings from "./Settings";
 import { withAuthorization } from "../Session";
+import { withFirebase } from "../Firebase";
 import { Switch, Route } from "react-router-dom";
+import { compose } from "recompose";
 
 const MyAccountPage = (props) => {
   return (
@@ -21,7 +23,7 @@ const MyAccountPage = (props) => {
       <Container fixed>
         <Profile edit />
         <CenteredTabs />
-        <Typography component="section" style={{ backgroundColor: "#cfe8fc" }}>
+        <Typography component="article" style={{ backgroundColor: "#cfe8fc" }}>
           <Switch>
             <Route path={`/Me/stats`} exact component={Stats} />
             <Route path={`/Me/uploads`} exact component={Uploads} />
@@ -37,4 +39,6 @@ const MyAccountPage = (props) => {
 
 const condition = (authUser) => !!authUser;
 
-export default withAuthorization(condition)(MyAccountPage);
+const ComposedMyAccount = compose(withFirebase)(MyAccountPage);
+
+export default withAuthorization(condition)(ComposedMyAccount);

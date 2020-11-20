@@ -20,6 +20,9 @@ export const useUserSession = (firebase) => {
           SetStorage("first_name", doc.data().first_name);
           SetStorage("last_name", doc.data().last_name);
           SetStorage("profile_pic", doc.data().profile_pic);
+        })
+        .catch((err) => {
+          //handle err
         });
     }
   }, [firebase]);
