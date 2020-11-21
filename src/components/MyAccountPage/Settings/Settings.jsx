@@ -33,8 +33,6 @@ const useStyles = makeStyles((theme) => ({
 const Settings = (props) => {
   const classes = useStyles();
 
-  alert(props.userInfo.birthdate)
-  
   return (
     <div className={classes.root}>
       <List
@@ -43,7 +41,7 @@ const Settings = (props) => {
       >
         <ListItem className={classes.paper}>
           <ListItemIcon>
-            <Avatar>CH</Avatar>
+            <Avatar>{sessionStorage.getItem("avatar")}</Avatar>
           </ListItemIcon>
           <ListItemText id="switch-list-label-wifi" primary="Profile Picture" />
           <ListItemSecondaryAction>
@@ -55,31 +53,43 @@ const Settings = (props) => {
         <ListItem className={classes.paper}>
           <ListItemText id="first_name_text" primary="First Name" />
           <ListItemSecondaryAction>
-            <TextField id="first_name" label="First Name" variant="outlined" />
+            <TextField
+              id="first_name"
+              label="First Name"
+              variant="outlined"
+              value={props.userInfo.first_name}
+              onChange={props.propagateUpdate}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
           <ListItemText id="last_name_text" primary="Last Name" />
           <ListItemSecondaryAction>
-            <TextField id="last_name" label="Last Name" variant="outlined" />
+            <TextField
+              id="last_name"
+              label="Last Name"
+              variant="outlined"
+              value={props.userInfo.last_name}
+              onChange={props.propagateUpdate}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
           <ListItemText id="birthday_text" primary="Birthday" />
           <ListItemSecondaryAction>
-            {props.userInfo.birthdate && 
+            {props.userInfo.birthdate && (
               <TextField
-              variant="outlined"
-              id="dateOfBirth"
-              label="Date Of Birth"
-              type="date"
-              defaultValue={props.userInfo.birthdate}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            }
-            
+                variant="outlined"
+                id="birthdate"
+                label="Date Of Birth"
+                type="date"
+                defaultValue={props.userInfo.birthdate}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={props.propagateUpdate}
+              />
+            )}
           </ListItemSecondaryAction>
         </ListItem>
       </List>
@@ -115,41 +125,38 @@ const Settings = (props) => {
         className={classes.list}
       >
         <ListItem className={classes.paper}>
-          <ListItemText
-            id="switch-list-label-bluetooth"
-            primary="Email Address"
-          />
+          <ListItemText id="email_text" primary="Email Address" />
+          <ListItemSecondaryAction>
+            {props.userInfo.email && (
+              <TextField
+                id="email"
+                label={props.userInfo.email}
+                variant="outlined"
+                onChange={props.propagateUpdate}
+              />
+            )}
+          </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem className={classes.paper}>
+          <ListItemText id="password_text" primary="Change Password" />
           <ListItemSecondaryAction>
             <TextField
-              id="outlined-basic"
-              label="Outlined"
+              id="new_password"
+              label="New Password"
               variant="outlined"
+              type="password"
+              onChange={props.propagateUpdate}
             />
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
-          <ListItemText
-            id="switch-list-label-bluetooth"
-            primary="Change Password"
-          />
+          <ListItemText id="display_name_text" primary="Change User Name" />
           <ListItemSecondaryAction>
             <TextField
               id="outlined-basic"
-              label="Outlined"
+              label={props.userInfo.display_name}
               variant="outlined"
-            />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <ListItem className={classes.paper}>
-          <ListItemText
-            id="switch-list-label-bluetooth"
-            primary="Change User Name"
-          />
-          <ListItemSecondaryAction>
-            <TextField
-              id="outlined-basic"
-              label="Outlined"
-              variant="outlined"
+              onChange={props.propagateUpdate}
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -167,4 +174,4 @@ const Settings = (props) => {
   );
 };
 
-export default Settings
+export default Settings;

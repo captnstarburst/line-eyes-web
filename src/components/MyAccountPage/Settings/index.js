@@ -5,13 +5,16 @@ import { withFirebase } from "../../Firebase";
 const Settings = (props) => {
   const [userInfo, setUserInfo] = useState({
     birthdate: null,
+    email: null,
+    first_name: sessionStorage.getItem("first_name"),
+    last_name: sessionStorage.getItem("last_name"),
+    new_password: null,
+    display_name: sessionStorage.getItem("display_name"),
   });
 
   const uid = props.firebase.currentUserUID();
-
+  const firestore = props.firebase.getFirestore();
   useEffect(() => {
-    const firestore = props.firebase.getFirestore();
-
     firestore
       .doc("Birthdays/" + uid)
       .get()
@@ -30,7 +33,32 @@ const Settings = (props) => {
       .catch((err) => {
         //handle err
       });
-  }, [props.firebase, uid]);
+  }, [firestore, uid]);
+
+  useEffect(() => {
+    firestore
+      .doc("Emails/" + uid)
+      .get()
+      .then((doc) => {
+        if (!doc.data()) throw new Error("User is missing Email Doc");
+
+        setUserInfo((prevState) => ({
+          ...prevState,
+          email: doc.data().email,
+        }));
+      })
+      .catch((err) => {
+        //handle err
+      });
+  }, [firestore, uid]);
+
+  const updateUserInfo = (e) => {
+    e.persist();
+    setUserInfo((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value.trim(),
+    }));
+  };
   //   const [checked, setChecked] = React.useState(["wifi"]);
 
   //   const handleToggle = (value) => () => {
@@ -46,7 +74,7 @@ const Settings = (props) => {
   //     setChecked(newChecked);
   //   };
 
-  return <SettingsJSX userInfo={userInfo} />;
+  return <SettingsJSX userInfo={userInfo} propagateUpdate={updateUserInfo} />;
 };
 
 export default withFirebase(Settings);
