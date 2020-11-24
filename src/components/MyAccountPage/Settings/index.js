@@ -61,6 +61,23 @@ const Settings = (props) => {
   }, [firestore, uid]);
 
   useEffect(() => {
+    firestore
+      .doc("Emails/" + uid)
+      .get()
+      .then((doc) => {
+        if (!doc.data()) throw new Error("User is missing Email Doc");
+
+        setUserInfo((prevState) => ({
+          ...prevState,
+          email: doc.data().email,
+        }));
+      })
+      .catch((err) => {
+        //handle err
+      });
+  }, [firestore, uid]);
+
+  useEffect(() => {
     clearInterval(timer.current);
 
     if (userUpdatedInfo) {
@@ -143,11 +160,17 @@ const Settings = (props) => {
     setUserUpdatedInfo(true);
   };
 
+  const handlePasswordReset = (e) => {
+    props.firebase.doPasswordReset("conorphinchee@gmail.com");
+    props.firebase.doSignOut();
+  };
+
   return (
     <SettingsJSX
       userInfo={userInfo}
       propagateUpdate={updateUserInfo}
       propagateToggle={handleToggle}
+      propagateReset={handlePasswordReset}
     />
   );
 };

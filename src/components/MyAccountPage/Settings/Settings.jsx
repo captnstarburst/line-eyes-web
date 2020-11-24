@@ -163,15 +163,11 @@ const Settings = (props) => {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
-          <ListItemText id="password_text" primary="Change Password" />
+          <ListItemText id="password_reset_text" primary="Change Password" />
           <ListItemSecondaryAction>
-            <TextField
-              id="new_password"
-              label="New Password"
-              variant="outlined"
-              type="password"
-              onChange={props.propagateUpdate}
-            />
+            <Button color="secondary" onClick={props.propagateReset}>
+              Reset Password
+            </Button>
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
