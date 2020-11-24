@@ -70,6 +70,7 @@ class Firebase {
   }
 
   timestampFrom(date) {
+    date.setDate(date.getDate() + 1);
     return app.firestore.Timestamp.fromDate(date);
   }
 }
