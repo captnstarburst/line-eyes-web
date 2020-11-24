@@ -24,14 +24,14 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateForm = (props) => {
   const classes = useStyles();
-  const now = new Date();
-  const minimumDate = DefaultDateString(
-    now.setFullYear(now.getFullYear() - 13)
-  );
 
-  const defaultDate = DefaultDateString(
-    now.setFullYear(now.getFullYear() - 18)
-  );
+  let minimumDateObj = new Date();
+  minimumDateObj.setFullYear(minimumDateObj.getFullYear() - 13);
+  const minimumDate = DefaultDateString(minimumDateObj);
+
+  let defaultDateObj = new Date();
+  defaultDateObj.setFullYear(defaultDateObj.getFullYear() - 18);
+  const defaultDate = DefaultDateString(defaultDateObj);
 
   const [userInfo, setUserInfo] = useState({
     email: "",
