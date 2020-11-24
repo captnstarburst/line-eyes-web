@@ -78,6 +78,7 @@ const Profile = (props) => {
                     {sessionStorage.getItem("first_name") &&
                       sessionStorage.getItem("last_name") &&
                       sessionStorage.getItem("first_name") +
+                        " " +
                         sessionStorage.getItem("last_name")}
                   </Typography>
                   <Typography
