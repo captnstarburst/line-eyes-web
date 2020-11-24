@@ -163,14 +163,6 @@ const Settings = (props) => {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
-          <ListItemText id="password_reset_text" primary="Change Password" />
-          <ListItemSecondaryAction>
-            <Button color="secondary" onClick={props.propagateReset}>
-              Reset Password
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <ListItem className={classes.paper}>
           <ListItemText id="display_name_text" primary="Change User Name" />
           <ListItemSecondaryAction>
             <TextField
@@ -179,6 +171,14 @@ const Settings = (props) => {
               variant="outlined"
               onChange={props.propagateUpdate}
             />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem className={classes.paper}>
+          <ListItemText id="password_reset_text" primary="Change Password" />
+          <ListItemSecondaryAction>
+            <Button color="secondary" onClick={props.propagateReset}>
+              Reset Password
+            </Button>
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem className={classes.paper}>
