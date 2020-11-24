@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Switch from "@material-ui/core/Switch";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
+import EmailIcon from "@material-ui/icons/Email";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
@@ -104,16 +105,40 @@ const Settings = (props) => {
             <NotificationsActiveIcon />
           </ListItemIcon>
           <ListItemText
-            id="switch-list-label-wifi"
+            id="switch-list-label-push-notifications"
             primary="Push Notifications"
           />
           <ListItemSecondaryAction>
             <Switch
+              id="push_notifications"
               edge="end"
               color="primary"
-              // onChange={handleToggle("wifi")}
-              // checked={checked.indexOf("wifi") !== -1}
-              inputProps={{ "aria-labelledby": "switch-list-label-wifi" }}
+              onChange={props.propagateToggle}
+              checked={props.userInfo.push_notifications}
+              inputProps={{
+                "aria-labelledby": "switch-list-label-push-notifications",
+              }}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem className={classes.paper}>
+          <ListItemIcon>
+            <EmailIcon />
+          </ListItemIcon>
+          <ListItemText
+            id="switch-list-label-email-notifications"
+            primary="Email Notifications"
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              id="email_notifications"
+              edge="end"
+              color="primary"
+              onChange={props.propagateToggle}
+              checked={props.userInfo.email_notifications}
+              inputProps={{
+                "aria-labelledby": "switch-list-label-email-notifications",
+              }}
             />
           </ListItemSecondaryAction>
         </ListItem>
