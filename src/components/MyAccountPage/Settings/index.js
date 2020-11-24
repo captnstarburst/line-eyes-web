@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import SettingsJSX from "./Settings";
 import DefaultDateString from "../../functions/DefaultDateString";
+import setStorage from "../../functions/SessionStorage";
 import { withFirebase } from "../../Firebase";
 
 const Settings = (props) => {
@@ -68,20 +69,39 @@ const Settings = (props) => {
         const notificationRef = firestore.doc("Notifications/" + uid);
         const userRef = firestore.doc("Users/" + uid);
 
-        userRef.update({
-          display_name: userInfo.display_name,
-          first_name: userInfo.first_name,
-          last_name: userInfo.last_name,
-        });
+        userRef
+          .update({
+            display_name: userInfo.display_name,
+            first_name: userInfo.first_name,
+            last_name: userInfo.last_name,
+          })
+          .then(() => {
+            setStorage("display_name", userInfo.display_name);
+            setStorage("first_name", userInfo.first_name);
+            setStorage("last_name", userInfo.last_name);
+          })
+          .catch((err) => {
+            //handle err
+          });
 
-        birthdayRef.update({
-          birthday: props.firebase.timestampFrom(new Date(userInfo.birthdate)),
-        });
+        birthdayRef
+          .update({
+            birthday: props.firebase.timestampFrom(
+              new Date(userInfo.birthdate)
+            ),
+          })
+          .catch((err) => {
+            //handle err
+          });
 
-        notificationRef.update({
-          email_notifications: userInfo.email_notifications,
-          push_notifications: userInfo.push_notifications,
-        });
+        notificationRef
+          .update({
+            email_notifications: userInfo.email_notifications,
+            push_notifications: userInfo.push_notifications,
+          })
+          .catch((err) => {
+            //handle err
+          });
 
         setUserUpdatedInfo(false);
       }, 2000);
