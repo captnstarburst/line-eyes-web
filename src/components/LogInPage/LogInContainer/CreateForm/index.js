@@ -31,6 +31,11 @@ const CreateForm = (props) => {
     dateOfBirth: false,
   });
 
+  const [errorText, setErrorText] = useState({
+    emailErrorText: "",
+    passwordErrorText: "",
+  });
+
   const [checkingValues, setCheckingValues] = useState(false);
 
   const handleChange = (e) => {
@@ -44,7 +49,14 @@ const CreateForm = (props) => {
 
   useEffect(() => {
     if (!EmailValidator(userInfo.email)) {
-      setFormError((prevState) => ({ ...prevState, email: true }));
+      setFormError((prevState) => ({
+        ...prevState,
+        email: true,
+      }));
+      setErrorText((prevState) => ({
+        ...prevState,
+        emailErrorText: "check email for validity",
+      }));
     } else {
       setFormError((prevState) => ({ ...prevState, email: false }));
     }
@@ -56,7 +68,14 @@ const CreateForm = (props) => {
     }
 
     if (userInfo.password !== userInfo.password_check) {
-      setFormError((prevState) => ({ ...prevState, password: true }));
+      setFormError((prevState) => ({
+        ...prevState,
+        password: true,
+      }));
+      setErrorText((prevState) => ({
+        ...prevState,
+        passwordErrorText: "passwords do not match",
+      }));
     } else {
       setFormError((prevState) => ({ ...prevState, password: false }));
     }
@@ -110,6 +129,7 @@ const CreateForm = (props) => {
     props.firebase
       .doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
       .then(async (authUser) => {
+        alert(authUser);
         await firestore
           .collection("Users")
           .doc(authUser.user.uid)
@@ -142,14 +162,44 @@ const CreateForm = (props) => {
             ),
           });
 
-        return authUser;
+        return;
       })
-      .then((authUser) => {
+      .then(() => {
         props.history.push(ROUTES.LANDING);
       })
-      .catch(function (error) {
-        console.log(JSON.stringify(error));
-        props.propagateError();
+      .catch(function (err) {
+        const errorCode = err.code;
+
+        if (errorCode === "auth/weak-password") {
+          setFormError((prevState) => ({
+            ...prevState,
+            password: true,
+          }));
+          setErrorText((prevState) => ({
+            ...prevState,
+            passwordErrorText: "weak password",
+          }));
+        } else if (errorCode === "auth/email-already-in-use") {
+          setFormError((prevState) => ({
+            ...prevState,
+            email: true,
+          }));
+          setErrorText((prevState) => ({
+            ...prevState,
+            emailErrorText: "email is already in use",
+          }));
+        } else if (errorCode === "auth/invalid-email") {
+          setFormError((prevState) => ({
+            ...prevState,
+            email: true,
+          }));
+          setErrorText((prevState) => ({
+            ...prevState,
+            emailErrorText: "check email for validity",
+          }));
+        } else {
+          props.propagateError();
+        }
       });
   };
 
@@ -157,6 +207,7 @@ const CreateForm = (props) => {
     <CreateFormJSX
       propagateChange={handleChange}
       formError={formError}
+      errorText={errorText}
       defaultDate={defaultDate}
       checkingValues={checkingValues}
       propagateCreateClick={handleCreateClick}

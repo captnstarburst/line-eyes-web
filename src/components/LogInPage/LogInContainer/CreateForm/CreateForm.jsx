@@ -29,7 +29,7 @@ const CreateForm = (props) => {
         error={props.checkingValues && props.formError.email}
         helperText={
           props.checkingValues && props.formError.email
-            ? "check email for validity"
+            ? props.errorText.emailErrorText
             : null
         }
       />
@@ -55,7 +55,7 @@ const CreateForm = (props) => {
         error={props.checkingValues && props.formError.password}
         helperText={
           props.checkingValues && props.formError.password
-            ? "passwords do not match"
+            ? props.errorText.passwordErrorText
             : null
         }
       />
@@ -68,7 +68,7 @@ const CreateForm = (props) => {
         error={props.checkingValues && props.formError.password}
         helperText={
           props.checkingValues && props.formError.password
-            ? "passwords do not match"
+            ? props.errorText.passwordErrorText
             : null
         }
       />
