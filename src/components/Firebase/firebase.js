@@ -20,6 +20,7 @@ class Firebase {
   constructor() {
     app.initializeApp(config);
 
+    this.functions = app.functions();
     this.auth = app.auth();
     this.firestore = app.firestore();
 
@@ -49,6 +50,10 @@ class Firebase {
 
   getFirestore() {
     return this.firestore;
+  }
+
+  useFunctions() {
+    return this.functions;
   }
 
   currentUserUID() {

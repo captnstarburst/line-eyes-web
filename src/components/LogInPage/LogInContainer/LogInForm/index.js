@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import EmailValidator from "../../../functions/EmailValidator";
 import { withFirebase } from "../../../Firebase";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../../constants/routes";
@@ -39,15 +40,36 @@ const LoginForm = (props) => {
   };
 
   const handleSignIn = () => {
-    props.firebase
-      .doSignInWithEmailAndPassword(user, password)
-      .then((authUser) => {
-        props.history.push(ROUTES.LANDING);
-      })
-      .catch(function (error) {
-        console.log(JSON.stringify(error));
-        props.propagateError();
-      });
+    if (EmailValidator(user)) {
+      props.firebase
+        .doSignInWithEmailAndPassword(user, password)
+        .then((authUser) => {
+          props.history.push(ROUTES.LANDING);
+        })
+        .catch(function (error) {
+          console.log(JSON.stringify(error));
+          props.propagateError();
+        });
+    } else {
+      const functions = props.firebase.useFunctions();
+      const ReturnEmail = functions.httpsCallable("ReturnEmail");
+
+      ReturnEmail({ display_name: user })
+        .then((result) => {
+          if (result.data === "") throw new Error("no user");
+
+          return props.firebase.doSignInWithEmailAndPassword(
+            result.data,
+            password
+          );
+        })
+        .then((authUser) => {
+          props.history.push(ROUTES.LANDING);
+        })
+        .catch((err) => {
+          //handle error
+        });
+    }
   };
 
   return (
