@@ -86,7 +86,10 @@ const LogInContainer = (props) => {
         )}
 
         {currentFormMounted === "login" && (
-          <LogInForm propagateForgot={handleForgotClick} />
+          <LogInForm
+            propagateError={mountError}
+            propagateForgot={handleForgotClick}
+          />
         )}
 
         {currentFormMounted === "create" && (
