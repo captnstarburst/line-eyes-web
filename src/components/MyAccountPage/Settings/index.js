@@ -161,7 +161,7 @@ const Settings = (props) => {
   };
 
   const handlePasswordReset = (e) => {
-    props.firebase.doPasswordReset("conorphinchee@gmail.com");
+    props.firebase.doPasswordReset(props.firebase.currentUserEmail());
     props.firebase.doSignOut();
   };
 

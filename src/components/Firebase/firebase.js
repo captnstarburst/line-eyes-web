@@ -60,6 +60,9 @@ class Firebase {
     return this.auth.currentUser.uid;
   }
 
+  currentUserEmail() {
+    return this.auth.currentUser.email;
+  }
   async getRole() {
     const firestore = this.getFirestore();
     const uid = this.currentUserUID();
