@@ -92,7 +92,7 @@ const LoginForm = (props) => {
           setAsyncWork(false);
 
           if (err.message === "no user") {
-            setErrorText("User Name is not Registered");
+            setErrorText("User Name is not registered");
           } else {
             const errCode = err.code;
             switch (errCode) {

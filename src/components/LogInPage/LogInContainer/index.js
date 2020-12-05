@@ -74,7 +74,7 @@ const LogInContainer = (props) => {
       >
         <img
           src={PregnancyTest}
-          alt="Line - Eyez App"
+          alt="Line - Eyes App"
           style={{ width: "50%", marginBottom: "50px" }}
         />
 
@@ -96,7 +96,9 @@ const LogInContainer = (props) => {
           <CreateForm propagateError={mountError} />
         )}
 
-        {currentFormMounted === "forgot" && <ForgotForm />}
+        {currentFormMounted === "forgot" && (
+          <ForgotForm propagateError={mountError} />
+        )}
 
         {currentFormMounted === "error" && <Error />}
       </div>
