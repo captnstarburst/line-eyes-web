@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import SettingsJSX from "./Settings";
 import DefaultDateString from "../../functions/DefaultDateString";
 import setStorage from "../../functions/SessionStorage";
+import EmailValidator from "../../functions/EmailValidator";
 import { withFirebase } from "../../Firebase";
 
 const Settings = (props) => {
   const [userInfo, setUserInfo] = useState({
     birthdate: null,
     email: null,
+    currentEmail: null,
     first_name: sessionStorage.getItem("first_name"),
     last_name: sessionStorage.getItem("last_name"),
     new_password: null,
@@ -17,6 +19,7 @@ const Settings = (props) => {
   });
 
   const [userUpdatedInfo, setUserUpdatedInfo] = useState(false);
+  const [mountReAuth, setMountReAuth] = useState(false);
   const timer = useRef(null);
 
   const uid = props.firebase.currentUserUID();
@@ -70,6 +73,7 @@ const Settings = (props) => {
         setUserInfo((prevState) => ({
           ...prevState,
           email: doc.data().email,
+          currentEmail: doc.data().email,
         }));
       })
       .catch((err) => {
@@ -85,6 +89,7 @@ const Settings = (props) => {
         const birthdayRef = firestore.doc("Birthdays/" + uid);
         const notificationRef = firestore.doc("Notifications/" + uid);
         const userRef = firestore.doc("Users/" + uid);
+        const emailsRef = firestore.doc("Emails/" + uid);
 
         userRef
           .update({
@@ -120,6 +125,23 @@ const Settings = (props) => {
             //handle err
           });
 
+        if (
+          EmailValidator(userInfo.email) &&
+          userInfo.email !== userInfo.currentEmail
+        ) {
+          props.firebase
+            .updateUserEmail(userInfo.email)
+            .then(() => {
+              return emailsRef.update({
+                email: userInfo.email,
+              });
+            })
+            .catch((err) => {
+              if (err.code === "auth/requires-recent-login")
+                setMountReAuth(true);
+            });
+        }
+
         setUserUpdatedInfo(false);
       }, 2000);
     }
@@ -132,7 +154,9 @@ const Settings = (props) => {
     props.firebase,
     uid,
     userInfo.birthdate,
+    userInfo.currentEmail,
     userInfo.display_name,
+    userInfo.email,
     userInfo.email_notifications,
     userInfo.first_name,
     userInfo.last_name,
@@ -165,12 +189,18 @@ const Settings = (props) => {
     props.firebase.doSignOut();
   };
 
+  const toggleReAuthMount = React.useCallback(() => {
+    setMountReAuth((prevState) => !prevState);
+  }, []);
+
   return (
     <SettingsJSX
       userInfo={userInfo}
       propagateUpdate={updateUserInfo}
       propagateToggle={handleToggle}
       propagateReset={handlePasswordReset}
+      toggleReAuthMount={toggleReAuthMount}
+      mountReAuth={mountReAuth}
     />
   );
 };

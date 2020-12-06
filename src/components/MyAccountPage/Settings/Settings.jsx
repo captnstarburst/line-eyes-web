@@ -12,6 +12,8 @@ import EmailIcon from "@material-ui/icons/Email";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
+import EmailValidator from "../../functions/EmailValidator";
+import ReAuthModal from "../../UI/ReAuthModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +38,7 @@ const Settings = (props) => {
 
   return (
     <div className={classes.root}>
+      <ReAuthModal open={props.mountReAuth} toggle={props.toggleReAuthMount} />
       <List
         subheader={<ListSubheader disableSticky>Personal Info</ListSubheader>}
         className={classes.list}
@@ -158,6 +161,12 @@ const Settings = (props) => {
                 label={props.userInfo.email}
                 variant="outlined"
                 onChange={props.propagateUpdate}
+                error={!EmailValidator(props.userInfo.email)}
+                helperText={
+                  !EmailValidator(props.userInfo.email)
+                    ? "Enter valid email address"
+                    : null
+                }
               />
             )}
           </ListItemSecondaryAction>
