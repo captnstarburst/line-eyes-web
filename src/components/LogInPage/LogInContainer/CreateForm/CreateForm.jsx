@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +94,7 @@ const CreateForm = (props) => {
       <Button
         variant="contained"
         color="primary"
-        endIcon={<AccountCircleIcon />}
+        endIcon={props.asyncWork ? <CircularProgress /> : <AccountCircleIcon />}
         style={{ width: "95%" }}
         onClick={props.propagateCreateClick}
       >

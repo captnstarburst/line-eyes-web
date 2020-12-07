@@ -37,6 +37,7 @@ const CreateForm = (props) => {
   });
 
   const [checkingValues, setCheckingValues] = useState(false);
+  const [asyncWork, setAsyncWork] = useState(false);
 
   const handleChange = (e) => {
     e.persist();
@@ -96,7 +97,7 @@ const CreateForm = (props) => {
     setCheckingValues(true);
 
     firestore
-      .collection("Users")
+      .collection("DisplayNames")
       .where("display_name", "==", userInfo.username)
       .get()
       .then(function (querySnapshot) {
@@ -129,7 +130,6 @@ const CreateForm = (props) => {
     props.firebase
       .doCreateUserWithEmailAndPassword(userInfo.email, userInfo.password)
       .then(async (authUser) => {
-        alert(authUser);
         await firestore
           .collection("Users")
           .doc(authUser.user.uid)
@@ -148,6 +148,7 @@ const CreateForm = (props) => {
       .then(async (authUser) => {
         await firestore.collection("Emails").doc(authUser.user.uid).set({
           email: userInfo.email,
+          display_name: userInfo.username,
         });
 
         return authUser;
@@ -161,6 +162,21 @@ const CreateForm = (props) => {
               new Date(userInfo.dateOfBirth)
             ),
           });
+
+        return authUser;
+      })
+      .then(async (authUser) => {
+        await firestore.collection("Notifications").doc(authUser.user.uid).set({
+          push_notifications: true,
+          email_notifications: true,
+        });
+
+        return authUser;
+      })
+      .then(async (authUser) => {
+        await firestore.collection("DisplayNames").doc(authUser.user.uid).set({
+          display_name: userInfo.username,
+        });
 
         return;
       })
@@ -211,6 +227,7 @@ const CreateForm = (props) => {
       defaultDate={defaultDate}
       checkingValues={checkingValues}
       propagateCreateClick={handleCreateClick}
+      asyncWork={asyncWork}
     />
   );
 };
