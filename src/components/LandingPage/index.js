@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Dragger from "./Draggable";
-import { Toast } from "./Toast";
+import { Toast } from "../UI/Toasts/UndoToast";
 import Chips from "../UI/Chips";
 import AppBar from "../UI/AppBar";
 import TagDrawer from "../UI/TagDrawer";

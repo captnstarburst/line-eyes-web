@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import LogInJSX from "../../UI/LogInJSX/LogIn";
-import EmailValidator from "../../functions/EmailValidator";
+import { withFirebase } from "../../Firebase";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const ReAuthModal = (props) => {
   const classes = useStyles();
 
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(sessionStorage.getItem("display_name"));
   const [password, setPassword] = useState("");
   const [errorText, setErrorText] = useState("");
   const [asyncWork, setAsyncWork] = useState(false);
@@ -56,17 +56,30 @@ const ReAuthModal = (props) => {
 
   const handleSignIn = () => {
     setAsyncWork(true);
-    if (EmailValidator(user)) {
-      props.firebase
-        .doSignInWithEmailAndPassword(user, password)
-        .then((authUser) => {
-          //    props.history.push(ROUTES.LANDING);
-        })
-        .catch(function (error) {
-          const errCode = error.code;
 
-          setAsyncWork(true);
+    const functions = props.firebase.useFunctions();
+    const ReturnEmail = functions.httpsCallable("ReturnEmail");
 
+    ReturnEmail({ display_name: user })
+      .then((result) => {
+        if (result.data === "") throw new Error("no user");
+
+        return props.firebase.doSignInWithEmailAndPassword(
+          result.data,
+          password
+        );
+      })
+      .then((authUser) => {
+        props.onSuccess();
+      })
+      .catch((err) => {
+        // setErrorText("No User Registered");
+        setAsyncWork(false);
+
+        if (err.message === "no user") {
+          setErrorText("User Name is not registered");
+        } else {
+          const errCode = err.code;
           switch (errCode) {
             case "auth/wrong-password":
               setErrorText("incorrect password");
@@ -78,47 +91,8 @@ const ReAuthModal = (props) => {
               props.propagateError();
               break;
           }
-          console.log(JSON.stringify(error));
-          // props.propagateError();
-        });
-    } else {
-      const functions = props.firebase.useFunctions();
-      const ReturnEmail = functions.httpsCallable("ReturnEmail");
-
-      ReturnEmail({ display_name: user })
-        .then((result) => {
-          if (result.data === "") throw new Error("no user");
-
-          return props.firebase.doSignInWithEmailAndPassword(
-            result.data,
-            password
-          );
-        })
-        .then((authUser) => {
-          //    props.history.push(ROUTES.LANDING);
-        })
-        .catch((err) => {
-          // setErrorText("No User Registered");
-          setAsyncWork(false);
-
-          if (err.message === "no user") {
-            setErrorText("User Name is not registered");
-          } else {
-            const errCode = err.code;
-            switch (errCode) {
-              case "auth/wrong-password":
-                setErrorText("incorrect password");
-                break;
-              case "auth/user-not-found":
-                setErrorText("email is not registered");
-                break;
-              default:
-                props.propagateError();
-                break;
-            }
-          }
-        });
-    }
+        }
+      });
   };
 
   return (
@@ -163,4 +137,4 @@ const ReAuthModal = (props) => {
   );
 };
 
-export default ReAuthModal;
+export default withFirebase(ReAuthModal);

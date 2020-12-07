@@ -38,7 +38,11 @@ const Settings = (props) => {
 
   return (
     <div className={classes.root}>
-      <ReAuthModal open={props.mountReAuth} toggle={props.toggleReAuthMount} />
+      <ReAuthModal
+        open={props.mountReAuth}
+        toggle={props.toggleReAuthMount}
+        onSuccess={props.propagateAuthSuccess}
+      />
       <List
         subheader={<ListSubheader disableSticky>Personal Info</ListSubheader>}
         className={classes.list}

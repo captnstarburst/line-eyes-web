@@ -3,6 +3,8 @@ import SettingsJSX from "./Settings";
 import DefaultDateString from "../../functions/DefaultDateString";
 import setStorage from "../../functions/SessionStorage";
 import EmailValidator from "../../functions/EmailValidator";
+import SaveToast from "../../UI/Toasts/SaveToast";
+import ErrorToast from "../../UI/Toasts/ErrorToast";
 import { withFirebase } from "../../Firebase";
 
 const Settings = (props) => {
@@ -14,13 +16,20 @@ const Settings = (props) => {
     last_name: sessionStorage.getItem("last_name"),
     new_password: null,
     display_name: sessionStorage.getItem("display_name"),
+    currentDisplayName: sessionStorage.getItem("display_name"),
     push_notifications: false,
     email_notifications: false,
   });
 
   const [userUpdatedInfo, setUserUpdatedInfo] = useState(false);
+  const [userUpdateEmail, setUserUpdateEmail] = useState(false);
   const [mountReAuth, setMountReAuth] = useState(false);
+  const [onSuccess, setOnSuccess] = useState(false);
+  const [onError, setOnError] = useState(false);
+
   const timer = useRef(null);
+  const emailTimer = useRef(null);
+  const displayNameTimer = useRef(null);
 
   const uid = props.firebase.currentUserUID();
   const firestore = props.firebase.getFirestore();
@@ -89,7 +98,6 @@ const Settings = (props) => {
         const birthdayRef = firestore.doc("Birthdays/" + uid);
         const notificationRef = firestore.doc("Notifications/" + uid);
         const userRef = firestore.doc("Users/" + uid);
-        const emailsRef = firestore.doc("Emails/" + uid);
 
         userRef
           .update({
@@ -125,25 +133,8 @@ const Settings = (props) => {
             //handle err
           });
 
-        if (
-          EmailValidator(userInfo.email) &&
-          userInfo.email !== userInfo.currentEmail
-        ) {
-          props.firebase
-            .updateUserEmail(userInfo.email)
-            .then(() => {
-              return emailsRef.update({
-                email: userInfo.email,
-              });
-            })
-            .catch((err) => {
-              if (err.code === "auth/requires-recent-login")
-                setMountReAuth(true);
-            });
-        }
-
         setUserUpdatedInfo(false);
-      }, 2000);
+      }, 2500);
     }
 
     return () => {
@@ -154,15 +145,32 @@ const Settings = (props) => {
     props.firebase,
     uid,
     userInfo.birthdate,
-    userInfo.currentEmail,
     userInfo.display_name,
-    userInfo.email,
     userInfo.email_notifications,
     userInfo.first_name,
     userInfo.last_name,
     userInfo.push_notifications,
     userUpdatedInfo,
   ]);
+
+  useEffect(() => {
+    clearInterval(emailTimer.current);
+
+    if (
+      userUpdateEmail &&
+      EmailValidator(userInfo.email) &&
+      userInfo.email !== userInfo.currentEmail
+    ) {
+      emailTimer.current = setInterval(() => {
+        setMountReAuth(true);
+        setUserUpdateEmail(false);
+      }, 2500);
+    }
+
+    return () => {
+      clearInterval(emailTimer.current);
+    };
+  }, [userInfo.currentEmail, userInfo.email, userUpdateEmail]);
 
   const updateUserInfo = (e) => {
     e.persist();
@@ -171,7 +179,13 @@ const Settings = (props) => {
       [e.target.id]: e.target.value.trim(),
     }));
 
-    setUserUpdatedInfo(true);
+    switch (e.target.id) {
+      case "email":
+        setUserUpdateEmail(true);
+        break;
+      default:
+        setUserUpdatedInfo(true);
+    }
   };
 
   const handleToggle = (e) => {
@@ -189,19 +203,45 @@ const Settings = (props) => {
     props.firebase.doSignOut();
   };
 
-  const toggleReAuthMount = React.useCallback(() => {
+  const toggleReAuthMount = useCallback(() => {
     setMountReAuth((prevState) => !prevState);
   }, []);
 
+  const changeEmail = () => {
+    const emailsRef = firestore.doc("Emails/" + uid);
+
+    props.firebase
+      .updateUserEmail(userInfo.email)
+      .then(() => {
+        return emailsRef.update({
+          email: userInfo.email,
+        });
+      })
+      .then(() => {
+        toggleReAuthMount();
+        setOnSuccess(true);
+      })
+      .catch((err) => {
+        setOnError(true);
+      });
+  };
+
   return (
-    <SettingsJSX
-      userInfo={userInfo}
-      propagateUpdate={updateUserInfo}
-      propagateToggle={handleToggle}
-      propagateReset={handlePasswordReset}
-      toggleReAuthMount={toggleReAuthMount}
-      mountReAuth={mountReAuth}
-    />
+    <>
+      <SettingsJSX
+        userInfo={userInfo}
+        propagateUpdate={updateUserInfo}
+        propagateToggle={handleToggle}
+        propagateReset={handlePasswordReset}
+        toggleReAuthMount={toggleReAuthMount}
+        mountReAuth={mountReAuth}
+        propagateAuthSuccess={changeEmail}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
+      <SaveToast saved={onSuccess} />
+      <ErrorToast error={onError} />
+    </>
   );
 };
 
