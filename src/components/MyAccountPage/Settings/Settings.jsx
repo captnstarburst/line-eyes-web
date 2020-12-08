@@ -179,10 +179,14 @@ const Settings = (props) => {
           <ListItemText id="display_name_text" primary="Change User Name" />
           <ListItemSecondaryAction>
             <TextField
-              id="outlined-basic"
+              id="display_name"
               label={props.userInfo.display_name}
               variant="outlined"
               onChange={props.propagateUpdate}
+              error={props.displayNameError}
+              helperText={
+                props.displayNameError ? "User Name is already taken" : null
+              }
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -199,6 +203,7 @@ const Settings = (props) => {
             variant="contained"
             color="secondary"
             style={{ width: "100%" }}
+            onClick={props.propagateDeleteClick}
           >
             Delete Account
           </Button>

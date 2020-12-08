@@ -23,9 +23,12 @@ const Settings = (props) => {
 
   const [userUpdatedInfo, setUserUpdatedInfo] = useState(false);
   const [userUpdateEmail, setUserUpdateEmail] = useState(false);
+  const [userUpdateDisplayName, setUserUpdateDisplayName] = useState(false);
+  const [displayNameError, setDisplayNameError] = useState(false);
   const [mountReAuth, setMountReAuth] = useState(false);
   const [onSuccess, setOnSuccess] = useState(false);
   const [onError, setOnError] = useState(false);
+  const [accountDeletion, setAccountDeletion] = useState(false);
 
   const timer = useRef(null);
   const emailTimer = useRef(null);
@@ -101,12 +104,10 @@ const Settings = (props) => {
 
         userRef
           .update({
-            display_name: userInfo.display_name,
             first_name: userInfo.first_name,
             last_name: userInfo.last_name,
           })
           .then(() => {
-            setStorage("display_name", userInfo.display_name);
             setStorage("first_name", userInfo.first_name);
             setStorage("last_name", userInfo.last_name);
           })
@@ -172,6 +173,54 @@ const Settings = (props) => {
     };
   }, [userInfo.currentEmail, userInfo.email, userUpdateEmail]);
 
+  useEffect(() => {
+    clearInterval(emailTimer.current);
+
+    if (
+      userUpdateEmail &&
+      EmailValidator(userInfo.email) &&
+      userInfo.email !== userInfo.currentEmail
+    ) {
+      emailTimer.current = setInterval(() => {
+        setMountReAuth(true);
+      }, 2500);
+    }
+
+    return () => {
+      clearInterval(emailTimer.current);
+    };
+  }, [userInfo.currentEmail, userInfo.email, userUpdateEmail]);
+
+  useEffect(() => {
+    clearInterval(displayNameTimer.current);
+
+    if (
+      userUpdateDisplayName &&
+      userInfo.display_name !== userInfo.currentDisplayName
+    ) {
+      displayNameTimer.current = setInterval(() => {
+        firestore
+          .collection("DisplayNames")
+          .where("display_name", "==", userInfo.display_name)
+          .get()
+          .then(function (querySnapshot) {
+            if (!querySnapshot.empty) setDisplayNameError(true);
+            else setMountReAuth(true);
+          });
+      }, 3500);
+    }
+
+    return () => {
+      clearInterval(displayNameTimer.current);
+    };
+  }, [
+    firestore,
+    userInfo.currentDisplayName,
+    userInfo.display_name,
+    userInfo.username,
+    userUpdateDisplayName,
+  ]);
+
   const updateUserInfo = (e) => {
     e.persist();
     setUserInfo((prevState) => ({
@@ -182,6 +231,9 @@ const Settings = (props) => {
     switch (e.target.id) {
       case "email":
         setUserUpdateEmail(true);
+        break;
+      case "display_name":
+        setUserUpdateDisplayName(true);
         break;
       default:
         setUserUpdatedInfo(true);
@@ -207,6 +259,23 @@ const Settings = (props) => {
     setMountReAuth((prevState) => !prevState);
   }, []);
 
+  const reAuthSuccess = () => {
+    if (userUpdateEmail && userUpdateDisplayName) {
+      changeEmail();
+      changeUserName();
+    } else if (userUpdateEmail) {
+      changeEmail();
+    } else if (userUpdateDisplayName) {
+      changeUserName();
+    } else if (accountDeletion) {
+      sessionStorage.removeItem("display_name");
+      sessionStorage.removeItem("first_name");
+      sessionStorage.removeItem("last_name");
+      sessionStorage.removeItem("profile_pic");
+      sessionStorage.removeItem("avatar");
+      props.firebase.doAccountDelete();
+    }
+  };
   const changeEmail = () => {
     const emailsRef = firestore.doc("Emails/" + uid);
 
@@ -220,10 +289,34 @@ const Settings = (props) => {
       .then(() => {
         toggleReAuthMount();
         setOnSuccess(true);
+        setUserUpdateEmail(false);
       })
       .catch((err) => {
         setOnError(true);
       });
+  };
+
+  const changeUserName = () => {
+    const displayNamesRef = firestore.doc("DisplayNames/" + uid);
+
+    displayNamesRef
+      .update({
+        display_name: userInfo.display_name,
+      })
+      .then(() => {
+        toggleReAuthMount();
+        setOnSuccess(true);
+        setUserUpdateDisplayName(false);
+        setStorage("display_name", userInfo.display_name);
+      })
+      .catch((err) => {
+        setOnError(true);
+      });
+  };
+
+  const handleDeletionClick = () => {
+    setAccountDeletion(true);
+    toggleReAuthMount();
   };
 
   return (
@@ -235,9 +328,11 @@ const Settings = (props) => {
         propagateReset={handlePasswordReset}
         toggleReAuthMount={toggleReAuthMount}
         mountReAuth={mountReAuth}
-        propagateAuthSuccess={changeEmail}
+        propagateAuthSuccess={reAuthSuccess}
+        displayNameError={displayNameError}
         onSuccess={onSuccess}
         onError={onError}
+        propagateDeleteClick={handleDeletionClick}
       />
       <SaveToast saved={onSuccess} />
       <ErrorToast error={onError} />

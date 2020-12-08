@@ -70,6 +70,7 @@ const ReAuthModal = (props) => {
         );
       })
       .then((authUser) => {
+        setAsyncWork(false);
         props.onSuccess();
       })
       .catch((err) => {
@@ -88,7 +89,6 @@ const ReAuthModal = (props) => {
               setErrorText("email is not registered");
               break;
             default:
-              props.propagateError();
               break;
           }
         }
@@ -112,7 +112,7 @@ const ReAuthModal = (props) => {
         <div className={classes.paper}>
           <h2 id="reAuth-title">Re-Authenticate</h2>
           <p id="transition-modal-description">
-            Changing your email address requires a recent to log in
+            This action requires a re-log in
           </p>
           <form className={classes.root} noValidate autoComplete="on">
             <LogInJSX

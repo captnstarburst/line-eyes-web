@@ -90,6 +90,7 @@ const CreateForm = (props) => {
 
   const handleCreateClick = (e) => {
     e.preventDefault();
+    setAsyncWork(true);
 
     let check = true;
     const firestore = props.firebase.getFirestore();
@@ -116,11 +117,13 @@ const CreateForm = (props) => {
       })
       .then(() => {
         if (check) {
-          createUser();
+          return createUser();
         }
+        setAsyncWork(false);
       })
       .catch(function (error) {
         console.log("Error getting documents: ", error);
+        setAsyncWork(false);
       });
   };
 
@@ -185,6 +188,7 @@ const CreateForm = (props) => {
       })
       .catch(function (err) {
         const errorCode = err.code;
+        setAsyncWork(false);
 
         if (errorCode === "auth/weak-password") {
           setFormError((prevState) => ({

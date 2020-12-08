@@ -48,6 +48,8 @@ class Firebase {
   doPasswordUpdate = (password) =>
     this.auth.currentUser.updatePassword(password);
 
+  doAccountDelete = () => this.auth.currentUser.delete();
+
   getFirestore() {
     return this.firestore;
   }
