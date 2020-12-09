@@ -5,6 +5,7 @@ import setStorage from "../../functions/SessionStorage";
 import EmailValidator from "../../functions/EmailValidator";
 import SaveToast from "../../UI/Toasts/SaveToast";
 import ErrorToast from "../../UI/Toasts/ErrorToast";
+import ImgOnly from "../../functions/ImgOnly";
 import { withFirebase } from "../../Firebase";
 
 const Settings = (props) => {
@@ -319,6 +320,52 @@ const Settings = (props) => {
     toggleReAuthMount();
   };
 
+  const handleUploadClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleFileSelection = async (e) => {
+    if (e.target.files.length) {
+      if (!ImgOnly(e.target.files[0])) {
+        alert("Images only");
+      } else {
+        const now = Date.now();
+
+        const uploadTask = props.firebase
+          .getStorage()
+          .child(`/Users/${uid}/profile_pic`)
+          .put(e.target.files[0]);
+
+        await uploadTask.on(
+          "state_changed",
+          null,
+          (error) => {
+            setOnError(true);
+          },
+          () => {
+            props.firebase
+              .getStorage()
+              .child(`/Users/${uid}/profile_pic`)
+              .getDownloadURL()
+              .then((url) => {
+                firestore
+                  .doc("Users/" + uid)
+                  .update({
+                    profile_pic: url,
+                  })
+                  .then(() => {
+                    setStorage("profile_pic", url);
+                  })
+                  .catch((err) => {
+                    setOnError(true);
+                  });
+              });
+          }
+        );
+      }
+    }
+  };
+
   return (
     <>
       <SettingsJSX
@@ -333,6 +380,14 @@ const Settings = (props) => {
         onSuccess={onSuccess}
         onError={onError}
         propagateDeleteClick={handleDeletionClick}
+        propagateUploadClick={handleUploadClick}
+      />
+      <input
+        id={"fileInput"}
+        type="file"
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleFileSelection}
       />
       <SaveToast saved={onSuccess} />
       <ErrorToast error={onError} />

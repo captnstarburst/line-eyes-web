@@ -49,11 +49,19 @@ const Settings = (props) => {
       >
         <ListItem className={classes.paper}>
           <ListItemIcon>
-            <Avatar>{sessionStorage.getItem("avatar")}</Avatar>
+            <Avatar src={sessionStorage.getItem("profile_pic")}>
+              {!sessionStorage.getItem("profile_pic")
+                ? sessionStorage.getItem("avatar")
+                : null}
+            </Avatar>
           </ListItemIcon>
-          <ListItemText id="switch-list-label-wifi" primary="Profile Picture" />
+          <ListItemText id="profile_picture_text" primary="Profile Picture" />
           <ListItemSecondaryAction>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={props.propagateUploadClick}
+            >
               Upload
             </Button>
           </ListItemSecondaryAction>

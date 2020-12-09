@@ -23,6 +23,7 @@ class Firebase {
     this.functions = app.functions();
     this.auth = app.auth();
     this.firestore = app.firestore();
+    this.storage = app.storage();
 
     this.googleProvider = new app.auth.GoogleAuthProvider();
     this.facebookProvider = new app.auth.FacebookAuthProvider();
@@ -52,6 +53,10 @@ class Firebase {
 
   getFirestore() {
     return this.firestore;
+  }
+
+  getStorage() {
+    return this.storage.ref();
   }
 
   useFunctions() {
