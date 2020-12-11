@@ -55,7 +55,7 @@ const MenuAppBar = (props) => {
     bottom: false,
     right: false,
   });
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     async function IIFE() {
