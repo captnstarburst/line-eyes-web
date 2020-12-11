@@ -6,10 +6,15 @@ import AppBar from "../UI/AppBar";
 import Footer from "../UI/Footer";
 import Profile from "../UI/Profile";
 import Activity from "./Activity";
+import useUserDataListener from "../Hooks/useUserDataListener";
 import { withAuthorization } from "../Session";
+import { withFirebase } from "../Firebase";
+import { compose } from "recompose";
 
 const AdminPage = (props) => {
   const [role, setRole] = useState(null);
+
+  const userData = useUserDataListener(props.firebase);
 
   useEffect(() => {
     async function IIFE() {
@@ -26,7 +31,7 @@ const AdminPage = (props) => {
       <AppBar />
       <CssBaseline />
       <Container fixed>
-        <Profile />
+        {userData && <Profile userData={userData} />}
         <Typography component="section" style={{ backgroundColor: "#cfe8fc" }}>
           <Activity />
         </Typography>
@@ -38,4 +43,6 @@ const AdminPage = (props) => {
 
 const condition = (authUser) => !!authUser;
 
-export default withAuthorization(condition)(AdminPage);
+const ComposedAdminPage = compose(withFirebase)(AdminPage);
+
+export default withAuthorization(condition)(ComposedAdminPage);
