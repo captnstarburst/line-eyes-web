@@ -49,10 +49,8 @@ const Settings = (props) => {
       >
         <ListItem className={classes.paper}>
           <ListItemIcon>
-            <Avatar src={sessionStorage.getItem("profile_pic")}>
-              {!sessionStorage.getItem("profile_pic")
-                ? sessionStorage.getItem("avatar")
-                : null}
+            <Avatar src={props.profile_pic}>
+              {!props.profile_pic ? props.avatar : null}
             </Avatar>
           </ListItemIcon>
           <ListItemText id="profile_picture_text" primary="Profile Picture" />

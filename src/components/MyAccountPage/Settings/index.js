@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import SettingsJSX from "./Settings";
 import DefaultDateString from "../../functions/DefaultDateString";
-import setStorage from "../../functions/SessionStorage";
 import EmailValidator from "../../functions/EmailValidator";
 import SaveToast from "../../UI/Toasts/SaveToast";
 import ErrorToast from "../../UI/Toasts/ErrorToast";
@@ -13,11 +12,11 @@ const Settings = (props) => {
     birthdate: null,
     email: null,
     currentEmail: null,
-    first_name: sessionStorage.getItem("first_name"),
-    last_name: sessionStorage.getItem("last_name"),
+    first_name: props.userData.first_name,
+    last_name: props.userData.last_name,
     new_password: null,
-    display_name: sessionStorage.getItem("display_name"),
-    currentDisplayName: sessionStorage.getItem("display_name"),
+    display_name: props.userData.display_name,
+    currentDisplayName: props.userData.display_name,
     push_notifications: false,
     email_notifications: false,
   });
@@ -107,10 +106,6 @@ const Settings = (props) => {
           .update({
             first_name: userInfo.first_name,
             last_name: userInfo.last_name,
-          })
-          .then(() => {
-            setStorage("first_name", userInfo.first_name);
-            setStorage("last_name", userInfo.last_name);
           })
           .catch((err) => {
             //handle err
@@ -269,11 +264,6 @@ const Settings = (props) => {
     } else if (userUpdateDisplayName) {
       changeUserName();
     } else if (accountDeletion) {
-      sessionStorage.removeItem("display_name");
-      sessionStorage.removeItem("first_name");
-      sessionStorage.removeItem("last_name");
-      sessionStorage.removeItem("profile_pic");
-      sessionStorage.removeItem("avatar");
       props.firebase.doAccountDelete();
     }
   };
@@ -308,7 +298,6 @@ const Settings = (props) => {
         toggleReAuthMount();
         setOnSuccess(true);
         setUserUpdateDisplayName(false);
-        setStorage("display_name", userInfo.display_name);
       })
       .catch((err) => {
         setOnError(true);
@@ -329,8 +318,6 @@ const Settings = (props) => {
       if (!ImgOnly(e.target.files[0])) {
         alert("Images only");
       } else {
-        const now = Date.now();
-
         const uploadTask = props.firebase
           .getStorage()
           .child(`/Users/${uid}/profile_pic`)
@@ -352,9 +339,6 @@ const Settings = (props) => {
                   .doc("Users/" + uid)
                   .update({
                     profile_pic: url,
-                  })
-                  .then(() => {
-                    setStorage("profile_pic", url);
                   })
                   .catch((err) => {
                     setOnError(true);
@@ -381,6 +365,8 @@ const Settings = (props) => {
         onError={onError}
         propagateDeleteClick={handleDeletionClick}
         propagateUploadClick={handleUploadClick}
+        profile_pic={props.userData.profile_pic}
+        avatar={props.userData.avatar}
       />
       <input
         id={"fileInput"}

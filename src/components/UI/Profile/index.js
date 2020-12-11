@@ -6,7 +6,6 @@ import Avatar from "@material-ui/core/Avatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { useUserSession } from "../../Hooks/useUserSession";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../../Firebase";
 import { compose } from "recompose";
@@ -28,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = (props) => {
   const classes = useStyles();
-
-  useUserSession(props.firebase);
 
   const handleRouteToSettings = () => {
     props.history.push(ROUTES.My_Account + "/settings");
@@ -54,8 +51,8 @@ const Profile = (props) => {
                   className={classes.large}
                   style={{ alignSelf: "center" }}
                   src={
-                    sessionStorage.getItem("profile_pic") ? (
-                      sessionStorage.getItem("profile_pic")
+                    props.userData.profile_pic ? (
+                      props.userData.profile_pic
                     ) : (
                       <AccountCircle className={classes.large} />
                     )
@@ -75,11 +72,11 @@ const Profile = (props) => {
                     variant="h6"
                     component="h6"
                   >
-                    {sessionStorage.getItem("first_name") &&
-                      sessionStorage.getItem("last_name") &&
-                      sessionStorage.getItem("first_name") +
+                    {props.userData.first_name &&
+                      props.userData.last_name &&
+                      props.userData.first_name +
                         " " +
-                        sessionStorage.getItem("last_name")}
+                        props.userData.last_name}
                   </Typography>
                   <Typography
                     align="left"
@@ -88,7 +85,7 @@ const Profile = (props) => {
                     component="h6"
                     style={{ fontSize: "12px" }}
                   >
-                    {sessionStorage.getItem("display_name")}
+                    {props.userData.display_name}
                   </Typography>
                 </div>
               </div>

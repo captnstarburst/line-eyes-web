@@ -10,25 +10,30 @@ import { Stats } from "./Stats";
 import { Uploads } from "./Uploads";
 import { Activity } from "./Activity";
 import Settings from "./Settings";
+import useUserDataListener from "../Hooks/useUserDataListener";
 import { withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { Switch, Route } from "react-router-dom";
 import { compose } from "recompose";
 
 const MyAccountPage = (props) => {
+  const userData = useUserDataListener(props.firebase);
+
   return (
     <>
       <AppBar />
       <CssBaseline />
       <Container fixed>
-        <Profile edit />
+        {userData && <Profile edit userData={userData} />}
         <CenteredTabs />
         <Typography component="article" style={{ backgroundColor: "#cfe8fc" }}>
           <Switch>
             <Route path={`/Me/stats`} exact component={Stats} />
             <Route path={`/Me/uploads`} exact component={Uploads} />
             <Route path={`/Me/activity`} component={Activity} />
-            <Route path={`/Me/settings`} component={Settings} />
+            <Route path={`/Me/settings`}>
+              {userData && <Settings userData={userData} />}
+            </Route>
           </Switch>
         </Typography>
       </Container>
