@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const ReAuthModal = (props) => {
   const classes = useStyles();
 
-  const [user, setUser] = useState(sessionStorage.getItem("display_name"));
+  const [user, setUser] = useState(props.display_name);
   const [password, setPassword] = useState("");
   const [errorText, setErrorText] = useState("");
   const [asyncWork, setAsyncWork] = useState(false);
@@ -118,6 +118,7 @@ const ReAuthModal = (props) => {
             <LogInJSX
               propagateChange={handleFormChange}
               errorText={errorText}
+              display_name={props.display_name}
               readOnly
             />
             <Button

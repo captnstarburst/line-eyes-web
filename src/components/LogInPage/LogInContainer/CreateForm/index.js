@@ -181,6 +181,14 @@ const CreateForm = (props) => {
           display_name: userInfo.username,
         });
 
+        return authUser;
+      })
+      .then(async (authUser) => {
+        await firestore.collection("Stats").doc(authUser.user.uid).set({
+          reviewed_tests: 0,
+          uploaded_tests: 0,
+        });
+
         return;
       })
       .then(() => {

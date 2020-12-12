@@ -42,6 +42,7 @@ const Settings = (props) => {
         open={props.mountReAuth}
         toggle={props.toggleReAuthMount}
         onSuccess={props.propagateAuthSuccess}
+        display_name={props.userInfo.display_name}
       />
       <List
         subheader={<ListSubheader disableSticky>Personal Info</ListSubheader>}

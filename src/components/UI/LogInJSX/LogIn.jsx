@@ -27,9 +27,7 @@ const LogInJSX = (props) => {
         id="username"
         label="User Name or Email"
         type="text"
-        defaultValue={
-          props.readOnly ? sessionStorage.getItem("display_name") : null
-        }
+        defaultValue={props.readOnly ? props.display_name : null}
         onChange={props.propagateChange}
         error={props.errorText}
         helperText={props.errorText ? props.errorText : null}

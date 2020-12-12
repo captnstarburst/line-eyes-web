@@ -22,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
 const Stats = (props) => {
   const [uploadedNumber, setUploadedNumber] = useState(0);
   const [testsReviewed, setTestsReviewed] = useState(0);
-  const [latestResults, setLatestResults] = useState({
-    invalid: 0,
-    negative: 0,
-    positive: 0,
-  });
+  const [latestResults, setLatestResults] = useState([
+    { name: "invalid", value: 600 },
+    { name: "negative", value: 200 },
+    { name: "positive", value: 300 },
+  ]);
 
   useEffect(() => {
     const firestore = props.firebase.getFirestore();
@@ -38,11 +38,11 @@ const Stats = (props) => {
       .then((doc) => {
         setUploadedNumber(doc.data().uploaded_tests);
         setTestsReviewed(doc.data().reviewed_tests);
-        setLatestResults({
-          invalid: doc.data().last_upload_results.invalid,
-          negative: doc.data().last_upload_results.negative,
-          positive: doc.data().last_upload_results.positive,
-        });
+        // setLatestResults({
+        //   invalid: doc.data().last_upload_results.invalid,
+        //   negative: doc.data().last_upload_results.negative,
+        //   positive: doc.data().last_upload_results.positive,
+        // });
       })
       .catch((err) => {
         //handle Erro
