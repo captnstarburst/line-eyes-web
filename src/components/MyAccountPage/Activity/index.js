@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ActivityCard } from "../../UI/Cards/ActivityCard";
+import { NoMoreCard } from "../../UI/Cards/NoMoreCard";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +24,8 @@ export const Activity = (props) => {
 
   return (
     <section className={classes.root}>
-      <ActivityCard chipData={chipData} />
+      {/* <ActivityCard chipData={chipData} /> */}
+      <NoMoreCard />
     </section>
   );
 };

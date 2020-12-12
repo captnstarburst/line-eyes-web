@@ -6,7 +6,7 @@ import AppBar from "../UI/AppBar";
 import Footer from "../UI/Footer";
 import Profile from "../UI/Profile";
 import CenteredTabs from "./Navigation";
-import { Stats } from "./Stats";
+import Stats from "./Stats";
 import { Uploads } from "./Uploads";
 import { Activity } from "./Activity";
 import Settings from "./Settings";
@@ -24,7 +24,7 @@ const MyAccountPage = (props) => {
       <AppBar />
       <CssBaseline />
       <Container fixed>
-        {userData && <Profile edit userData={userData} />}
+        <Profile edit userData={userData} />
         <CenteredTabs />
         <Typography component="article" style={{ backgroundColor: "#cfe8fc" }}>
           <Switch>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Grow from "@material-ui/core/Grow";
 import PieChart from "./PieChart";
+import { withFirebase } from "../../Firebase";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +19,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Stats = () => {
+const Stats = (props) => {
+  const [uploadedNumber, setUploadedNumber] = useState(0);
+  const [testsReviewed, setTestsReviewed] = useState(0);
+  const [latestResults, setLatestResults] = useState({
+    invalid: 0,
+    negative: 0,
+    positive: 0,
+  });
+
+  useEffect(() => {
+    const firestore = props.firebase.getFirestore();
+    const uid = props.firebase.currentUserUID();
+
+    firestore
+      .doc("Stats/" + uid)
+      .get()
+      .then((doc) => {
+        setUploadedNumber(doc.data().uploaded_tests);
+        setTestsReviewed(doc.data().reviewed_tests);
+        setLatestResults({
+          invalid: doc.data().last_upload_results.invalid,
+          negative: doc.data().last_upload_results.negative,
+          positive: doc.data().last_upload_results.positive,
+        });
+      })
+      .catch((err) => {
+        //handle Erro
+      });
+  }, [props.firebase]);
+
   const classes = useStyles();
 
   return (
@@ -49,7 +79,7 @@ export const Stats = () => {
                 variant="p"
                 component="p"
               >
-                0
+                {uploadedNumber}
               </Typography>
             </Paper>
           </Grow>
@@ -71,7 +101,7 @@ export const Stats = () => {
                 variant="p"
                 component="p"
               >
-                0
+                {testsReviewed}
               </Typography>
             </Paper>
           </Grow>
@@ -87,7 +117,7 @@ export const Stats = () => {
               >
                 Most Recent Upload
               </Typography>
-              <PieChart />
+              <PieChart results={latestResults} />
             </Paper>
           </Grow>
         </Grid>
@@ -95,3 +125,5 @@ export const Stats = () => {
     </div>
   );
 };
+
+export default withFirebase(Stats);

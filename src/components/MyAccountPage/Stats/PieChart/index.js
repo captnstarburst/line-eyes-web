@@ -36,8 +36,6 @@ const renderCustomizedLabel = ({
   );
 };
 export default class Example extends PureComponent {
-  static jsfiddleUrl = "//jsfiddle.net/alidingling/6okmehja/";
-
   render() {
     return (
       <div style={{ width: "100%", height: 300 }}>
