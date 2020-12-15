@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Grow from "@material-ui/core/Grow";
 import PieChart from "./PieChart";
+import { NoMoreCard } from "../../UI/Cards/NoMoreCard";
 import { withFirebase } from "../../Firebase";
 
 const useStyles = makeStyles((theme) => ({
@@ -117,7 +118,8 @@ const Stats = (props) => {
               >
                 Most Recent Upload
               </Typography>
-              <PieChart results={latestResults} />
+              {/* <PieChart results={latestResults} /> */}
+              <NoMoreCard />
             </Paper>
           </Grow>
         </Grid>

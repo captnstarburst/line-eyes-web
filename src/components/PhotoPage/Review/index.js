@@ -41,7 +41,7 @@ const Review = (props) => {
 
   const [tagDrawerOpen, setTagDrawerOpen] = useState(true);
   const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Pregnancy Test", viewing: true },
+    { key: 0, label: "Pregnancy Test", viewing: false },
     { key: 1, label: "Ovulation Test", viewing: false },
     { key: 2, label: "Clear Blue", viewing: false },
     { key: 3, label: "First Response", viewing: false },
