@@ -9,7 +9,7 @@ import Dragger from "./Draggable";
 import { Toast } from "../UI/Toasts/UndoToast";
 import Chips from "../UI/Chips";
 import AppBar from "../UI/AppBar";
-import TagDrawer from "../UI/TagDrawer";
+// import TagDrawer from "../UI/TagDrawer";
 import * as ROUTES from "../constants/routes";
 import { makeStyles } from "@material-ui/core/styles";
 import { withAuthorization } from "../Session";
@@ -111,12 +111,12 @@ const Landing = (props) => {
       <AppBar />
       <CssBaseline />
       <Container fixed>
-        <TagDrawer
+        {/* <TagDrawer
           chipData={chipData}
           propagateChipChange={handleChipChange}
           open={tagDrawerOpen}
           toggle={toggleDrawer}
-        />
+        /> */}
         <Typography component="main" className={classes.Main}>
           <Chips
             chipData={chipData}
@@ -125,6 +125,7 @@ const Landing = (props) => {
             propagateChipChange={handleChipChange}
           />
           <div style={{ position: "relative" }}>
+            {/* THATS IT FOR NOW */}
             <Dragger propagateSelection={propagateSelection} />
           </div>
           <Toast userSelection={selection} />

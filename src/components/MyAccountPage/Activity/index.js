@@ -25,7 +25,7 @@ export const Activity = (props) => {
   return (
     <section className={classes.root}>
       {/* <ActivityCard chipData={chipData} /> */}
-      <NoMoreCard />
+      {/* <NoMoreCard /> */}
     </section>
   );
 };

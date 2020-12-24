@@ -8,8 +8,8 @@ import Paper from "@material-ui/core/Paper";
 
   Props:
   `chipData` - An array of object that contain the chip data; 
-    + Should be a unique key and string to label the indiviual chip 
-  `deletable` - When added inidividual chips have the deletable UI
+    + Should be a unique key and string to label the individual chip 
+  `deletable` - When added individual chips have the deletable UI
   `margin` - When added the default margin will be added to the list of chips 
     
   Optional Props:
@@ -19,7 +19,7 @@ Example of Component:
     <Chips
         chipData = {[{key: 1, label: "chip 1"}]}
         margin
-        deleteable 
+        deletable 
         handleDelete = {() => {}}
     />
 */
@@ -59,20 +59,28 @@ const Chips = (props) => {
     >
       {props.deletable ? (
         <>
-          {props.chipData.map((data) => {
-            if (data.viewing) {
-              return (
-                <li key={data.key}>
-                  <Chip
-                    label={data.label}
-                    className={classes.chip}
-                    onDelete={() => props.propagateChipChange(data.key)}
-                  />
-                </li>
-              );
-            } else {
-              return null;
-            }
+          {props.chipData.map((topicArrays, topicIndex) => {
+            return (
+              <div key={topicIndex}>
+                {topicArrays.map((item) => {
+                  if (item.viewing) {
+                    return (
+                      <li key={item.key}>
+                        <Chip
+                          label={item.label.split("_").join(" ")}
+                          className={classes.chip}
+                          onDelete={() =>
+                            props.propagateChipDeletion(item.label)
+                          }
+                        />
+                      </li>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </div>
+            );
           })}
         </>
       ) : (

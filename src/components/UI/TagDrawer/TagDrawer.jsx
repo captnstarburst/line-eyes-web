@@ -1,11 +1,12 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
-import { TagDrawerChips } from "./Chips";
+import Grid from "@material-ui/core/Grid";
+import TagDropDown from "../TagDropDown";
 
 const Accordion = withStyles({
   root: {
@@ -48,10 +49,25 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-const TagDrawer = (props) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    height: 140,
+    width: 100,
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+}));
+
+const TagDrawerJSX = (props) => {
+  const classes = useStyles();
+
   return (
     <Accordion square expanded={props.open} onChange={props.toggle}>
-      <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+      <AccordionSummary aria-controls="Tag-Content" id="Tag-Header">
         <Typography
           style={{
             display: "flex",
@@ -60,17 +76,37 @@ const TagDrawer = (props) => {
             width: "100%",
           }}
         >
-          <DoubleArrowIcon style={{ transform: "rotate(90deg)" }} />
+          <DoubleArrowIcon
+            style={{
+              transform: props.open ? "rotate(-90deg)" : "rotate(90deg)",
+            }}
+          />
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        <TagDrawerChips
+      <AccordionDetails id="Tag-Content">
+        <Grid container className={classes.root} spacing={2}>
+          <Grid item xs={12}>
+            <Grid container justify="center" spacing={2}>
+              {props.chipData.map((data, index) => {
+                return (
+                  <Grid item key={data[0].id}>
+                    <TagDropDown
+                      tagData={data}
+                      propagateChipSelection={props.propagateChipSelection}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+        {/* <Tags
           chipData={props.chipData}
-          propagateChipChange={props.propagateChipChange}
-        />
+          propagateSelection={props.propagateChipSelection}
+        /> */}
       </AccordionDetails>
     </Accordion>
   );
 };
 
-export default TagDrawer;
+export default TagDrawerJSX;
