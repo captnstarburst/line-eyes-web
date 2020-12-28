@@ -54,11 +54,11 @@ const Review = (props) => {
 
   const handleChipDeletion = (id) => {
     let indices = [];
-
+    let dataCopy = [...chipData];
     chipData.forEach((topicArrays, topicIndex) => {
       if (indices.length > 0) return;
-
       topicArrays.forEach((item, itemIndex) => {
+        if (indices.length > 0) return;
         if (item.label === id) indices = [topicIndex, itemIndex];
       });
     });
@@ -69,13 +69,28 @@ const Review = (props) => {
       chipData[indices[0]].map((item, itemIndex) => {
         if (itemIndex === 0)
           return { key: item.key, header: item.id, id: item.id };
-        if (itemIndex === indices[1])
-          return { key: item.key, label: item.label, viewing: false };
+
         return { key: item.key, label: item.label, viewing: false };
       })
     );
 
-    setChipData(updatedTopicArray);
+    if (id === "Ovulation_Test") {
+      dataCopy.pop();
+    } else if (id === "Pregnancy_Test") {
+      dataCopy.pop();
+      dataCopy.pop();
+    }
+
+    dataCopy.splice(indices[0], indices[0] + 1, ...updatedTopicArray);
+
+    if (id.substring(0, 3) === "DPO") {
+      dataCopy.push(getDaysPastTransfer());
+    } else if (id.substring(0, 3) === "DPT") {
+      dataCopy.push(getDaysPastOvulation());
+    }
+
+    setMountUpload(false);
+    setChipData(dataCopy);
   };
 
   const getCycleDays = () => {
@@ -173,20 +188,21 @@ const Review = (props) => {
     switch (addTopic) {
       case "Pregnancy_Test":
         updatedTopics = [
-          ...chipData,
+          chipData[0],
           getDaysPastOvulation(),
           getDaysPastTransfer(),
         ];
-        setAddTopic(null);
+
         setChipData(updatedTopics);
         break;
       case "Ovulation_Test":
-        if (chipData.length === 1) {
-          updatedTopics = [...chipData, getCycleDays()];
-          setChipData(updatedTopics);
-        }
+        updatedTopics = [chipData[0], getCycleDays()];
+
+        setChipData(updatedTopics);
         break;
       case "Cycle_Day":
+      case "Days_Past_Ovulation":
+      case "Days_Past_Transfer":
         setMountUpload(true);
         break;
       default:
