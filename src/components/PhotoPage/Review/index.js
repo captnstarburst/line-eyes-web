@@ -193,13 +193,17 @@ const Review = (props) => {
     const firestore = props.firebase.getFirestore();
     const uuid = uuidv4();
 
+    let tags = [];
+    chipData.forEach((topicArrays, topicIndex) => {
+      topicArrays.forEach((item, itemIndex) => {
+        if (item.viewing) tags.push(item.label);
+      });
+    });
+
     const uploadTask = props.firebase
       .getStorage()
       .child(`/Tests/${uid}/${uuid}`)
       .putString(props.url, "data_url");
-    // .then(function (snapshot) {
-    //   console.log("Uploaded a base64url string!");
-    // });
 
     await uploadTask.on(
       "state_changed",
@@ -213,15 +217,23 @@ const Review = (props) => {
           .child(`/Tests/${uid}/${uuid}`)
           .getDownloadURL()
           .then((url) => {
-            alert(url);
-            // firestore
-            //   .doc("Users/" + uid)
-            //   .update({
-            //     profile_pic: url,
-            //   })
-            //   .catch((err) => {
-            //     // setOnError(true);
-            //   });
+            return firestore.collection("UploadedTests/").add({
+              file_name: uuid,
+              invalids: 0,
+              negatives: 0,
+              positives: 0,
+              reported: false,
+              tags,
+              uploaded: props.firebase.timestampFrom(new Date()),
+              uploaded_by: uid,
+              url,
+            });
+          })
+          .then(() => {
+            props.history.push(ROUTES.My_Account + "/uploads");
+          })
+          .catch((err) => {
+            // console.log(err);
           });
       }
     );
