@@ -1,6 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ReviewJSX from "./Review.jsx";
+import { v4 as uuidv4 } from "uuid";
 import { withRouter } from "react-router-dom";
+import { withFirebase } from "../../Firebase";
+import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes";
 
 const Review = (props) => {
@@ -184,6 +187,45 @@ const Review = (props) => {
       { key: 76, label: "20+ DPT", viewing: false },
     ];
   };
+
+  const handleUpload = async () => {
+    const uid = props.firebase.currentUserUID();
+    const firestore = props.firebase.getFirestore();
+    const uuid = uuidv4();
+
+    const uploadTask = props.firebase
+      .getStorage()
+      .child(`/Tests/${uid}/${uuid}`)
+      .putString(props.url, "data_url");
+    // .then(function (snapshot) {
+    //   console.log("Uploaded a base64url string!");
+    // });
+
+    await uploadTask.on(
+      "state_changed",
+      null,
+      (error) => {
+        // setOnError(true);
+      },
+      () => {
+        props.firebase
+          .getStorage()
+          .child(`/Tests/${uid}/${uuid}`)
+          .getDownloadURL()
+          .then((url) => {
+            alert(url);
+            // firestore
+            //   .doc("Users/" + uid)
+            //   .update({
+            //     profile_pic: url,
+            //   })
+            //   .catch((err) => {
+            //     // setOnError(true);
+            //   });
+          });
+      }
+    );
+  };
   useEffect(() => {
     if (addTopic) {
       let updatedTopics = [];
@@ -229,10 +271,13 @@ const Review = (props) => {
       chipData={chipData}
       handleChipSelection={handleChipSelection}
       handleChipDeletion={handleChipDeletion}
+      handleUpload={handleUpload}
       mountUpload={mountUpload}
       url={props.url}
     />
   );
 };
 
-export default withRouter(Review);
+const ComposedReview = compose(withRouter)(Review);
+
+export default withFirebase(ComposedReview);

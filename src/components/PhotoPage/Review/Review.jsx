@@ -140,6 +140,7 @@ const ReviewJSX = (props) => {
             className={classes.fab}
             variant="extended"
             color={"primary"}
+            onClick={props.handleUpload}
           >
             Upload <CloudUploadIcon style={{ marginLeft: "10px" }} />
           </Fab>
