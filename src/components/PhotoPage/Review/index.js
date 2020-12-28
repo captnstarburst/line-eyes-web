@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ReviewJSX from "./Review.jsx";
+import { withRouter } from "react-router-dom";
+import * as ROUTES from "../../constants/routes";
 
 const Review = (props) => {
   const [tagDrawerOpen, setTagDrawerOpen] = useState(true);
@@ -214,6 +216,12 @@ const Review = (props) => {
     }
   }, [addTopic, chipData]);
 
+  useEffect(() => {
+    if (!props.url) {
+      props.history.push(ROUTES.PHOTO);
+    }
+  }, [props.history, props.url]);
+
   return (
     <ReviewJSX
       toggleDrawer={toggleDrawer}
@@ -222,8 +230,9 @@ const Review = (props) => {
       handleChipSelection={handleChipSelection}
       handleChipDeletion={handleChipDeletion}
       mountUpload={mountUpload}
+      url={props.url}
     />
   );
 };
 
-export default Review;
+export default withRouter(Review);

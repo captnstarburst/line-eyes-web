@@ -72,10 +72,10 @@ const ReviewJSX = (props) => {
             <Card className={classes.root}>
               <CardMedia
                 component="img"
-                alt="Contemplative Reptile"
+                alt="pending upload"
                 height="140"
                 image={props.url}
-                title="Contemplative Reptile"
+                title="pending upload"
               />
 
               <CardActions>

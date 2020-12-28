@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
-import AppBar from '../UI/AppBar'
-import Editor from './Editor'
-import Review from './Review'
-import { Switch, Route, withRouter } from 'react-router-dom'
-import { withAuthorization } from '../Session'
-import { compose } from 'recompose'
+import React, { useState } from "react";
+import AppBar from "../UI/AppBar";
+import Editor from "./Editor";
+import Review from "./Review";
+import { Switch, Route, withRouter } from "react-router-dom";
+import { withAuthorization } from "../Session";
+import { compose } from "recompose";
 
-const PhotoPage = props => {
-  const [base64, setBase64] = useState()
+const PhotoPage = (props) => {
+  const [base64, setBase64] = useState();
 
-  const incrementNext = url => {
-    setBase64(url)
-    props.history.push('/upload-photo/review')
-  }
+  const incrementNext = (url) => {
+    setBase64(url);
+    props.history.push("/upload-photo/review");
+  };
 
   return (
     <>
@@ -30,11 +30,11 @@ const PhotoPage = props => {
         />
       </Switch>
     </>
-  )
-}
+  );
+};
 
-const condition = authUser => !!authUser
+const condition = (authUser) => !!authUser;
 
-const ComposedPhoto = compose(withRouter)(PhotoPage)
+const ComposedPhoto = compose(withRouter)(PhotoPage);
 
-export default withAuthorization(condition)(ComposedPhoto)
+export default withAuthorization(condition)(ComposedPhoto);
