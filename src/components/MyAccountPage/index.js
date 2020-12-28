@@ -7,7 +7,7 @@ import Footer from "../UI/Footer";
 import Profile from "../UI/Profile";
 import CenteredTabs from "./Navigation";
 import Stats from "./Stats";
-import { Uploads } from "./Uploads";
+import Uploads from "./Uploads";
 import { Activity } from "./Activity";
 import Settings from "./Settings";
 import useUserDataListener from "../Hooks/useUserDataListener";
@@ -29,7 +29,9 @@ const MyAccountPage = (props) => {
         <Typography component="article" style={{ backgroundColor: "#cfe8fc" }}>
           <Switch>
             <Route path={`/Me/stats`} exact component={Stats} />
-            <Route path={`/Me/uploads`} exact component={Uploads} />
+            <Route path={`/Me/uploads`}>
+              {userData && <Uploads userData={userData} />}
+            </Route>
             <Route path={`/Me/activity`} component={Activity} />
             <Route path={`/Me/settings`}>
               {userData && <Settings userData={userData} />}

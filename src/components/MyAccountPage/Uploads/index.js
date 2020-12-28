@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ActivityCard } from "../../UI/Cards/ActivityCard";
+import { withFirebase } from "../../Firebase";
 
 const useStyles = makeStyles({
   root: {
@@ -10,20 +11,72 @@ const useStyles = makeStyles({
   },
 });
 
-const chipData = [
-  { key: 0, label: "Pregnancy Test" },
-  { key: 1, label: "Clear Blue" },
-  { key: 2, label: "DPO 5" },
-  { key: 3, label: "Ovulation Test" },
-  { key: 4, label: "Help Me, I am trapped in here" },
-];
-
-export const Uploads = (props) => {
+const Uploads = (props) => {
   const classes = useStyles();
+  const firestore = props.firebase.getFirestore();
+  const uid = props.firebase.currentUserUID();
+
+  const [testUploads, setTestUploads] = useState(null);
+
+  const formatTags = (tags) => {
+    let arrOfObjs = tags.map((tag, index) => {
+      return { key: index, label: tag.split("_").join(" ") };
+    });
+
+    console.log(arrOfObjs);
+    return arrOfObjs;
+  };
+
+  const formatDate = (seconds) => {
+    const date = new Date(seconds * 1000);
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, "0");
+    let day = date.getDate().toString().padStart(2, "0");
+
+    return month + "/" + day + "/" + year;
+  };
+  useEffect(() => {
+    let arrOfObjs = [];
+
+    firestore
+      .collection("UploadedTests")
+      .where("uploaded_by", "==", uid)
+      .limit(5)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          arrOfObjs.push({
+            id: doc.id,
+            formattedTags: formatTags(doc.data().tags),
+            formattedDate: formatDate(doc.data().uploaded.seconds),
+            ...doc.data(),
+          });
+        });
+      })
+      .then(() => {
+        setTestUploads(arrOfObjs);
+      })
+      .catch((error) => {});
+  }, [firestore, uid]);
 
   return (
     <section className={classes.root}>
-      <ActivityCard chipData={chipData} />
+      {testUploads && (
+        <>
+          {testUploads.map((tests) => {
+            return (
+              <ActivityCard
+                key={tests.id}
+                uploadData={tests}
+                userData={props.userData}
+              />
+            );
+          })}
+        </>
+      )}
     </section>
   );
 };
+
+export default withFirebase(Uploads);

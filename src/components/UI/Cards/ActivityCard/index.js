@@ -6,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Chips from "../../Chips";
 import Typography from "@material-ui/core/Typography";
-import PregnancyTest from "../../../assets/pregnancy-test.png";
 import DragHandleIcon from "@material-ui/icons/DragHandle";
 import MinimizeIcon from "@material-ui/icons/Minimize";
 import WarningIcon from "@material-ui/icons/Warning";
@@ -62,28 +61,32 @@ export const ActivityCard = (props) => {
           </div>
           <CardMedia
             component="img"
-            alt="Contemplative Reptile"
+            alt={"test " + props.uploadData.file_name}
             height="140"
-            image={PregnancyTest}
-            title="Contemplative Reptile"
+            image={props.uploadData.url}
+            title={"test " + props.uploadData.file_name}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              User Name 10/12/2020
+              {`${props.userData.display_name} ${props.uploadData.formattedDate}`}
             </Typography>
 
-            <Chips chipData={props.chipData} />
+            <Chips chipData={props.uploadData.formattedTags} />
           </CardContent>
           <CardActions>
             <BottomNavigation
-              value={0}
+              // value={0}
               showLabels
               className={classes.navigation}
             >
               <BottomNavigationAction
                 label="Negative"
                 icon={
-                  <Badge color="secondary" badgeContent={1} invisible={false}>
+                  <Badge
+                    color="primary"
+                    badgeContent={props.uploadData.negatives}
+                    invisible={false}
+                  >
                     <MinimizeIcon
                       style={{
                         transform: "rotate(90deg)",
@@ -96,7 +99,11 @@ export const ActivityCard = (props) => {
               <BottomNavigationAction
                 label="Invalid"
                 icon={
-                  <Badge color="secondary" badgeContent={1} invisible={false}>
+                  <Badge
+                    color="primary"
+                    badgeContent={props.uploadData.invalids}
+                    invisible={false}
+                  >
                     {" "}
                     <WarningIcon />
                   </Badge>
@@ -105,7 +112,11 @@ export const ActivityCard = (props) => {
               <BottomNavigationAction
                 label="Positive"
                 icon={
-                  <Badge color="secondary" badgeContent={1} invisible={false}>
+                  <Badge
+                    color="primary"
+                    badgeContent={props.uploadData.positives}
+                    invisible={false}
+                  >
                     <DragHandleIcon style={{ transform: "rotate(90deg)" }} />
                   </Badge>
                 }
