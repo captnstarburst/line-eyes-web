@@ -62,8 +62,8 @@ export const CurrentTest = (props) => {
 
   return (
     <Paper elevation={3} variant="outlined">
-      {props.tests && (
-        <Zoom in={props.tests} {...{ timeout: 500 }} unmountOnExit>
+      {props.tests && props.tests[0] && (
+        <Zoom in={props.tests[0]} {...{ timeout: 500 }} unmountOnExit>
           <Card className={classes.root}>
             <CardMedia
               style={{ width: "500px" }}

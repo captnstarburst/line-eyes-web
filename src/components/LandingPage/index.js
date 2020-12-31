@@ -245,6 +245,7 @@ const Landing = (props) => {
         setTests(arrObjects);
       })
       .catch((err) => {
+        alert(err);
         // console.log("Error getting documents: ", error);
       });
   }, [firestore]);
