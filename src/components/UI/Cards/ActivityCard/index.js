@@ -18,6 +18,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { withFirebase } from "../../../Firebase";
 
 const useStyles = makeStyles({
   root: {
@@ -28,35 +29,73 @@ const useStyles = makeStyles({
   },
 });
 
-export const ActivityCard = (props) => {
+const ActivityCard = (props) => {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
+  const handleMenuOpenClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuOptionClick = () => {
+    if (props.owner) {
+      handleDelete();
+      handleClose();
+    } else {
+    }
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleDelete = () => {
+    const storageRef = props.firebase.getStorage();
+    const uid = props.firebase.currentUserUID();
+    const testRef = storageRef.child(
+      "Tests/" + uid + "/" + props.uploadData.file_name
+    );
+
+    // Delete the file
+    testRef
+      .delete()
+      .then(() => {
+        props.onImageDelete();
+      })
+      .catch((err) => {
+        // Uh-oh, an error occurred!
+      });
+  };
+
   return (
     <Fade in={true} {...{ timeout: 1000 }}>
-      <Paper elevation={3} variant="outlined">
+      <Paper
+        elevation={0}
+        style={{
+          backgroundColor: "#cfe8fc",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Card className={classes.root}>
           <div style={{ display: "flex", justifyContent: "end" }}>
-            <IconButton aria-label="settings" onClick={handleClick}>
+            <IconButton
+              aria-label="image options"
+              onClick={handleMenuOpenClick}
+            >
               <MoreHorizIcon />
             </IconButton>
             <Menu
-              id="simple-menu"
+              id="image_menu"
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Report Image</MenuItem>
+              <MenuItem onClick={handleMenuOptionClick}>
+                {props.owner ? "Delete" : "Report Image"}
+              </MenuItem>
             </Menu>
           </div>
           <CardMedia
@@ -128,3 +167,5 @@ export const ActivityCard = (props) => {
     </Fade>
   );
 };
+
+export default withFirebase(ActivityCard);

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { ActivityCard } from "../../UI/Cards/ActivityCard";
+import ActivityCard from "../../UI/Cards/ActivityCard";
 import { withFirebase } from "../../Firebase";
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     paddingTop: "50px",
   },
@@ -34,6 +35,19 @@ const Uploads = (props) => {
     let day = date.getDate().toString().padStart(2, "0");
 
     return month + "/" + day + "/" + year;
+  };
+
+  const onImageDeletion = (id) => {
+    let selectedIndex = 0;
+    let uploadCopy = [...testUploads];
+
+    testUploads.forEach((test, index) => {
+      if (test.id === id) selectedIndex = index;
+    });
+
+    uploadCopy.splice(selectedIndex, selectedIndex + 1);
+
+    setTestUploads(uploadCopy);
   };
   useEffect(() => {
     let arrOfObjs = [];
@@ -64,12 +78,14 @@ const Uploads = (props) => {
     <section className={classes.root}>
       {testUploads && (
         <>
-          {testUploads.map((tests) => {
+          {testUploads.map((test) => {
             return (
               <ActivityCard
-                key={tests.id}
-                uploadData={tests}
+                key={test.id}
+                uploadData={test}
                 userData={props.userData}
+                onImageDelete={onImageDeletion}
+                owner
               />
             );
           })}
