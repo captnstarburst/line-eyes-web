@@ -9,6 +9,7 @@ import * as ROUTES from "../constants/routes";
 const Landing = (props) => {
   const firestore = props.firebase.getFirestore();
   const [tagDrawerOpen, setTagDrawerOpen] = useState(true);
+  const [selection, setSelection] = useState(null);
 
   const [chipData, setChipData] = useState([
     [
@@ -30,6 +31,7 @@ const Landing = (props) => {
     []
   );
 
+  const propagateSelection = (selected) => setSelection(selected);
   const handleChipSelection = (id) => {
     let indices = [];
     let dataCopy = [...chipData];
@@ -255,6 +257,8 @@ const Landing = (props) => {
       toggleDrawer={toggleDrawer}
       handleChipDeletion={handleChipDeletion}
       handleRouteToPhotoPage={handleRouteToPhotoPage}
+      propagateSelection={propagateSelection}
+      selection={selection}
       tests={tests}
     />
   );

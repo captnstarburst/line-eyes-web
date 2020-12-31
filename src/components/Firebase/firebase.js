@@ -83,6 +83,9 @@ class Firebase {
       .get()
       .then((doc) => {
         return doc.data().role;
+      })
+      .catch((err) => {
+        return "";
       });
 
     return role;
