@@ -76,6 +76,7 @@ class Dragger extends React.Component {
               positionX={deltaPosition.x.toFixed(0)}
               positionY={deltaPosition.y.toFixed(0)}
               programmaticallyMoveCard={this.programmaticallyMoveCard}
+              tests={this.props.tests}
             />
           </div>
         </Draggable>
