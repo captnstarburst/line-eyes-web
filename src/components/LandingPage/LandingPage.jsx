@@ -10,6 +10,8 @@ import { Toast } from "../UI/Toasts/UndoToast";
 import Chips from "../UI/Chips";
 import AppBar from "../UI/AppBar";
 import TagDrawerJSX from "../UI/TagDrawer/TagDrawer.jsx";
+import LoadingCard from "../UI/Cards/LoadingCard";
+import NoMoreCard from "../UI/Cards/NoMoreCard";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,13 +53,20 @@ const LandingPageJSX = (props) => {
             deletable
             propagateChipDeletion={props.handleChipDeletion}
           />
-          <div style={{ position: "relative" }}>
-            {/* THATS IT FOR NOW */}
-            <Dragger
-              propagateSelection={props.propagateSelection}
-              tests={props.tests}
-            />
-          </div>
+          {props.loading ? (
+            <LoadingCard />
+          ) : !props.noMoreTests && props.tests[0] ? (
+            <div style={{ position: "relative" }}>
+              <Dragger
+                propagateSelection={props.propagateSelection}
+                loading={props.loading}
+                tests={props.tests}
+              />
+            </div>
+          ) : (
+            <NoMoreCard />
+          )}
+
           <Toast userSelection={props.selection} />
           <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
             <Fab

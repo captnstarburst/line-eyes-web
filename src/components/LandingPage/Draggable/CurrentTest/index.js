@@ -61,70 +61,70 @@ export const CurrentTest = (props) => {
   };
 
   return (
-    <Paper elevation={3} variant="outlined">
-      {props.tests && props.tests[0] && (
-        <Zoom in={props.tests[0]} {...{ timeout: 500 }} unmountOnExit>
-          <Card className={classes.root}>
-            <CardMedia
-              style={{ width: "500px" }}
-              component="img"
-              alt="Current Test"
-              height="200"
-              image={props.tests[0].url}
-              title="Current Test"
-              draggable="false"
-            />
-            <IconButton
-              aria-label="settings"
-              style={{ position: "absolute", top: "5px", right: "10px" }}
-              onClick={handleClick}
+    <Paper
+      elevation={3}
+      variant={"outlined"}
+      style={{ backgroundColor: "#cfe8fc" }}
+    >
+      <Zoom in={props.tests[0]} {...{ timeout: 500 }} unmountOnExit>
+        <Card className={classes.root}>
+          <CardMedia
+            style={{ width: "500px", objectFit: "fill" }}
+            component="img"
+            alt="Current Test"
+            height="200"
+            image={props.tests[0].url}
+            title="Current Test"
+            draggable="false"
+          />
+          <IconButton
+            aria-label="settings"
+            style={{ position: "absolute", top: "5px", right: "10px" }}
+            onClick={handleClick}
+          >
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Report Image</MenuItem>
+          </Menu>
+          <CardActions>
+            <BottomNavigation
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+              showLabels
+              className={classes.navigation}
             >
-              <MoreHorizIcon />
-            </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Report Image</MenuItem>
-            </Menu>
-            <CardActions>
-              <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                showLabels
-                className={classes.navigation}
-              >
-                <BottomNavigationAction
-                  label="Negative"
-                  icon={
-                    <MinimizeIcon
-                      style={{ transform: "rotate(90deg)", marginLeft: "10%" }}
-                    />
-                  }
-                  onClick={() => props.programmaticallyMoveCard("negative")}
-                />
-                <BottomNavigationAction
-                  label="Invalid"
-                  icon={<WarningIcon />}
-                  onClick={() => props.programmaticallyMoveCard("invalid")}
-                />
-                <BottomNavigationAction
-                  label="Positive"
-                  icon={
-                    <DragHandleIcon style={{ transform: "rotate(90deg)" }} />
-                  }
-                  onClick={() => props.programmaticallyMoveCard("positive")}
-                />
-              </BottomNavigation>
-            </CardActions>
-          </Card>
-        </Zoom>
-      )}
+              <BottomNavigationAction
+                label="Negative"
+                icon={
+                  <MinimizeIcon
+                    style={{ transform: "rotate(90deg)", marginLeft: "10%" }}
+                  />
+                }
+                onClick={() => props.programmaticallyMoveCard("negative")}
+              />
+              <BottomNavigationAction
+                label="Invalid"
+                icon={<WarningIcon />}
+                onClick={() => props.programmaticallyMoveCard("invalid")}
+              />
+              <BottomNavigationAction
+                label="Positive"
+                icon={<DragHandleIcon style={{ transform: "rotate(90deg)" }} />}
+                onClick={() => props.programmaticallyMoveCard("positive")}
+              />
+            </BottomNavigation>
+          </CardActions>
+        </Card>
+      </Zoom>
     </Paper>
   );
 };

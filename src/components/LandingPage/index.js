@@ -8,6 +8,8 @@ import * as ROUTES from "../constants/routes";
 
 const Landing = (props) => {
   const firestore = props.firebase.getFirestore();
+  const uid = props.firebase.currentUserUID();
+
   const [tagDrawerOpen, setTagDrawerOpen] = useState(true);
   const [selection, setSelection] = useState(null);
 
@@ -21,6 +23,8 @@ const Landing = (props) => {
 
   const [addTopic, setAddTopic] = useState(null);
   const [tests, setTests] = useState(null);
+  const [noMoreTests, setNoMoreTests] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleRouteToPhotoPage = () => {
     props.history.push(ROUTES.PHOTO);
@@ -31,7 +35,9 @@ const Landing = (props) => {
     []
   );
 
-  const propagateSelection = (selected) => setSelection(selected);
+  const propagateSelection = (selected) => {
+    setSelection(selected);
+  };
   const handleChipSelection = (id) => {
     let indices = [];
     let dataCopy = [...chipData];
@@ -225,14 +231,24 @@ const Landing = (props) => {
   }, [addTopic, chipData]);
 
   useEffect(() => {
+    let selectionArr = [];
+
+    chipData.forEach((topic) => {
+      topic.forEach((item) => {
+        if (item.viewing) {
+          selectionArr.push(item.label);
+        }
+      });
+    });
+
     firestore
       .collection("UploadedTests")
-      .where("tags", "array-contains-any", ["Pregnancy_Test"])
-      .limit(5)
+      .where("uploaded_by", "!=", uid)
+      .where("tags", "array-contains-any", selectionArr)
+      .limit(1)
       .get()
       .then((querySnapshot) => {
         let arrObjects = [];
-
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
@@ -241,14 +257,20 @@ const Landing = (props) => {
         return arrObjects;
       })
       .then((arrObjects) => {
+        if (arrObjects) {
+          setTests(arrObjects);
+        } else {
+          setNoMoreTests(true);
+        }
         console.log(arrObjects);
-        setTests(arrObjects);
+
+        setLoading(false);
       })
       .catch((err) => {
         alert(err);
         // console.log("Error getting documents: ", error);
       });
-  }, [firestore]);
+  }, [chipData, firestore, uid]);
 
   return (
     <LandingPageJSX
@@ -261,6 +283,8 @@ const Landing = (props) => {
       propagateSelection={propagateSelection}
       selection={selection}
       tests={tests}
+      loading={loading}
+      noMoreTests={noMoreTests}
     />
   );
 };

@@ -73,7 +73,7 @@ const ReviewJSX = (props) => {
               <CardMedia
                 component="img"
                 alt="pending upload"
-                height="140"
+                height="200"
                 image={props.url}
                 title="pending upload"
               />

@@ -101,9 +101,10 @@ const ActivityCard = (props) => {
           <CardMedia
             component="img"
             alt={"test " + props.uploadData.file_name}
-            height="140"
+            height="200"
             image={props.uploadData.url}
             title={"test " + props.uploadData.file_name}
+            style={{ objectFit: "fill" }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
