@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   logInContainer: {
     height: "auto",
     marginTop: "5vh",
+    minWidth: "500px",
     maxWidth: "70vw",
   },
 }));
