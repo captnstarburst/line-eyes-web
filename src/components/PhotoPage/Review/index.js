@@ -212,28 +212,24 @@ const Review = (props) => {
         // setOnError(true);
       },
       () => {
+        const functions = props.firebase.useFunctions();
+        const TestImageUploaded = functions.httpsCallable("TestImageUploaded");
+
         props.firebase
           .getStorage()
           .child(`/Tests/${uid}/${uuid}`)
           .getDownloadURL()
           .then((url) => {
-            return firestore.collection("UploadedTests/").add({
-              file_name: uuid,
-              invalids: 0,
-              negatives: 0,
-              positives: 0,
-              reported: false,
-              tags,
-              uploaded: props.firebase.timestampFrom(new Date()),
-              uploaded_by: uid,
-              url,
-            });
+            return TestImageUploaded({ uuid, tags, uid, url });
           })
-          .then(() => {
+          .then((result) => {
+            console.log(result);
+            if (!result.data.outcome) throw new Error(result.data.message);
             props.history.push(ROUTES.My_Account + "/uploads");
           })
           .catch((err) => {
-            // console.log(err);
+            // alert(err);
+            console.log(err);
           });
       }
     );

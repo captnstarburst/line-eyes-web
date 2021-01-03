@@ -95,6 +95,14 @@ class Firebase {
     date.setDate(date.getDate() + 1);
     return app.firestore.Timestamp.fromDate(date);
   }
+
+  incrementCount() {
+    return app.firestore.FieldValue.increment(1);
+  }
+
+  decrementCount() {
+    return app.firestore.FieldValue.increment(-1);
+  }
 }
 
 export default Firebase;

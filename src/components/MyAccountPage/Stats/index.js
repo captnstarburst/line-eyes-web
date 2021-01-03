@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Grow from "@material-ui/core/Grow";
 import PieChart from "./PieChart";
-import NoMoreCard from "../../UI/Cards/NoMoreCard";
+// import NoMoreCard from "../../UI/Cards/NoMoreCard";
 import { withFirebase } from "../../Firebase";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,18 +21,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Stats = (props) => {
+  const firestore = props.firebase.getFirestore();
+  const uid = props.firebase.currentUserUID();
+
   const [uploadedNumber, setUploadedNumber] = useState(0);
   const [testsReviewed, setTestsReviewed] = useState(0);
   const [latestResults, setLatestResults] = useState([
-    { name: "invalid", value: 600 },
-    { name: "negative", value: 200 },
-    { name: "positive", value: 300 },
+    { name: "invalid", value: 0 },
+    { name: "negative", value: 0 },
+    { name: "positive", value: 0 },
   ]);
 
   useEffect(() => {
-    const firestore = props.firebase.getFirestore();
-    const uid = props.firebase.currentUserUID();
-
     firestore
       .doc("Stats/" + uid)
       .get()
@@ -48,7 +48,29 @@ const Stats = (props) => {
       .catch((err) => {
         //handle Erro
       });
-  }, [props.firebase]);
+  }, [firestore, uid]);
+
+  useEffect(() => {
+    firestore
+      .collection("UploadedTests")
+      .where("uploaded_by", "==", uid)
+      .orderBy("uploaded", "asc")
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach(function (doc) {
+          setLatestResults([
+            { name: "invalid", value: doc.data().invalids },
+            { name: "negative", value: doc.data().negatives },
+            { name: "positive", value: doc.data().positives },
+          ]);
+        });
+      })
+      .catch((err) => {
+        alert(err);
+        // console.log("Error getting documents: ", error);
+      });
+  }, [firestore, uid]);
 
   const classes = useStyles();
 
@@ -118,8 +140,7 @@ const Stats = (props) => {
               >
                 Most Recent Upload
               </Typography>
-              {/* <PieChart results={latestResults} /> */}
-              <NoMoreCard />
+              <PieChart results={latestResults} />
             </Paper>
           </Grow>
         </Grid>

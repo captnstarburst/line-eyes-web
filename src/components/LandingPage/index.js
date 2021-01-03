@@ -36,6 +36,21 @@ const Landing = (props) => {
   );
 
   const propagateSelection = (selected) => {
+    firestore
+      .doc("UploadedTests/" + tests[0].docId)
+      .collection("responses")
+      .doc(uid)
+      .set({
+        response: selected,
+      })
+      .catch((err) => {
+        //handle error
+      });
+
+    firestore
+      .doc("UploadedTests/" + tests[0].docId)
+      .update({ [selected + "s"]: props.firebase.incrementCount() });
+
     setSelection(selected);
   };
   const handleChipSelection = (id) => {
