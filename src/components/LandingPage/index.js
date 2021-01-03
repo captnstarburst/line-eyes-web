@@ -25,6 +25,7 @@ const Landing = (props) => {
   const [tests, setTests] = useState(null);
   const [noMoreTests, setNoMoreTests] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reported, setReported] = useState(false);
 
   const handleRouteToPhotoPage = () => {
     props.history.push(ROUTES.PHOTO);
@@ -211,6 +212,21 @@ const Landing = (props) => {
     ];
   };
 
+  const handleReportImage = () => {
+    const functions = props.firebase.useFunctions();
+    const ReportImage = functions.httpsCallable("ReportImage");
+
+    ReportImage({ docId: tests[0].docId })
+      .then((result) => {
+        if (!result.data.outcome) throw new Error("error reporting image");
+
+        setReported(true);
+      })
+      .catch((err) => {
+        //handle error
+      });
+  };
+
   useEffect(() => {
     if (addTopic) {
       let updatedTopics = [];
@@ -254,6 +270,7 @@ const Landing = (props) => {
 
     firestore
       .collection("UploadedTests")
+      .where("reported", "==", false)
       .where("uploaded_by", "!=", uid)
       .where("tags", "array-contains-any", selectionArr)
       .limit(1)
@@ -290,9 +307,11 @@ const Landing = (props) => {
       tagDrawerOpen={tagDrawerOpen}
       toggleDrawer={toggleDrawer}
       handleChipDeletion={handleChipDeletion}
+      handleReportImage={handleReportImage}
       handleRouteToPhotoPage={handleRouteToPhotoPage}
       propagateSelection={propagateSelection}
       selection={selection}
+      reported={reported}
       tests={tests}
       loading={loading}
       noMoreTests={noMoreTests}

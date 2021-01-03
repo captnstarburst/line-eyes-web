@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Dragger from "./Draggable";
 import { Toast } from "../UI/Toasts/UndoToast";
+import { ReportToast } from "../UI/Toasts/ReportToast";
 import Chips from "../UI/Chips";
 import AppBar from "../UI/AppBar";
 import TagDrawerJSX from "../UI/TagDrawer/TagDrawer.jsx";
@@ -59,6 +60,7 @@ const LandingPageJSX = (props) => {
             <div style={{ position: "relative" }}>
               <Dragger
                 propagateSelection={props.propagateSelection}
+                handleReportImage={props.handleReportImage}
                 loading={props.loading}
                 tests={props.tests}
               />
@@ -66,8 +68,8 @@ const LandingPageJSX = (props) => {
           ) : (
             <NoMoreCard />
           )}
-
           <Toast userSelection={props.selection} />
+          <ReportToast reported={props.reported} />
           <Zoom in={true} {...{ timeout: 500 }} unmountOnExit>
             <Fab
               aria-label={"Add Photo"}

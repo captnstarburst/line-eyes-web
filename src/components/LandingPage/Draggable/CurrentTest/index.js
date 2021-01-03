@@ -57,6 +57,7 @@ export const CurrentTest = (props) => {
   };
 
   const handleClose = () => {
+    props.handleReportImage();
     setAnchorEl(null);
   };
 
