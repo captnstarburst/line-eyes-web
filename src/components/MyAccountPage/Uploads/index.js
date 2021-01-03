@@ -55,6 +55,7 @@ const Uploads = (props) => {
     firestore
       .collection("UploadedTests")
       .where("uploaded_by", "==", uid)
+      .orderBy("uploaded", "asc")
       .limit(5)
       .get()
       .then((querySnapshot) => {
