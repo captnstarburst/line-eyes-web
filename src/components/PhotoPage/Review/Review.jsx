@@ -17,6 +17,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardMedia from "@material-ui/core/CardMedia";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import TagDrawerJSX from "../../UI/TagDrawer/TagDrawer.jsx";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Chips from "../../UI/Chips";
 
 const useStyles = makeStyles((theme) => ({
@@ -141,8 +142,14 @@ const ReviewJSX = (props) => {
             variant="extended"
             color={"primary"}
             onClick={props.handleUpload}
+            disabled={props.uploading}
           >
-            Upload <CloudUploadIcon style={{ marginLeft: "10px" }} />
+            Upload{" "}
+            {props.uploading ? (
+              <CircularProgress style={{ marginLeft: "10px" }} />
+            ) : (
+              <CloudUploadIcon style={{ marginLeft: "10px" }} />
+            )}
           </Fab>
         </Zoom>
       </Typography>

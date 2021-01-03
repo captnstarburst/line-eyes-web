@@ -19,6 +19,7 @@ const Review = (props) => {
 
   const [addTopic, setAddTopic] = useState(null);
   const [mountUpload, setMountUpload] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const toggleDrawer = useCallback(() => {
     setTagDrawerOpen((prevState) => !prevState);
@@ -190,8 +191,8 @@ const Review = (props) => {
 
   const handleUpload = async () => {
     const uid = props.firebase.currentUserUID();
-    const firestore = props.firebase.getFirestore();
     const uuid = uuidv4();
+    setUploading(true);
 
     let tags = [];
     chipData.forEach((topicArrays, topicIndex) => {
@@ -282,6 +283,7 @@ const Review = (props) => {
       handleUpload={handleUpload}
       mountUpload={mountUpload}
       url={props.url}
+      uploading={uploading}
     />
   );
 };

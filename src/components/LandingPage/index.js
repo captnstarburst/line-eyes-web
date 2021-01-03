@@ -47,10 +47,6 @@ const Landing = (props) => {
         //handle error
       });
 
-    firestore
-      .doc("UploadedTests/" + tests[0].docId)
-      .update({ [selected + "s"]: props.firebase.incrementCount() });
-
     setSelection(selected);
   };
   const handleChipSelection = (id) => {
