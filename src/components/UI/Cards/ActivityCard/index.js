@@ -76,6 +76,7 @@ const ActivityCard = (props) => {
           backgroundColor: "#cfe8fc",
           display: "flex",
           justifyContent: "center",
+          marginBottom: "50px",
         }}
       >
         <Card className={classes.root}>
