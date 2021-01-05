@@ -94,10 +94,10 @@ const Settings = (props) => {
   }, [firestore, uid]);
 
   useEffect(() => {
-    clearInterval(timer.current);
+    clearTimeout(timer.current);
 
     if (userUpdatedInfo) {
-      timer.current = setInterval(() => {
+      timer.current = setTimeout(() => {
         const birthdayRef = firestore.doc("Birthdays/" + uid);
         const notificationRef = firestore.doc("Notifications/" + uid);
         const userRef = firestore.doc("Users/" + uid);
@@ -135,7 +135,7 @@ const Settings = (props) => {
     }
 
     return () => {
-      clearInterval(timer.current);
+      clearTimeout(timer.current);
     };
   }, [
     firestore,
@@ -151,50 +151,50 @@ const Settings = (props) => {
   ]);
 
   useEffect(() => {
-    clearInterval(emailTimer.current);
+    clearTimeout(emailTimer.current);
 
     if (
       userUpdateEmail &&
       EmailValidator(userInfo.email) &&
       userInfo.email !== userInfo.currentEmail
     ) {
-      emailTimer.current = setInterval(() => {
+      emailTimer.current = setTimeout(() => {
         setMountReAuth(true);
         setUserUpdateEmail(false);
       }, 2500);
     }
 
     return () => {
-      clearInterval(emailTimer.current);
+      clearTimeout(emailTimer.current);
     };
   }, [userInfo.currentEmail, userInfo.email, userUpdateEmail]);
 
   useEffect(() => {
-    clearInterval(emailTimer.current);
+    clearTimeout(emailTimer.current);
 
     if (
       userUpdateEmail &&
       EmailValidator(userInfo.email) &&
       userInfo.email !== userInfo.currentEmail
     ) {
-      emailTimer.current = setInterval(() => {
+      emailTimer.current = setTimeout(() => {
         setMountReAuth(true);
       }, 2500);
     }
 
     return () => {
-      clearInterval(emailTimer.current);
+      clearTimeout(emailTimer.current);
     };
   }, [userInfo.currentEmail, userInfo.email, userUpdateEmail]);
 
   useEffect(() => {
-    clearInterval(displayNameTimer.current);
+    clearTimeout(displayNameTimer.current);
 
     if (
       userUpdateDisplayName &&
       userInfo.display_name !== userInfo.currentDisplayName
     ) {
-      displayNameTimer.current = setInterval(() => {
+      displayNameTimer.current = setTimeout(() => {
         firestore
           .collection("DisplayNames")
           .where("display_name", "==", userInfo.display_name)
@@ -207,7 +207,7 @@ const Settings = (props) => {
     }
 
     return () => {
-      clearInterval(displayNameTimer.current);
+      clearTimeout(displayNameTimer.current);
     };
   }, [
     firestore,
