@@ -43,6 +43,8 @@ const ActivityCard = (props) => {
       handleDelete();
       handleClose();
     } else {
+      props.handleReportImage(props.uploadData.id);
+      handleClose();
     }
   };
 
@@ -80,25 +82,28 @@ const ActivityCard = (props) => {
         }}
       >
         <Card className={classes.root}>
-          <div style={{ display: "flex", justifyContent: "end" }}>
-            <IconButton
-              aria-label="image options"
-              onClick={handleMenuOpenClick}
-            >
-              <MoreHorizIcon />
-            </IconButton>
-            <Menu
-              id="image_menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleMenuOptionClick}>
-                {props.owner ? "Delete" : "Report Image"}
-              </MenuItem>
-            </Menu>
-          </div>
+          {!props.uploadData.reported && (
+            <div style={{ display: "flex", justifyContent: "end" }}>
+              <IconButton
+                aria-label="image options"
+                onClick={handleMenuOpenClick}
+              >
+                <MoreHorizIcon />
+              </IconButton>
+              <Menu
+                id="image_menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleMenuOptionClick}>
+                  {props.owner ? "Delete" : "Report Image"}
+                </MenuItem>
+              </Menu>
+            </div>
+          )}
+
           <CardMedia
             component="img"
             alt={

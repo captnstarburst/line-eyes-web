@@ -8,7 +8,7 @@ import Profile from "../UI/Profile";
 import CenteredTabs from "./Navigation";
 import Stats from "./Stats";
 import Uploads from "./Uploads";
-import { Activity } from "./Activity";
+import Activity from "./Activity";
 import Settings from "./Settings";
 import useUserDataListener from "../Hooks/useUserDataListener";
 import { withAuthorization } from "../Session";
