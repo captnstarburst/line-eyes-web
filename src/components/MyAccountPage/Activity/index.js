@@ -67,7 +67,7 @@ const Activity = (props) => {
   useEffect(() => {
     firestore
       .collection("ActivityFeed/" + uid + "/History")
-      .orderBy("responded", "asc")
+      .orderBy("responded", "desc")
       .limit(5)
       .get()
       .then((querySnapshot) => {

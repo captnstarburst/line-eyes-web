@@ -55,7 +55,7 @@ const Uploads = (props) => {
     firestore
       .collection("UploadedTests")
       .where("uploaded_by", "==", uid)
-      .orderBy("uploaded", "asc")
+      .orderBy("uploaded", "desc")
       .limit(5)
       .get()
       .then((querySnapshot) => {
@@ -72,7 +72,9 @@ const Uploads = (props) => {
       .then(() => {
         setTestUploads(arrOfObjs);
       })
-      .catch((error) => {});
+      .catch((err) => {
+        alert(err);
+      });
   }, [firestore, uid]);
 
   return (

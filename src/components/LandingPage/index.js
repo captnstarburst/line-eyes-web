@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import LandingPageJSX from "./LandingPage";
 import { withAuthorization } from "../Session";
 import { withRouter } from "react-router-dom";
@@ -9,6 +9,7 @@ import * as ROUTES from "../constants/routes";
 const Landing = (props) => {
   const firestore = props.firebase.getFirestore();
   const uid = props.firebase.currentUserUID();
+  const timer = useRef(null);
 
   const [tagDrawerOpen, setTagDrawerOpen] = useState(true);
   const [selection, setSelection] = useState(null);
@@ -26,6 +27,8 @@ const Landing = (props) => {
   const [noMoreTests, setNoMoreTests] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reported, setReported] = useState(false);
+  const [getTests, setGetTests] = useState(false);
+  const [lastResponse, setLastResponse] = useState(null);
 
   const handleRouteToPhotoPage = () => {
     props.history.push(ROUTES.PHOTO);
@@ -258,6 +261,15 @@ const Landing = (props) => {
   }, [addTopic, chipData]);
 
   useEffect(() => {
+    /*
+      Check if user has already reviewed the most recent test based on the current selected tags.
+      If no tests are found or if the user has responded to the most recent test show no more.
+      Else setGetMore Tests
+    */
+    alert("tag change");
+    setLoading(true);
+    setGetTests(false);
+
     let selectionArr = [];
 
     chipData.forEach((topic) => {
@@ -268,37 +280,189 @@ const Landing = (props) => {
       });
     });
 
-    firestore
-      .collection("UploadedTests")
-      .where("reported", "==", false)
-      .where("uploaded_by", "!=", uid)
-      .where("tags", "array-contains-any", selectionArr)
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        let arrObjects = [];
-        querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          arrObjects.push({ docId: doc.id, url: doc.data().url });
-        });
-        return arrObjects;
-      })
-      .then((arrObjects) => {
-        if (arrObjects) {
-          setTests(arrObjects);
-        } else {
-          setNoMoreTests(true);
-        }
-        console.log(arrObjects);
+    if (!selectionArr) {
+      setNoMoreTests(true);
+      setLoading(false);
+    } else {
+      firestore
+        .collection("UploadedTests")
+        .orderBy("uploaded_by", "desc")
+        .orderBy("uploaded", "desc")
+        .where("reported", "==", false)
+        .where("uploaded_by", "!=", uid)
+        .where("tags", "array-contains-any", selectionArr)
+        .limit(1)
+        .get()
+        .then((querySnapshot) => {
+          // let arrObjects = [];
+          // querySnapshot.forEach(function (doc) {
+          //   // doc.data() is never undefined for query doc snapshots
+          //   console.log(doc.id, " => ", doc.data());
+          //   arrObjects.push({ docId: doc.id, url: doc.data().url });
+          // });
+          // return arrObjects;
+          let docId = "";
+          querySnapshot.forEach(function (doc) {
+            docId = doc.id;
+          });
 
-        setLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-        // console.log("Error getting documents: ", error);
-      });
+          return docId;
+        })
+        .then((docId) => {
+          alert("tag change, docId: " + docId);
+          if (!docId) return;
+
+          return firestore
+            .doc("UploadedTests/" + docId + "/responses/" + uid)
+            .get();
+        })
+        .then((responseDoc) => {
+          alert("tag change, responseDoc: " + responseDoc);
+          alert(typeof responseDoc === "undefined");
+
+          if (typeof responseDoc === "undefined") {
+            setNoMoreTests(true);
+            setLoading(false);
+          } else if (responseDoc.exists || !responseDoc) {
+            setNoMoreTests(true);
+            setLoading(false);
+          } else {
+            setGetTests(true);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+          // console.log("Error getting documents: ", error);
+        });
+    }
   }, [chipData, firestore, uid]);
+
+  useEffect(() => {
+    //Get last responded test by user based on the current tags
+
+    if (getTests) {
+      alert("get last test ");
+      let selectionArr = [];
+
+      chipData.forEach((topic) => {
+        topic.forEach((item) => {
+          if (item.viewing) {
+            selectionArr.push(item.label);
+          }
+        });
+      });
+
+      firestore
+        .collection("ActivityFeed/" + uid + "/History")
+        .orderBy("responded", "desc")
+        .where("tags", "array-contains-any", selectionArr)
+        .limit(1)
+        .get()
+        .then((querySnapshot) => {
+          let uploaded = 1;
+          querySnapshot.forEach(function (doc) {
+            uploaded = doc.data().uploaded;
+          });
+
+          alert("get last test : " + uploaded);
+          return uploaded;
+        })
+        .then((uploaded) => {
+          alert("get last test : " + uploaded);
+          setLastResponse(uploaded);
+          setGetTests(false);
+        })
+        .catch((err) => {
+          setNoMoreTests(true);
+          setLoading(false);
+          setLastResponse(false);
+          setGetTests(false);
+        });
+    }
+  }, [chipData, firestore, getTests, uid]);
+
+  useEffect(() => {
+    if (lastResponse) {
+      alert("getting tests based on lastResponse");
+      let selectionArr = [];
+
+      chipData.forEach((topic) => {
+        topic.forEach((item) => {
+          if (item.viewing) {
+            selectionArr.push(item.label);
+          }
+        });
+      });
+
+      let query;
+
+      if (lastResponse === 1) {
+        query = firestore
+          .collection("UploadedTests")
+          .orderBy("uploaded_by", "asc")
+          .orderBy("uploaded", "asc")
+          .where("uploaded_by", "!=", uid)
+          .where("reported", "==", false)
+          .where("tags", "array-contains-any", selectionArr)
+          .limit(1)
+          .get();
+      } else {
+        query = firestore
+          .collection("UploadedTests")
+          .orderBy("uploaded", "asc")
+          .where("uploaded", ">", lastResponse)
+          .where("reported", "==", false)
+          .where("tags", "array-contains-any", selectionArr)
+          .limit(1)
+          .get();
+      }
+
+      query
+        .then((querySnapshot) => {
+          let arrObjects = [];
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            arrObjects.push({ docId: doc.id, url: doc.data().url });
+          });
+          return arrObjects;
+        })
+        .then((arrObjects) => {
+          if (arrObjects) {
+            setTests(arrObjects);
+          } else {
+            setNoMoreTests(true);
+          }
+
+          setLastResponse(null);
+          setLoading(false);
+        })
+        .catch((err) => {
+          alert(err);
+          setNoMoreTests(true);
+          setLoading(false);
+          setLastResponse(false);
+          setGetTests(false);
+        });
+    }
+  }, [chipData, firestore, lastResponse, uid]);
+
+  useEffect(() => {
+    clearTimeout(timer.current);
+
+    if (selection) {
+      timer.current = setTimeout(() => {
+        const timeStamp = props.firebase.timestampFrom(new Date());
+        setLastResponse(timeStamp);
+        setSelection(false);
+        setLoading(true);
+      }, 1000);
+
+      return () => {
+        clearTimeout(timer.current);
+      };
+    }
+  }, [props.firebase, selection]);
 
   return (
     <LandingPageJSX
