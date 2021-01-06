@@ -87,7 +87,7 @@ const Activity = (props) => {
     if (retrieveTests) {
       setRetrieval(false);
       let arrOfObjs = [...tests];
-      let promises = activities.map(async (docId) => {
+      let promises = activities.map((docId) => {
         return new Promise((resolve, reject) => {
           firestore
             .doc("UploadedTests/" + docId)
@@ -107,8 +107,14 @@ const Activity = (props) => {
                 .get();
             })
             .then((NamesDoc) => {
-              arrOfObjs[arrOfObjs.length - 1] = {
-                ...arrOfObjs[arrOfObjs.length - 1],
+              let index;
+
+              arrOfObjs.forEach((test, i) => {
+                if (test.id === docId) index = i;
+              });
+
+              arrOfObjs[index] = {
+                ...arrOfObjs[index],
                 uploaded_by_display_name: NamesDoc.data().display_name,
               };
             })
@@ -121,7 +127,7 @@ const Activity = (props) => {
         });
       });
 
-      Promise.all(promises).then((values) => {
+      Promise.allSettled(promises).then((values) => {
         setTests(arrOfObjs);
       });
     }
