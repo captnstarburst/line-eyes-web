@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ActivityCard from "../../UI/Cards/ActivityCard";
 import { ReportToast } from "../../UI/Toasts/ReportToast";
 import { withFirebase } from "../../Firebase";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const useStyles = makeStyles({
   root: {
@@ -22,6 +23,7 @@ const Activity = (props) => {
   const [tests, setTests] = useState([]);
   const [retrieveTests, setRetrieval] = useState(false);
   const [reported, setReported] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
 
   const timer = useRef(null);
   const formatTags = (tags) => {
@@ -64,6 +66,38 @@ const Activity = (props) => {
       });
   };
 
+  const fetchMore = () => {
+    if (hasMore) {
+      firestore
+        .collection("ActivityFeed/" + uid + "/History")
+        .orderBy("responded", "desc")
+        .where("responded", "<", activities[activities.length - 1].responded)
+        .limit(5)
+        .get()
+        .then((querySnapshot) => {
+          let activityArr = [...activities];
+
+          querySnapshot.forEach(function (doc) {
+            activityArr.push({
+              docId: doc.id,
+              responded: doc.data().responded,
+            });
+          });
+
+          setActivities(activityArr);
+          setRetrieval(true);
+
+          if (querySnapshot.length < 5) {
+            setHasMore(false);
+          } else {
+            setHasMore(true);
+          }
+        })
+        .catch((error) => {
+          setHasMore(false);
+        });
+    }
+  };
   useEffect(() => {
     firestore
       .collection("ActivityFeed/" + uid + "/History")
@@ -74,56 +108,68 @@ const Activity = (props) => {
         let activityArr = [];
 
         querySnapshot.forEach(function (doc) {
-          activityArr.push(doc.id);
+          activityArr.push({ docId: doc.id, responded: doc.data().responded });
         });
 
         setActivities(activityArr);
         setRetrieval(true);
+
+        if (activityArr.length < 5) {
+          setHasMore(false);
+        } else {
+          setHasMore(true);
+        }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setHasMore(false);
+      });
   }, [firestore, uid]);
 
   useEffect(() => {
     if (retrieveTests) {
       setRetrieval(false);
       let arrOfObjs = [...tests];
-      let promises = activities.map((docId) => {
+      let promises = activities.map((activity, i) => {
         return new Promise((resolve, reject) => {
-          firestore
-            .doc("UploadedTests/" + docId)
-            .get()
-            .then((doc) => {
-              arrOfObjs.push({
-                id: doc.id,
-                formattedTags: formatTags(doc.data().tags),
-                formattedDate: formatDate(doc.data().uploaded.seconds),
-                ...doc.data(),
-              });
-              return doc.data();
-            })
-            .then((testData) => {
-              return firestore
-                .doc("DisplayNames/" + testData.uploaded_by)
-                .get();
-            })
-            .then((NamesDoc) => {
-              let index;
+          if (tests.length && i < tests.length) {
+            resolve();
+          } else {
+            firestore
+              .doc("UploadedTests/" + activity.docId)
+              .get()
+              .then((doc) => {
+                arrOfObjs.push({
+                  id: doc.id,
+                  formattedTags: formatTags(doc.data().tags),
+                  formattedDate: formatDate(doc.data().uploaded.seconds),
+                  ...doc.data(),
+                });
+                return doc.data();
+              })
+              .then((testData) => {
+                return firestore
+                  .doc("DisplayNames/" + testData.uploaded_by)
+                  .get();
+              })
+              .then((NamesDoc) => {
+                let index;
 
-              arrOfObjs.forEach((test, i) => {
-                if (test.id === docId) index = i;
-              });
+                arrOfObjs.forEach((test, i) => {
+                  if (test.id === activity.docId) index = i;
+                });
 
-              arrOfObjs[index] = {
-                ...arrOfObjs[index],
-                uploaded_by_display_name: NamesDoc.data().display_name,
-              };
-            })
-            .then(() => {
-              resolve();
-            })
-            .catch((err) => {
-              reject();
-            });
+                arrOfObjs[index] = {
+                  ...arrOfObjs[index],
+                  uploaded_by_display_name: NamesDoc.data().display_name,
+                };
+              })
+              .then(() => {
+                resolve();
+              })
+              .catch((err) => {
+                reject();
+              });
+          }
         });
       });
 
@@ -150,9 +196,30 @@ const Activity = (props) => {
   return (
     <section className={classes.root}>
       {tests && (
-        <>
+        <InfiniteScroll
+          dataLength={tests.length} //This is important field to render the next data
+          next={fetchMore}
+          hasMore={hasMore}
+          // loader={<h4>Loading...</h4>}
+          // endMessage={
+          //   <p style={{ textAlign: "center" }}>
+          //     <b>Yay! You have seen it all</b>
+          //   </p>
+          // }
+          // below props only if you need pull down functionality
+          // refreshFunction={this.refresh}
+          // pullDownToRefresh
+          // pullDownToRefreshThreshold={50}
+          // pullDownToRefreshContent={
+          //   <h3 style={{ textAlign: "center" }}>
+          //     &#8595; Pull down to refresh
+          //   </h3>
+          // }
+          // releaseToRefreshContent={
+          //   <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+          // }
+        >
           {tests.map((test) => {
-            console.log(test);
             return (
               <ActivityCard
                 key={test.id}
@@ -163,7 +230,7 @@ const Activity = (props) => {
               />
             );
           })}
-        </>
+        </InfiniteScroll>
       )}
       <ReportToast reported={reported} />
     </section>
