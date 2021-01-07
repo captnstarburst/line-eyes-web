@@ -87,7 +87,7 @@ const Activity = (props) => {
           setActivities(activityArr);
           setRetrieval(true);
 
-          if (querySnapshot.length < 5) {
+          if (querySnapshot.size < 5) {
             setHasMore(false);
           } else {
             setHasMore(true);
@@ -114,7 +114,7 @@ const Activity = (props) => {
         setActivities(activityArr);
         setRetrieval(true);
 
-        if (activityArr.length < 5) {
+        if (activityArr.size < 5) {
           setHasMore(false);
         } else {
           setHasMore(true);
@@ -200,24 +200,6 @@ const Activity = (props) => {
           dataLength={tests.length} //This is important field to render the next data
           next={fetchMore}
           hasMore={hasMore}
-          // loader={<h4>Loading...</h4>}
-          // endMessage={
-          //   <p style={{ textAlign: "center" }}>
-          //     <b>Yay! You have seen it all</b>
-          //   </p>
-          // }
-          // below props only if you need pull down functionality
-          // refreshFunction={this.refresh}
-          // pullDownToRefresh
-          // pullDownToRefreshThreshold={50}
-          // pullDownToRefreshContent={
-          //   <h3 style={{ textAlign: "center" }}>
-          //     &#8595; Pull down to refresh
-          //   </h3>
-          // }
-          // releaseToRefreshContent={
-          //   <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
-          // }
         >
           {tests.map((test) => {
             return (
