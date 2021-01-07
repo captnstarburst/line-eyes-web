@@ -451,7 +451,7 @@ const Landing = (props) => {
         clearTimeout(timer.current);
       };
     }
-  }, [props.firebase, selection]);
+  }, [props.firebase, selection, tests]);
 
   return (
     <LandingPageJSX

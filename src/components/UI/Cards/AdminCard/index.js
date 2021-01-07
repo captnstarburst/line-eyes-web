@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -6,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Chips from "../../Chips";
 import Typography from "@material-ui/core/Typography";
-import PregnancyTest from "../../../assets/pregnancy-test.png";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Fade from "@material-ui/core/Fade";
@@ -27,22 +26,45 @@ const useStyles = makeStyles({
 export const AdminCard = (props) => {
   const classes = useStyles();
 
+  const [asyncWork, setAsyncWork] = useState(false);
+
+  const doingAsync = () => setAsyncWork(true);
+
+  const handleDeleteClick = () => {
+    doingAsync();
+    props.markForDeletion(props.test.docId);
+  };
+
+  const handleAllGoodClick = () => {
+    doingAsync();
+    props.markAllGood(props.test.docId);
+  };
+
   return (
     <Fade in={true} {...{ timeout: 1000 }}>
-      <Paper elevation={3} variant="outlined">
+      <Paper
+        elevation={3}
+        variant="outlined"
+        style={{
+          backgroundColor: "#cfe8fc",
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "50px",
+        }}
+      >
         <Card className={classes.root}>
           <CardMedia
             component="img"
-            alt="Contemplative Reptile"
+            alt="reported test"
             height="140"
-            image={PregnancyTest}
-            title="Contemplative Reptile"
+            image={props.test.url}
+            title="reported test"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              User Name 10/12/2020
+              {props.test.uploaded_by} {props.test.uploaded}
             </Typography>
-            <Chips chipData={props.chipData} />
+            <Chips chipData={props.test.chipData} />
           </CardContent>
           <CardActions>
             <BottomNavigation
@@ -53,7 +75,12 @@ export const AdminCard = (props) => {
               <BottomNavigationAction
                 label="Mark For Deletion"
                 icon={
-                  <Button variant="contained" color="secondary">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleDeleteClick}
+                    disabled={asyncWork}
+                  >
                     <DeleteForeverIcon />
                   </Button>
                 }
@@ -62,7 +89,12 @@ export const AdminCard = (props) => {
               <BottomNavigationAction
                 label="All Good"
                 icon={
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAllGoodClick}
+                    disabled={asyncWork}
+                  >
                     <CheckCircleIcon />
                   </Button>
                 }
