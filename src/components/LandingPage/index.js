@@ -266,7 +266,6 @@ const Landing = (props) => {
       If no tests are found or if the user has responded to the most recent test show no more.
       Else setGetMore Tests
     */
-    alert("tag change");
     setLoading(true);
     setGetTests(false);
 
@@ -294,13 +293,6 @@ const Landing = (props) => {
         .limit(1)
         .get()
         .then((querySnapshot) => {
-          // let arrObjects = [];
-          // querySnapshot.forEach(function (doc) {
-          //   // doc.data() is never undefined for query doc snapshots
-          //   console.log(doc.id, " => ", doc.data());
-          //   arrObjects.push({ docId: doc.id, url: doc.data().url });
-          // });
-          // return arrObjects;
           let docId = "";
           querySnapshot.forEach(function (doc) {
             docId = doc.id;
@@ -309,7 +301,6 @@ const Landing = (props) => {
           return docId;
         })
         .then((docId) => {
-          alert("tag change, docId: " + docId);
           if (!docId) return;
 
           return firestore
@@ -317,9 +308,6 @@ const Landing = (props) => {
             .get();
         })
         .then((responseDoc) => {
-          alert("tag change, responseDoc: " + responseDoc);
-          alert(typeof responseDoc === "undefined");
-
           if (typeof responseDoc === "undefined") {
             setNoMoreTests(true);
             setLoading(false);
@@ -341,7 +329,6 @@ const Landing = (props) => {
     //Get last responded test by user based on the current tags
 
     if (getTests) {
-      alert("get last test ");
       let selectionArr = [];
 
       chipData.forEach((topic) => {
@@ -364,11 +351,9 @@ const Landing = (props) => {
             uploaded = doc.data().uploaded;
           });
 
-          alert("get last test : " + uploaded);
           return uploaded;
         })
         .then((uploaded) => {
-          alert("get last test : " + uploaded);
           setLastResponse(uploaded);
           setGetTests(false);
         })
@@ -383,7 +368,6 @@ const Landing = (props) => {
 
   useEffect(() => {
     if (lastResponse) {
-      alert("getting tests based on lastResponse");
       let selectionArr = [];
 
       chipData.forEach((topic) => {
@@ -421,21 +405,27 @@ const Landing = (props) => {
         .then((querySnapshot) => {
           let arrObjects = [];
           querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            arrObjects.push({ docId: doc.id, url: doc.data().url });
+            arrObjects.push({
+              docId: doc.id,
+              url: doc.data().url,
+              uploaded: doc.data().uploaded,
+              uploaded_by: doc.data().uploaded_by,
+            });
           });
           return arrObjects;
         })
         .then((arrObjects) => {
-          if (arrObjects) {
-            setTests(arrObjects);
-          } else {
+          if (!arrObjects) {
             setNoMoreTests(true);
+            setLastResponse(null);
+            setLoading(false);
+          } else if (arrObjects.uploaded_by === uid) {
+            setLastResponse(arrObjects.uploaded);
+          } else {
+            setTests(arrObjects);
+            setLastResponse(null);
+            setLoading(false);
           }
-
-          setLastResponse(null);
-          setLoading(false);
         })
         .catch((err) => {
           alert(err);
@@ -452,8 +442,7 @@ const Landing = (props) => {
 
     if (selection) {
       timer.current = setTimeout(() => {
-        const timeStamp = props.firebase.timestampFrom(new Date());
-        setLastResponse(timeStamp);
+        setLastResponse(tests[0].uploaded);
         setSelection(false);
         setLoading(true);
       }, 1000);
