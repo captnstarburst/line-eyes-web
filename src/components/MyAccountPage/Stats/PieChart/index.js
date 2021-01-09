@@ -22,10 +22,11 @@ const renderCustomizedLabel = ({
       x={x}
       y={y}
       fill="white"
-      textAnchor={x > cx ? "start" : "end"}
+      textAnchor={x > cx ? "central" : "central"}
       dominantBaseline="central"
     >
-      {`${(percent * 100).toFixed(0)}%`}
+      {index === 2 && "Positives"}
+      {`${(percent * 100).toFixed(0)}% `}
     </text>
   );
 };
