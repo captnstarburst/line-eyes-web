@@ -1,8 +1,10 @@
 import React from "react";
-import "tui-image-editor/dist/tui-image-editor.css";
+import "./tui-image-editor.css";
 import ImageEditor from "@toast-ui/react-image-editor";
 import SaveIcon from "@material-ui/icons/Save";
 import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import useWindowDimensions from "../../Hooks/useWindowDimensions";
 import { makeStyles } from "@material-ui/core/styles";
 
 const myTheme = {
@@ -31,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 function Editor(props) {
   const classes = useStyles();
 
+  const { height, width } = useWindowDimensions();
+
   const imageEditor = React.createRef();
 
   const currentImgToURL = () => {
@@ -40,7 +44,7 @@ function Editor(props) {
   };
 
   return (
-    <main style={{ background: "#151515" }}>
+    <Container style={{ background: "#151515" }} maxWidth="xl">
       <section style={{ display: "flex", flexDirection: "row-reverse" }}>
         <Button
           variant="contained"
@@ -60,11 +64,11 @@ function Editor(props) {
           menu: ["filter"],
           initMenu: "filter",
           uiSize: {
-            height: "700px",
+            height: "100vh",
           },
-          menuBarPosition: "top",
+          menuBarPosition: width < 600 ? "bottom" : "top",
         }}
-        cssMaxHeight={window.innerHeight}
+        cssMaxHeight={height}
         cssMaxWidth={window.innerWidth}
         selectionStyle={{
           cornerSize: 20,
@@ -73,7 +77,7 @@ function Editor(props) {
         usageStatistics={true}
         ref={imageEditor}
       />
-    </main>
+    </Container>
   );
 }
 
