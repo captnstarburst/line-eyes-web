@@ -279,7 +279,7 @@ const Landing = (props) => {
       });
     });
 
-    if (!selectionArr) {
+    if (selectionArr.length === 0) {
       setNoMoreTests(true);
       setLoading(false);
     } else {
