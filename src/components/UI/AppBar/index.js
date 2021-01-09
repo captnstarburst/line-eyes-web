@@ -189,12 +189,12 @@ const MenuAppBar = (props) => {
           </Typography>
           <div>
             <IconButton
-              aria-label="account of current user"
+              aria-label="notficiations"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit"
             >
-              <Badge color="secondary" badgeContent={1} invisible={false}>
+              <Badge color="secondary" badgeContent={1} invisible={true}>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
