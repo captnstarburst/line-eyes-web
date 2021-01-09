@@ -9,9 +9,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "40ch",
+      width: "50ch",
       display: "flex",
       flexDirection: "column",
+      [theme.breakpoints.down("sm")]: {
+        width: "30ch",
+      },
     },
   },
 }));

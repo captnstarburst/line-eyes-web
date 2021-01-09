@@ -75,7 +75,7 @@ const AdminActivity = (props) => {
   };
 
   const filterTests = (id) =>
-    setReportedTests(reportedTests.filter((test) => test.docId === id));
+    setReportedTests(reportedTests.filter((test) => test.docId !== id));
 
   const markForDeletion = (id) => {
     const functions = props.firebase.useFunctions();

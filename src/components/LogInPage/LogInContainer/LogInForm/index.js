@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
       width: "40ch",
       display: "flex",
       flexDirection: "column",
+      [theme.breakpoints.down("sm")]: {
+        width: "30ch",
+      },
     },
   },
 }));

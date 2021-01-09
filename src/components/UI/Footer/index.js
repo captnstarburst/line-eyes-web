@@ -4,10 +4,13 @@ import Link from "@material-ui/core/Link";
 
 const Footer = (props) => {
   return (
-    <footer style={{ marginTop: "150px" }}>
+    <footer
+      style={{ marginTop: "150px", color: props.white ? "#fff" : "primary" }}
+    >
       <Typography
         style={{ textAlign: "center", fontSize: "16px" }}
-        variant="h6"
+        variant="h2"
+        color={"inherit"}
       >
         Line-Eyes &copy;
       </Typography>
@@ -16,13 +19,13 @@ const Footer = (props) => {
           style={{
             display: "flex",
             justifyContent: "space-around",
-            width: "50%",
+            width: "100%",
           }}
         >
-          <Link href="/privacy-policy" color="primary">
+          <Link href="/privacy-policy" color={"inherit"}>
             Privacy Policy
           </Link>
-          <Link href="/terms-and-conditions" color="primary">
+          <Link href="/terms-and-conditions" color={"inherit"}>
             Terms & Conditions
           </Link>
         </Typography>

@@ -15,8 +15,10 @@ const useStyles = makeStyles((theme) => ({
   logInContainer: {
     height: "auto",
     marginTop: "5vh",
-    minWidth: "500px",
     maxWidth: "70vw",
+    [theme.breakpoints.up("sm")]: {
+      minWidth: "40vw",
+    },
   },
 }));
 
@@ -37,7 +39,7 @@ const LogInPage = (props) => {
           <LogInContainer />
         </Paper>
       </Grid>
-      <Footer />
+      <Footer white />
     </main>
   );
 };
