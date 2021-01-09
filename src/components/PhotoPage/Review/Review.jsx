@@ -26,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
     width: 500,
     position: "relative",
     minHeight: 200,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 400,
+    },
   },
   fab: {
     position: "absolute",
@@ -34,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
   },
   navigation: {
     width: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 400,
+    },
   },
 }));
 
@@ -41,7 +53,7 @@ const ReviewJSX = (props) => {
   const classes = useStyles();
 
   return (
-    <Container fixed>
+    <Container fixed disableGutters>
       <TagDrawerJSX
         chipData={props.chipData}
         propagateChipSelection={props.handleChipSelection}
@@ -72,11 +84,12 @@ const ReviewJSX = (props) => {
           <Paper elevation={3} variant="outlined">
             <Card className={classes.root}>
               <CardMedia
+                style={{ objectFit: "fill" }}
                 component="img"
                 alt="pending upload"
-                height="200"
                 image={props.url}
                 title="pending upload"
+                draggable="false"
               />
 
               <CardActions>
