@@ -4,14 +4,26 @@ import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 import Zoom from "@material-ui/core/Zoom";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
   },
   navigation: {
     width: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
   },
-});
+}));
 
 const NoMoreCard = (props) => {
   const classes = useStyles();

@@ -6,14 +6,41 @@ import CardContent from "@material-ui/core/CardContent";
 import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
+  },
+  CardContent: {
+    width: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
+    height: "200px",
+    backgroundColor: "#cfe8fc",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
   },
   navigation: {
     width: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
   },
-});
+}));
 
 const LoadingCard = (props) => {
   const classes = useStyles();
@@ -28,17 +55,7 @@ const LoadingCard = (props) => {
       }}
     >
       <Card className={classes.root}>
-        <CardContent
-          style={{
-            width: "500px",
-            height: "200px",
-            backgroundColor: "#cfe8fc",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <CardContent className={classes.CardContent}>
           <CircularProgress />
         </CardContent>
       </Card>

@@ -15,10 +15,17 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Zoom from "@material-ui/core/Zoom";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 500,
+    width: 500,
     zIndex: 1,
+
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
   },
   normalIcon: {
     fontSize: "24px",
@@ -30,8 +37,15 @@ const useStyles = makeStyles({
   },
   navigation: {
     width: 500,
+
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 400,
+    },
   },
-});
+}));
 
 export const CurrentTest = (props) => {
   const classes = useStyles();
@@ -70,10 +84,9 @@ export const CurrentTest = (props) => {
       <Zoom in={props.tests[0]} {...{ timeout: 500 }} unmountOnExit>
         <Card className={classes.root}>
           <CardMedia
-            style={{ width: "500px", objectFit: "fill" }}
+            style={{ objectFit: "fill" }}
             component="img"
             alt="Current Test"
-            height="200"
             image={props.tests[0].url}
             title="Current Test"
             draggable="false"

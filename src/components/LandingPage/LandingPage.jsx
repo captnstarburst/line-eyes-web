@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
     overflowX: "hidden",
   },
+  Container: {
+    [theme.breakpoints.down("md")]: {
+      maxWidth: "100vw",
+    },
+  },
   fab: {
     position: "absolute",
     bottom: theme.spacing(2),
@@ -40,7 +45,7 @@ const LandingPageJSX = (props) => {
     <>
       <AppBar />
       <CssBaseline />
-      <Container fixed>
+      <Container classes="classes.Container" fixed disableGutters>
         <TagDrawerJSX
           chipData={props.chipData}
           propagateChipSelection={props.handleChipSelection}
