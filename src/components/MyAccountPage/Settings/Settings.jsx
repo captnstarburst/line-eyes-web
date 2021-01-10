@@ -12,6 +12,11 @@ import EmailIcon from "@material-ui/icons/Email";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import EmailValidator from "../../functions/EmailValidator";
 import ReAuthModal from "../../UI/ReAuthModal";
 
@@ -93,17 +98,32 @@ const Settings = (props) => {
           <ListItemText id="birthday_text" primary="Birthday" />
           <ListItemSecondaryAction>
             {props.userInfo.birthdate && (
-              <TextField
-                variant="outlined"
-                id="birthdate"
-                label="Date Of Birth"
-                type="date"
-                defaultValue={props.userInfo.birthdate}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={props.propagateUpdate}
-              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="outlined"
+                  format="mm/dd/yyyy"
+                  margin="normal"
+                  id="birthdate"
+                  label="Date Of Birth"
+                  defaultValue={new Date("2014-08-18T21:11:54")}
+                  onChange={props.propagateUpdate}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date of birth",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              // <TextField
+              //   variant="outlined"
+              //   id="birthdate"
+              //   label="Date Of Birth"
+              //   type="date"
+              //   defaultValue={props.userInfo.birthdate}
+              //   InputLabelProps={{
+              //     shrink: true,
+              //   }}
+              //   onChange={props.propagateUpdate}
+              // />
             )}
           </ListItemSecondaryAction>
         </ListItem>
