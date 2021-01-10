@@ -66,7 +66,7 @@ const CreateForm = (props) => {
       <TextField
         variant="outlined"
         id="password_check"
-        label="Password Check"
+        label="Re-Enter Password"
         type="password"
         onChange={props.propagateChange}
         error={props.checkingValues && props.formError.password}
