@@ -20,14 +20,26 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withFirebase } from "../../../Firebase";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
   },
   navigation: {
     width: 500,
+    [theme.breakpoints.between("xs", "sm")]: {
+      maxWidth: 250,
+    },
+    [theme.breakpoints.only("sm")]: {
+      maxWidth: 400,
+    },
   },
-});
+}));
 
 const ActivityCard = (props) => {
   const classes = useStyles();
@@ -111,14 +123,13 @@ const ActivityCard = (props) => {
                 ? "Uploaded reported and is under review"
                 : "test " + props.uploadData.file_name
             }
-            height="200"
+            style={{ objectFit: "fill" }}
             image={props.uploadData.reported ? null : props.uploadData.url}
             title={
               props.uploadData.reported
                 ? "Uploaded reported and is under review"
                 : "test " + props.uploadData.file_name
             }
-            style={{ objectFit: "fill" }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
