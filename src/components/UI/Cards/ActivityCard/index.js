@@ -111,7 +111,6 @@ const ActivityCard = (props) => {
                 ? "Uploaded reported and is under review"
                 : "test " + props.uploadData.file_name
             }
-            height="200"
             image={props.uploadData.reported ? null : props.uploadData.url}
             title={
               props.uploadData.reported
