@@ -84,7 +84,8 @@ export const CurrentTest = (props) => {
       <Zoom in={props.tests[0]} {...{ timeout: 500 }} unmountOnExit>
         <Card className={classes.root}>
           <CardMedia
-            style={{ objectFit: "fill" }}
+            height="200px"
+            style={{ objectFit: "contain" }}
             component="img"
             alt="Current Test"
             image={props.tests[0].url}
