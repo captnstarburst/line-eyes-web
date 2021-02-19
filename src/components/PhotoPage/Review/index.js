@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ReviewJSX from "./Review.jsx";
+import ImgOnly from "../../functions/ImgOnly";
 import { v4 as uuidv4 } from "uuid";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../../Firebase";
@@ -8,7 +9,8 @@ import * as ROUTES from "../../constants/routes";
 
 const Review = (props) => {
   const [tagDrawerOpen, setTagDrawerOpen] = useState(true);
-
+  const [pendingUploadURL, setPendingUploadURL] = useState(null);
+  const [pendingUploadFile, setPendingUploadFile] = useState(null);
   const [chipData, setChipData] = useState([
     [
       { key: 0, header: "Test_Type", id: "Test_Type" },
@@ -189,6 +191,21 @@ const Review = (props) => {
     ];
   };
 
+  const simulateInputClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleFileSelection = async (e) => {
+    if (e.target.files.length) {
+      if (!ImgOnly(e.target.files[0])) {
+        alert("Images only");
+      } else {
+        setPendingUploadFile(e.target.files[0]);
+        setPendingUploadURL(URL.createObjectURL(e.target.files[0]));
+      }
+    }
+  };
+
   const handleUpload = async () => {
     const uid = props.firebase.currentUserUID();
     const uuid = uuidv4();
@@ -204,7 +221,7 @@ const Review = (props) => {
     const uploadTask = props.firebase
       .getStorage()
       .child(`/Tests/${uid}/${uuid}`)
-      .putString(props.url, "data_url");
+      .put(pendingUploadFile);
 
     await uploadTask.on(
       "state_changed",
@@ -267,24 +284,34 @@ const Review = (props) => {
     }
   }, [addTopic, chipData]);
 
-  useEffect(() => {
-    if (!props.url) {
-      props.history.push(ROUTES.PHOTO);
-    }
-  }, [props.history, props.url]);
+  // useEffect(() => {
+  //   if (!props.url) {
+  //     props.history.push(ROUTES.PHOTO);
+  //   }
+  // }, [props.history, props.url]);
 
   return (
-    <ReviewJSX
-      toggleDrawer={toggleDrawer}
-      tagDrawerOpen={tagDrawerOpen}
-      chipData={chipData}
-      handleChipSelection={handleChipSelection}
-      handleChipDeletion={handleChipDeletion}
-      handleUpload={handleUpload}
-      mountUpload={mountUpload}
-      url={props.url}
-      uploading={uploading}
-    />
+    <>
+      <ReviewJSX
+        toggleDrawer={toggleDrawer}
+        tagDrawerOpen={tagDrawerOpen}
+        chipData={chipData}
+        simulateInputClick={simulateInputClick}
+        handleChipSelection={handleChipSelection}
+        handleChipDeletion={handleChipDeletion}
+        handleUpload={handleUpload}
+        mountUpload={mountUpload}
+        url={pendingUploadURL}
+        uploading={uploading}
+      />
+      <input
+        id={"fileInput"}
+        type="file"
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleFileSelection}
+      />
+    </>
   );
 };
 
