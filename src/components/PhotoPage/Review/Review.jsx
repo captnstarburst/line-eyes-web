@@ -19,6 +19,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import TagDrawerJSX from "../../UI/TagDrawer/TagDrawer.jsx";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Chips from "../../UI/Chips";
+import Placeholder from "../../assets/placeholder.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,9 +89,10 @@ const ReviewJSX = (props) => {
                 style={{ objectFit: "contain" }}
                 component="img"
                 alt="pending upload"
-                image={props.url}
+                image={props.url ? props.url : Placeholder}
                 title="pending upload"
                 draggable="false"
+                onClick={props.simulateInputClick}
               />
 
               <CardActions>
