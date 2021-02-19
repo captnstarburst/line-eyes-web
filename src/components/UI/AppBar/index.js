@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    cursor: "pointer",
   },
   list: {
     width: 250,
@@ -184,7 +185,11 @@ const MenuAppBar = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            onClick={handleRouteToLineEyes}
+          >
             Line-Eyes
           </Typography>
           <div>

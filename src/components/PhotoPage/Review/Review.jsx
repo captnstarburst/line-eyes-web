@@ -84,7 +84,8 @@ const ReviewJSX = (props) => {
           <Paper elevation={3} variant="outlined">
             <Card className={classes.root}>
               <CardMedia
-                style={{ objectFit: "fill" }}
+                height="200px"
+                style={{ objectFit: "contain" }}
                 component="img"
                 alt="pending upload"
                 image={props.url}
