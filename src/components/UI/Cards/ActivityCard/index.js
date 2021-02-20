@@ -80,6 +80,11 @@ const ActivityCard = (props) => {
       .catch((err) => {
         // Uh-oh, an error occurred!
       });
+
+    const fileNameSplit = props.uploadData.file_name.split("_");
+    const ogRef = storageRef.child("Tests/" + uid + "/" + fileNameSplit[0]);
+
+    ogRef.delete();
   };
 
   return (
