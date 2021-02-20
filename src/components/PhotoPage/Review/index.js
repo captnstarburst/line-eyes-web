@@ -233,10 +233,11 @@ const Review = (props) => {
         const functions = props.firebase.useFunctions();
         const TestImageUploaded = functions.httpsCallable("TestImageUploaded");
 
-        props.firebase
+        const storageRef = props.firebase
           .getStorage()
-          .child(`/Tests/${uid}/${uuid}`)
-          .getDownloadURL()
+          .child(`/Tests/${uid}/${uuid}_500x500`);
+
+        retrieveResizedImage(10, storageRef)
           .then((url) => {
             return TestImageUploaded({ uuid, tags, uid, url });
           })
@@ -246,12 +247,42 @@ const Review = (props) => {
             props.history.push(ROUTES.My_Account + "/uploads");
           })
           .catch((err) => {
-            // alert(err);
+            alert(err);
             console.log(err);
           });
       }
     );
   };
+
+  const delayPoll = (t, v) => {
+    return new Promise(function (resolve) {
+      setTimeout(resolve.bind(null, v), t);
+    });
+  };
+
+  const retrieveResizedImage = (triesRemaining, storageRef) => {
+    if (triesRemaining < 0) {
+      return Promise.reject("out of tries");
+    }
+
+    return storageRef
+      .getDownloadURL()
+      .then((url) => {
+        return url;
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "storage/object-not-found":
+            return delayPoll(2000).then(() => {
+              return retrieveResizedImage(triesRemaining - 1, storageRef);
+            });
+          default:
+            console.log(error);
+            return Promise.reject(error);
+        }
+      });
+  };
+
   useEffect(() => {
     if (addTopic) {
       let updatedTopics = [];

@@ -85,7 +85,7 @@ export const CurrentTest = (props) => {
         <Card className={classes.root}>
           <CardMedia
             height="200px"
-            style={{ objectFit: "contain" }}
+            style={{ objectFit: "cover" }}
             component="img"
             alt="Current Test"
             image={props.tests[0].url}
