@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 const TagDrawerJSX = (props) => {
   const classes = useStyles();
 
+  console.log(props.chipData);
   return (
     <Accordion square expanded={props.open} onChange={props.toggle}>
       <AccordionSummary aria-controls="Tag-Content" id="Tag-Header">
